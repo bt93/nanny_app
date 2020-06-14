@@ -23,24 +23,25 @@ CREATE TABLE address (
 	country NVARCHAR(25),
 )
 
-CREATE TABLE caretaker (
-	caretaker_id INT IDENTITY PRIMARY KEY,
-	address_id INT NOT NULL,
-	first_name NVARCHAR(80) NOT NULL,
-	last_name NVARCHAR(80) NOT NULL,
-	email NVARCHAR(120) NOT NULL,
-	password NVARCHAR(60) NOT NULL,
-	phone_number NVARCHAR(10)
-	CONSTRAINT fk_caretaker_address FOREIGN KEY (address_id) REFERENCES address(address_id)
+CREATE TABLE diaper (
+	diaper_id INT IDENTITY PRIMARY KEY,
+	session_id INT NOT NULL,
+	time DATETIME NOT NULL,
+	notes TEXT
 )
 
-CREATE TABLE parent (
-	parent_id INT IDENTITY PRIMARY KEY,
-	address_id INT NOT NULL,
-	first_name NVARCHAR(80),
-	last_name NVARCHAR(80),
-	email NVARCHAR(120),
-	phone_number NVARCHAR(10)
-	CONSTRAINT fk_parent_address FOREIGN KEY (address_id) REFERENCES address(address_id)
+CREATE TABLE meal (
+	meal_id INT IDENTITY PRIMARY KEY,
+	session_id INT NOT NULL,
+	time DATETIME NOT NULL,
+	type NVARCHAR(20),
+	notes TEXT
 )
 
+CREATE TABLE nap (
+	nap_id INT IDENTITY PRIMARY KEY,
+	session_id INT NOT NULL,
+	start_time DATETIME NOT NULL,
+	end_time DATETIME NOT NULL,
+	notes TEXT
+)

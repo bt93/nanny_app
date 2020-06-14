@@ -70,7 +70,7 @@ CREATE TABLE session (
 	drop_off DATETIME,
 	pick_up DATETIME,
 	total_hours INT,
-	total_pay MONEY,
+	total_owed MONEY,
 	notes TEXT
 	CONSTRAINT fk_session_child FOREIGN KEY (child_id) REFERENCES child(child_id)
 )

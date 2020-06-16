@@ -46,14 +46,12 @@ CREATE TABLE parent (
 
 CREATE TABLE child (
 	child_id INT IDENTITY PRIMARY KEY,
-	caretaker_id INT NOT NULL,
 	first_name NVARCHAR(80) NOT NULL,
 	last_name NVARCHAR(80) NOT NULL,
 	gender NVARCHAR(11),
 	date_of_birth DATE,
 	rate_per_hour MONEY NOT NULL,
 	needs_diapers BIT NOT NULL,
-	CONSTRAINT fk_child_caretaker FOREIGN KEY (caretaker_id) REFERENCES caretaker(caretaker_id)
 )
 
 CREATE TABLE child_parent (
@@ -69,10 +67,16 @@ CREATE TABLE session (
 	child_id INT NOT NULL,
 	drop_off DATETIME,
 	pick_up DATETIME,
-	total_hours INT,
-	total_owed MONEY,
 	notes TEXT
 	CONSTRAINT fk_session_child FOREIGN KEY (child_id) REFERENCES child(child_id)
+)
+
+CREATE TABLE session_caretaker (
+	session_id INT NOT NULL,
+	caretaker_id INT NOT NULL
+	CONSTRAINT pk_session_caretaker PRIMARY KEY (session_id, caretaker_id),
+	CONSTRAINT fk_session FOREIGN KEY (session_id) REFERENCES session(session_id),
+	CONSTRAINT fk_caretaker FOREIGN KEY (caretaker_id) REFERENCES caretaker(caretaker_id)
 )
 
 CREATE TABLE diaper (

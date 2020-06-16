@@ -10,16 +10,17 @@ SELECT *
 	FROM caretaker c
 	JOIN address a ON c.address_id = c.address_id
 
-INSERT INTO child (caretaker_id, first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers) 
-	VALUES (1, 'Ellie', 'Kwecien', 'Female', '2018-08-25', 6.30, 1)
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers) 
+	VALUES ('Ellie', 'Kwecien', 'Female', '2018-08-25', 6.30, 1)
 
 SELECT *
 	FROM child
-	JOIN caretaker ON child.caretaker_id = caretaker.caretaker_id
 
+DECLARE @Existingdate datetime
+SET @Existingdate=GETDATE()
 
-INSERT INTO session (child_id, drop_off, pick_up, total_hours, total_pay, notes)
-	VALUES (1, @Existingdate, @Existingdate, 6, 30.22, 'Ellie was a sweetheart!')
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (1, @Existingdate, @Existingdate, 'Ellie was a sweetheart!')
 
 SELECT * FROM session
 	JOIN child ON session.child_id = child.child_id
@@ -40,8 +41,6 @@ SELECT *
 	FROM meal
 	JOIN session ON meal.session_id = session.session_id
 
-DECLARE @Existingdate datetime
-SET @Existingdate=GETDATE()
 
 INSERT INTO nap (session_id, start_time, end_time, notes)
 	VALUES (1, @Existingdate, @Existingdate, 'She slept very well')

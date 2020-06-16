@@ -28,7 +28,7 @@ CREATE TABLE caretaker (
 	address_id INT NOT NULL,
 	first_name NVARCHAR(80) NOT NULL,
 	last_name NVARCHAR(80) NOT NULL,
-	email NVARCHAR(120) NOT NULL,
+	email_address NVARCHAR(120) NOT NULL,
 	password NVARCHAR (60) NOT NULL,
 	phone_number NVARCHAR(20) NOT NULL,
 	CONSTRAINT fk_caretaker_address FOREIGN KEY (address_id) REFERENCES address(address_id)
@@ -39,7 +39,7 @@ CREATE TABLE parent (
 	address_id INT NOT NULL,
 	first_name NVARCHAR(80) NOT NULL,
 	last_name NVARCHAR(80) NOT NULL,
-	email NVARCHAR(120) NOT NULL,
+	email_address NVARCHAR(120) NOT NULL,
 	phone_number NVARCHAR(20) NOT NULL
 	CONSTRAINT fk_parent_address FOREIGN KEY (address_id) REFERENCES address(address_id)
 )

@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using NannyApi.DAL;
+using NannyApi.Models;
 
 namespace NannyApi
 {

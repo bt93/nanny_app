@@ -10,13 +10,16 @@ namespace NannyApi.DAL
     {
 
         private string connectionString { get; set; }
-
+        /// <summary>
+        /// Creates a sql based caretaker DAO
+        /// </summary>
+        /// <param name="dbconnectionString"></param>
         public CareTakerSqlDAO(string dbconnectionString)
         {
             this.connectionString = dbconnectionString;
         }
 
-        public IList<CareTaker> GetCareTakers()
+        public IList<CareTaker> GetAllCareTakers()
         {
             List<CareTaker> careTakers = new List<CareTaker>();
 
@@ -45,6 +48,39 @@ namespace NannyApi.DAL
             return careTakers;
         }
 
+        public CareTaker GetCareTakerByName(string firstName, string lastName)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+
+                    const string sql = @"SELECT *
+                                            FROM caretaker
+                                            WHERE first_name = @first_name
+                                            AND last_name = @last_name";
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@first_name", firstName);
+                    cmd.Parameters.AddWithValue("@last_name", lastName);
+
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        return ParseRow(rdr);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
         private CareTaker ParseRow(SqlDataReader rdr)
         {
             CareTaker careTaker = new CareTaker();
@@ -59,5 +95,7 @@ namespace NannyApi.DAL
 
             return careTaker;
         }
+
+        
     }
 }

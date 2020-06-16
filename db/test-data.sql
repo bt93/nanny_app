@@ -19,6 +19,10 @@ SELECT *
 	FROM caretaker c
 	JOIN address a ON c.address_id = c.address_id
 
+SELECT *
+	FROM caretaker
+	WHERE first_name = 'Jason'
+	AND last_name = 'Howie';
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers) 
 	VALUES ('Ellie', 'Kwecien', 'Female', '2018-08-25', 6.30, 1)
 

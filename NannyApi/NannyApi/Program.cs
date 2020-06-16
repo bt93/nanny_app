@@ -18,6 +18,9 @@ namespace NannyApi
             string connectionString = configuration.GetConnectionString("NannyDB");
 
             ICareTakerDAO careTakerDAO = new CareTakerSqlDAO(connectionString);
+
+            NannyAppCLI cli = new NannyAppCLI(careTakerDAO);
+            cli.RunCLI();
         }
     }
 }

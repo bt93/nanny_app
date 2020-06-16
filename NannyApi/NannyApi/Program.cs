@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-
+using NannyApi.DAL;
+using NannyApi.Models;
 
 namespace NannyApi
 {
@@ -16,7 +18,7 @@ namespace NannyApi
             IConfigurationRoot configuration = builder.Build();
             string connectionString = configuration.GetConnectionString("NannyDB");
 
-            Console.WriteLine(connectionString);
+            ICareTakerDAO careTakerDAO = new CareTakerSqlDAO(connectionString);
         }
     }
 }

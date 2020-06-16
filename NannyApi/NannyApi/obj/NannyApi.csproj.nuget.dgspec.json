@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jason Howie\\projects\\nanny-app\\api\\NannyApi\\NannyApi\\NannyApi.csproj": {}
+    "C:\\Users\\Jason Howie\\projects\\nanny-app\\NannyApi\\NannyApi\\NannyApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jason Howie\\projects\\nanny-app\\api\\NannyApi\\NannyApi\\NannyApi.csproj": {
+    "C:\\Users\\Jason Howie\\projects\\nanny-app\\NannyApi\\NannyApi\\NannyApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jason Howie\\projects\\nanny-app\\api\\NannyApi\\NannyApi\\NannyApi.csproj",
+        "projectUniqueName": "C:\\Users\\Jason Howie\\projects\\nanny-app\\NannyApi\\NannyApi\\NannyApi.csproj",
         "projectName": "NannyApi",
-        "projectPath": "C:\\Users\\Jason Howie\\projects\\nanny-app\\api\\NannyApi\\NannyApi\\NannyApi.csproj",
+        "projectPath": "C:\\Users\\Jason Howie\\projects\\nanny-app\\NannyApi\\NannyApi\\NannyApi.csproj",
         "packagesPath": "C:\\Users\\Jason Howie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jason Howie\\projects\\nanny-app\\api\\NannyApi\\NannyApi\\obj\\",
+        "outputPath": "C:\\Users\\Jason Howie\\projects\\nanny-app\\NannyApi\\NannyApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Jason Howie\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -49,6 +49,10 @@
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
               "version": "[3.1.5, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.1, )"
             }
           },
           "imports": [

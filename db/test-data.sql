@@ -3,8 +3,17 @@ INSERT INTO address (street_number, streed_name, city, state, zip, county, count
 
 SELECT * from address
 
-INSERT INTO caretaker (address_id, first_name, last_name, email, password, phone_number)
+INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	VALUES (1, 'Ruth', 'Howie', 'rudih@windstream.net', 'password', '216-262-9355')
+
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
+	VALUES (1, 'Jason', 'Howie', 'jason@windstream.net', 'password', '216-262-9355')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
+	VALUES (1, 'Jay', 'Howie', 'rudih@windstream.net', 'password', '216-262-9355')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
+	VALUES (1, 'John', 'Doe', 'rudih@windstream.net', 'password', '216-262-9355')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
+	VALUES (1, 'Jane', 'Doe', 'rudih@windstream.net', 'password', '216-262-9355')
 
 SELECT *
 	FROM caretaker c
@@ -52,10 +61,10 @@ SELECT *
 INSERT INTO address (street_number, streed_name, city, state, zip, county, country)
 	VALUES (2221, 'Mayfield Ridge Road', 'Mayfield Heights', 'Ohio', 44124, 'Cuyahoga', 'United States of America')
 
-INSERT INTO parent (address_id, first_name, last_name, email, phone_number)
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
 	VALUES (2, 'Megan', 'Kwecien', 'meganhowie.1@gmail.com', '330-222-2222')
 
-INSERT INTO parent (address_id, first_name, last_name, email, phone_number)
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
 	VALUES (2, 'Matt', 'Kwecien', 'mat.1@gmail.com', '330-222-2222')
 
 SELECT * FROM parent

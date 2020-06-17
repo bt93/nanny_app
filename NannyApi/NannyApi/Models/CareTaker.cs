@@ -13,6 +13,18 @@ namespace NannyApi.Models
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
+        public int StreetNumber { get; set; }
+        public string StreetName { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public int Zip { get; set; }
+        public string County { get; set; }
+        public string Country { get; set; }
+
+        public string GetAddress()
+        {
+            return $"{this.StreetNumber} {this.StreetName} {this.City}, {this.State} {this.Zip} {this.County} {this.Country}";
+        }
 
         public override string ToString()
         {

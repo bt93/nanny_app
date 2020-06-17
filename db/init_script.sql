@@ -15,7 +15,7 @@ GO
 CREATE TABLE address (
 	address_id INT IDENTITY PRIMARY KEY,
 	street_number INT NOT NULL,
-	streed_name NVARCHAR(25) NOT NULL,
+	street_name NVARCHAR(25) NOT NULL,
 	city NVARCHAR(25) NOT NULL,
 	state NVARCHAR(25) NOT NULL,
 	zip INT,

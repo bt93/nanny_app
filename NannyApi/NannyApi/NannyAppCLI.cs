@@ -14,7 +14,7 @@ namespace NannyApi
         const string Command_LanguagesByCountryCode = "4";
         const string Command_AddNewLanguage = "5";
         const string Command_RemoveLanguage = "6";
-        const string Command_AddCity = "7";
+        const string Command_AddCareTaker = "7";
         const string Command_Quit = "q";
 
         private ICareTakerDAO careTakerDAO;
@@ -62,9 +62,9 @@ namespace NannyApi
                     //    RemoveLanguage();
                     //    break;
 
-                    //case Command_AddCity:
-                    //    AddCity();
-                    //    break;
+                    case Command_AddCareTaker:
+                        AddCareTaker();
+                        break;
 
                     case Command_Quit:
                         Console.WriteLine("Thank you for using the world geography cli app");
@@ -99,29 +99,47 @@ namespace NannyApi
             Console.WriteLine(" 4 - Get a list of the languages by country code");
             Console.WriteLine(" 5 - Add a new language");
             Console.WriteLine(" 6 - Remove language");
-            Console.WriteLine(" 7 - Add a city");
+            Console.WriteLine(" 7 - Add a caretaker");
             Console.WriteLine(" Q - Quit");
         }
 
-        //private void AddCity()
-        //{
-        //    string name = CLIHelper.GetString("Name of the city:");
-        //    string code = CLIHelper.GetString("Country code:");
-        //    string district = CLIHelper.GetString($"District {name} is in:");
-        //    int population = CLIHelper.GetInteger($"Population of {name}:");
+        private void AddCareTaker()
+        {
+            
+            string firstName = CLIHelper.GetString("First Name");
+            string lastName = CLIHelper.GetString("Last Name");
+            string email = CLIHelper.GetString("Email");
+            string password = CLIHelper.GetString("Password");
+            string phoneNumber = CLIHelper.GetString("Phone Number");
+            int streetNumber = CLIHelper.GetInteger("Street Number");
+            string streetName = CLIHelper.GetString("Street Name");
+            string city = CLIHelper.GetString("City");
+            string state = CLIHelper.GetString("State");
+            int zip = CLIHelper.GetInteger("Zip Code");
+            string county = CLIHelper.GetString("County");
+            string country = CLIHelper.GetString("Country");
 
-        //    City city = new City
-        //    {
-        //        CountryCode = code,
-        //        Name = name,
-        //        District = district,
-        //        Population = population
-        //    };
+            CareTaker careTaker = new CareTaker()
+            {
+                
+                FirstName = firstName,
+                LastName = lastName,
+                EmailAddress = email,
+                Password = password,
+                PhoneNumber = phoneNumber,
+                StreetNumber = streetNumber,
+                StreetName = streetName,
+                City = city,
+                State = state,
+                Zip = zip,
+                County = county,
+                Country = country
+            };
 
-        //    cityDAO.AddCity(city);
+            this.careTakerDAO.AddCareTaker(careTaker);
 
-        //    Console.WriteLine("City added.");
-        //}
+            Console.WriteLine("Caretaker added.");
+        }
 
 
         private void GetAllCareTakers()
@@ -133,7 +151,7 @@ namespace NannyApi
 
             for (int index = 0; index < careTakers.Count; index++)
             {
-                Console.WriteLine(index + " - " + careTakers[index]);
+                Console.WriteLine($"{index} - {careTakers[index]} - {careTakers[index].GetAddress()}");
             }
         }
 

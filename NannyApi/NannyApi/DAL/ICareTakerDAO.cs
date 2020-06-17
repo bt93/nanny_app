@@ -19,5 +19,11 @@ namespace NannyApi.DAL
         /// <param name="lastName"></param>
         /// <returns>CareTaker Object</returns>
         public CareTaker GetCareTakerByName(string firstName, string lastName);
+        /// <summary>
+        /// Adds a caretaker to the caretaker list
+        /// </summary>
+        /// <param name="careTaker"></param>
+        /// <returns>Intiger of rows affected</returns>
+        public void AddCareTaker(CareTaker careTaker);
     }
 }

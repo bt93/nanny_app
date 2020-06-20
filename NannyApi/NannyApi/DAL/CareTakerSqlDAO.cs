@@ -94,16 +94,15 @@ namespace NannyApi.DAL
                     conn.Open();
 
                     // Two inserts, first is done on Address then selects that id
-                    const string addressSql = @"INSERT INTO address (street_number, street_name, city, state, zip, county, country)
-	                                            VALUES (@street_number, @street_name, @city, @state, @zip, @county, @country)
+                    const string addressSql = @"INSERT INTO address (street, city, state, zip, county, country)
+	                                            VALUES (@street, @city, @state, @zip, @county, @country)
                                                 SELECT @@Identity";
                     // Second insert adds to the caretaker table
                     const string personSql = @"INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	                                            VALUES (@address_id, @first_name, @last_name, @email_address, @password, @phone_number);";
                     // Address insert done first 
                     SqlCommand cmd = new SqlCommand(addressSql, conn);
-                    cmd.Parameters.AddWithValue("@street_number", careTaker.StreetNumber);
-                    cmd.Parameters.AddWithValue("@street_name", careTaker.StreetName);
+                    cmd.Parameters.AddWithValue("@street", careTaker.Street);
                     cmd.Parameters.AddWithValue("@city", careTaker.City);
                     cmd.Parameters.AddWithValue("@state", careTaker.State);
                     cmd.Parameters.AddWithValue("@zip", careTaker.Zip);
@@ -146,8 +145,7 @@ namespace NannyApi.DAL
             careTaker.PhoneNumber = Convert.ToString(rdr["phone_number"]);
 
             // Caretaker Address info
-            careTaker.StreetNumber = Convert.ToInt32(rdr["street_number"]);
-            careTaker.StreetName = Convert.ToString(rdr["street_name"]);
+            careTaker.Street = Convert.ToString(rdr["street"]);
             careTaker.City = Convert.ToString(rdr["city"]);
             careTaker.State = Convert.ToString(rdr["state"]);
             careTaker.Zip = Convert.ToInt32(rdr["zip"]);

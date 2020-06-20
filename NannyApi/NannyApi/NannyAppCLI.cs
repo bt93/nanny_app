@@ -111,8 +111,7 @@ namespace NannyApi
             string email = CLIHelper.GetString("Email");
             string password = CLIHelper.GetString("Password");
             string phoneNumber = CLIHelper.GetString("Phone Number");
-            int streetNumber = CLIHelper.GetInteger("Street Number");
-            string streetName = CLIHelper.GetString("Street Name");
+            string street = CLIHelper.GetString("Street");
             string city = CLIHelper.GetString("City");
             string state = CLIHelper.GetString("State");
             int zip = CLIHelper.GetInteger("Zip Code");
@@ -127,8 +126,7 @@ namespace NannyApi
                 EmailAddress = email,
                 Password = password,
                 PhoneNumber = phoneNumber,
-                StreetNumber = streetNumber,
-                StreetName = streetName,
+                Street = street,
                 City = city,
                 State = state,
                 Zip = zip,

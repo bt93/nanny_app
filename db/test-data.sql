@@ -1,5 +1,5 @@
-INSERT INTO address (street_number, street_name, city, state, zip, county, country)
-	VALUES (1282, 'Berkshire Drive', 'Macedonia', 'Ohio', 44056, 'Summit', 'United States of America')
+INSERT INTO address (street, city, state, zip, county, country)
+	VALUES ('1282 Berkshire Drive', 'Macedonia', 'Ohio', 44056, 'Summit', 'United States of America')
 
 SELECT * from address
 
@@ -65,8 +65,8 @@ SELECT *
 	FROM nap
 	JOIN session ON nap.session_id = session.session_id
 
-INSERT INTO address (street_number, street_name, city, state, zip, county, country)
-	VALUES (2221, 'Mayfield Ridge Road', 'Mayfield Heights', 'Ohio', 44124, 'Cuyahoga', 'United States of America')
+INSERT INTO address (street, city, state, zip, county, country)
+	VALUES ('2211 Mayfield Ridge Road', 'Mayfield Heights', 'Ohio', 44124, 'Cuyahoga', 'United States of America')
 
 INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
 	VALUES (2, 'Megan', 'Kwecien', 'meganhowie.1@gmail.com', '330-222-2222')
@@ -87,8 +87,7 @@ SELECT * FROM child
 	JOIN parent ON child_parent.parent_id = parent.parent_id
 
 
-INSERT INTO address (street_number, street_name, city, state, zip, county, country)
-	VALUES (1282, 'Berkshire Drive', 'Macedonia', 'Ohio', 44056, 'Summit', 'United States of America')
+
 
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	VALUES (1, 'Bob', 'Person', 'bob@bob.com', 'bob', '555-555-5555');

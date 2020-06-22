@@ -20,6 +20,12 @@ namespace NannyApi.DAL
         /// <returns>CareTaker Object</returns>
         public CareTaker GetCareTakerByName(string firstName, string lastName);
         /// <summary>
+        /// Gets a single caretaker by an id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>CareTaker Object</returns>
+        public CareTaker GetCareTakerById(int id);
+        /// <summary>
         /// Adds a caretaker to the caretaker list
         /// </summary>
         /// <param name="careTaker"></param>

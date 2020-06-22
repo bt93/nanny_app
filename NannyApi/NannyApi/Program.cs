@@ -20,6 +20,7 @@ namespace NannyApi
 
             // Creates all the objects needed
             ICareTakerDAO careTakerDAO = new CareTakerSqlDAO(connectionString);
+            IParentDAO parentDAO = new ParentSqlDAO(connectionString);
 
             // Runs test CLI with objects passed
             NannyAppCLI cli = new NannyAppCLI(careTakerDAO);

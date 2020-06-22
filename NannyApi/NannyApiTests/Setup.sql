@@ -1,4 +1,4 @@
-﻿-- Start a transaction
+﻿-- Start a transactio
 --BEGIN TRANSACTION
 
 -- REMOVE data from the database
@@ -37,6 +37,8 @@ SELECT @mayfield = @@IDENTITY;
 -- Caretaker tests
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	VALUES (@berkshire, 'Ruth', 'Howie', 'ruth@ruth.com', 'pass', '216-222-0123');
+DECLARE @ruth int
+SELECT @ruth = @@IDENTITY;
 
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	VALUES (@fleet, 'Person', 'Guy', 'person@guy.com', 'word', '216-111-2243');
@@ -44,12 +46,25 @@ INSERT INTO caretaker (address_id, first_name, last_name, email_address, passwor
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	VALUES (@berkshire, 'Person', 'Thing', 'person@Thing.com', 'word', '216-111-2243');
 
+-- Parent Tests
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	VALUES (@mayfield, 'Megan', 'Kwecien', 'Megan@megan.com', '216-222-5555')
+DECLARE @megan int
+SELECT @megan = @@IDENTITY;
+
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	VALUES (@mayfield, 'Matt', 'Kwecien', 'Matt@matt.com', '216-222-5555')
+
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	VALUES (@street, 'Jane', 'Doe', 'jane@doe.com', '216-222-5555')
+
 -- Test if they work
 --SELECT * FROM address
 --SELECT * FROM caretaker
 
 -- Return data to the caller
-SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield
+SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
+@ruth AS ruth, @megan AS megan;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

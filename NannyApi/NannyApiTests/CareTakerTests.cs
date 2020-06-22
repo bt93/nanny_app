@@ -17,6 +17,7 @@ namespace NannyApiTests
 
         // A place to hold the id's that were added to the database
         private int berkshire;
+        private int ruth;
 
         [TestInitialize]
         public void SetupDB()
@@ -34,6 +35,7 @@ namespace NannyApiTests
                 if (rdr.Read())
                 {
                     berkshire = Convert.ToInt32(rdr["berkshire"]);
+                    ruth = Convert.ToInt32(rdr["ruth"]);
                 }
             }
         }
@@ -49,7 +51,7 @@ namespace NannyApiTests
         public void TestCareTakerCount()
         {
             // Arrange
-            CareTakerSqlDAO dao = new CareTakerSqlDAO(connectionString);
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
 
             // Act
             IList<CareTaker> careTakers = dao.GetAllCareTakers();
@@ -62,7 +64,7 @@ namespace NannyApiTests
         public void TestGetCareTakerByName()
         {
             // Arrange
-            CareTakerSqlDAO dao = new CareTakerSqlDAO(connectionString);
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
 
             // Act
             CareTaker careTaker = dao.GetCareTakerByName("Ruth", "Howie");
@@ -76,7 +78,7 @@ namespace NannyApiTests
         public void TestAddCareTaker()
         {
             // Arrange
-            CareTakerSqlDAO dao = new CareTakerSqlDAO(connectionString);
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
             CareTaker testCareTaker = new CareTaker()
             {
                 AddressId = berkshire,
@@ -100,6 +102,36 @@ namespace NannyApiTests
 
             // Assert
             Assert.AreEqual("Jason", careTaker.FirstName);
+        }
+
+        [TestMethod]
+        public void TestGetCareTakerById()
+        {
+            // Arrange
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
+            CareTaker testCareTaker = new CareTaker()
+            {
+                AddressId = berkshire,
+                FirstName = "Ruth",
+                LastName = "Howie",
+                EmailAddress = "askdfja",
+                Password = "pass",
+                PhoneNumber = "342342432",
+                Street = "34243243",
+                City = "sdlktgj",
+                State = "akedgihj",
+                Zip = 324234,
+                County = "asf",
+                Country = "ertwseg"
+            };
+
+            // Act
+            dao.AddCareTaker(testCareTaker);
+            CareTaker careTaker = dao.GetCareTakerById(ruth);
+
+
+            // Assert
+            Assert.AreEqual("Ruth", careTaker.FirstName);
         }
     }
 }

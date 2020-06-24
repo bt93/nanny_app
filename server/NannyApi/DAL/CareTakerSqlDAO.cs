@@ -98,7 +98,7 @@ namespace NannyApi.DAL
             return null;
         }
 
-        public void AddCareTaker(CareTaker careTaker)
+        public CareTaker AddCareTaker(CareTaker careTaker)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
@@ -134,6 +134,61 @@ namespace NannyApi.DAL
 
                 // Finally, executes the caretaker insert
                 cmd.ExecuteNonQuery();
+
+                return careTaker;
+            }
+        }
+
+        public CareTaker UpdateCareTaker(CareTaker careTaker, int id)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                // Two updates, first is done on Address then selects that id
+                const string addressSql = @"UPDATE address
+	                                            SET street = @street,
+	                                            city = @city,
+	                                            state = @state,
+	                                            zip = @zip,
+	                                            county = @county,
+                                                country = @country
+	                                            WHERE address_id = @address_id;";
+
+                // Second update adds to the caretaker table
+                const string personSql = @"UPDATE caretaker
+	                                            SET address_id = @address_id,
+	                                            first_name = @first_name,
+	                                            last_name = @last_name,
+	                                            email_address = @email_address,
+	                                            password = @password
+	                                            WHERE caretaker_id = @caretaker_id;";
+                
+                // Address insert done first 
+                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                cmd.Parameters.AddWithValue("@address_id", id);
+                cmd.Parameters.AddWithValue("@street", careTaker.Street);
+                cmd.Parameters.AddWithValue("@city", careTaker.City);
+                cmd.Parameters.AddWithValue("@state", careTaker.State);
+                cmd.Parameters.AddWithValue("@zip", careTaker.Zip);
+                cmd.Parameters.AddWithValue("@county", careTaker.County);
+                cmd.Parameters.AddWithValue("@country", careTaker.Country);
+
+
+                // Starts caretaker insert with address id added from above
+                cmd = new SqlCommand(personSql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", id);
+                cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
+                cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
+                cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
+                cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
+                cmd.Parameters.AddWithValue("@password", careTaker.Password);
+                cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
+
+                // Finally, executes the caretaker insert
+                cmd.ExecuteNonQuery();
+
+                return careTaker;
             }
         }
 

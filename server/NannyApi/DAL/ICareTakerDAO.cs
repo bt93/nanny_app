@@ -30,6 +30,8 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="careTaker"></param>
         /// <returns>Intiger of rows affected</returns>
-        public void AddCareTaker(CareTaker careTaker);
+        public CareTaker AddCareTaker(CareTaker careTaker);
+
+        public CareTaker UpdateCareTaker(CareTaker careTaker, int caretakerId);
     }
 }

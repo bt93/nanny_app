@@ -133,5 +133,35 @@ namespace NannyApiTests
             // Assert
             Assert.AreEqual("Ruth", careTaker.FirstName);
         }
+
+        [TestMethod]
+        public void TestUpdateCareTaker()
+        {
+            // Arrange
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
+            CareTaker testCareTaker = new CareTaker()
+            {
+                AddressId = berkshire,
+                FirstName = "Ru",
+                LastName = "Howie",
+                EmailAddress = "askdfja",
+                Password = "pass",
+                PhoneNumber = "342342432",
+                Street = "34243243",
+                City = "sdlktgj",
+                State = "akedgihj",
+                Zip = 324234,
+                County = "asf",
+                Country = "ertwseg"
+            };
+
+            // Act
+            dao.UpdateCareTaker(testCareTaker, ruth);
+            CareTaker careTaker = dao.GetCareTakerById(ruth);
+
+
+            // Assert
+            Assert.AreEqual("Ru", careTaker.FirstName);
+        }
     }
 }

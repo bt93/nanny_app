@@ -91,3 +91,11 @@ SELECT * FROM child
 
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	VALUES (1, 'Bob', 'Person', 'bob@bob.com', 'bob', '555-555-5555');
+
+UPDATE caretaker
+	SET address_id = 1,
+	first_name = 'Ruth',
+	last_name = 'Howie',
+	email_address = 'Ruth@ruth.com',
+	password = 'pass'
+	WHERE caretaker_id = 1;

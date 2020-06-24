@@ -47,6 +47,7 @@ obj/
 bin/
 .vs/
 *.user
+TestResults/
 
 # local env files
 .env.local

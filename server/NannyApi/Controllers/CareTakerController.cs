@@ -45,12 +45,18 @@ namespace NannyApi.Controllers
         [HttpPost]
         public ActionResult<CareTaker> AddCareTaker(CareTaker careTaker)
         {
-            return careTakerDao.AddCareTaker(careTaker);
+            CareTaker newCareTaker = careTakerDao.AddCareTaker(careTaker);
+            return Created($"caretakers/{newCareTaker.CareTakerId}", newCareTaker);
         }
 
         [HttpPut("{id}")]
         public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker, int id)
         {
+            if (careTakerDao.GetCareTakerById(id) == null)
+            {
+                return NotFound();
+            }
+            careTaker.CareTakerId = id;
             return careTakerDao.UpdateCareTaker(careTaker);
         }
     }

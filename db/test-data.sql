@@ -86,6 +86,11 @@ SELECT * FROM child
 	JOIN child_parent ON child.child_id = child_parent.child_id
 	JOIN parent ON child_parent.parent_id = parent.parent_id
 
+DECLARE @address int
+SELECT address = (SELECT address_id FROM caretaker WHERE caretaker_id = 45)
+DELETE FROM caretaker WHERE caretaker_id = 45;
+DELETE FROM address WHERE address_id = @address;
+
 
 
 

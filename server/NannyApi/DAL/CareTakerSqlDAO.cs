@@ -109,14 +109,13 @@ namespace NannyApi.DAL
                 conn.Open();
 
                 // Two inserts, first is done on Address then selects that id
-                const string addressSql = @"INSERT INTO address (street, city, state, zip, county, country)
+                const string sql = @"INSERT INTO address (street, city, state, zip, county, country)
 	                                        VALUES (@street, @city, @state, @zip, @county, @country)
+                                            INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
+	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @password, @phone_number);
                                             SELECT @@Identity";
-                // Second insert adds to the caretaker table
-                const string personSql = @"INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	                                        VALUES (@address_id, @first_name, @last_name, @email_address, @password, @phone_number);";
                 // Address insert done first 
-                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@street", careTaker.Street);
                 cmd.Parameters.AddWithValue("@city", careTaker.City);
                 cmd.Parameters.AddWithValue("@state", careTaker.State);
@@ -124,20 +123,16 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@county", careTaker.County);
                 cmd.Parameters.AddWithValue("@country", careTaker.Country);
 
-                // Takes the @@identity converts it to an int
-                int addressId = Convert.ToInt32(cmd.ExecuteScalar());
-
                 // Starts caretaker insert with address id added from above
-                cmd = new SqlCommand(personSql, conn);
-                cmd.Parameters.AddWithValue("@address_id", addressId);
+                cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
                 cmd.Parameters.AddWithValue("@password", careTaker.Password);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
-                // TODO: Add caretaker id
+                
                 // Finally, executes the caretaker insert
-                cmd.ExecuteNonQuery();
+                careTaker.CareTakerId = Convert.ToInt32(cmd.ExecuteScalar());
 
                 return careTaker;
             }
@@ -150,26 +145,23 @@ namespace NannyApi.DAL
                 conn.Open();
 
                 // Two updates, first is done on Address then selects that id
-                const string addressSql = @"UPDATE address
+                const string sql = @"UPDATE address
 	                                            SET street = @street,
 	                                            city = @city,
 	                                            state = @state,
 	                                            zip = @zip,
 	                                            county = @county,
                                                 country = @country
-	                                            WHERE address_id = (SELECT address_id FROM caretaker WHERE caretaker_id = @caretaker_id);";
-
-                // Second update adds to the caretaker table
-                const string personSql = @"UPDATE caretaker
-	                                            SET 
-	                                            first_name = @first_name,
+	                                            WHERE address_id = (SELECT address_id FROM caretaker WHERE caretaker_id = @caretaker_id)
+                                                UPDATE caretaker
+	                                            SET first_name = @first_name,
 	                                            last_name = @last_name,
 	                                            email_address = @email_address,
 	                                            password = @password
 	                                            WHERE caretaker_id = @caretaker_id;";
                 
                 // Address insert done first 
-                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
                 cmd.Parameters.AddWithValue("@street", careTaker.Street);
                 cmd.Parameters.AddWithValue("@city", careTaker.City);
@@ -180,8 +172,6 @@ namespace NannyApi.DAL
 
 
                 // Starts caretaker insert with address id added from above
-                cmd = new SqlCommand(personSql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
                 cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
@@ -189,11 +179,18 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@password", careTaker.Password);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
 
-                // TODO: update query
                 // Finally, executes the caretaker insert
                 cmd.ExecuteNonQuery();
 
                 return careTaker;
+            }
+        }
+
+        public void DeleteCareTaker(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+
             }
         }
 

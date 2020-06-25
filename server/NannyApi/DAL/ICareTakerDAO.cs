@@ -32,6 +32,6 @@ namespace NannyApi.DAL
         /// <returns>Intiger of rows affected</returns>
         public CareTaker AddCareTaker(CareTaker careTaker);
 
-        public CareTaker UpdateCareTaker(CareTaker careTaker, int caretakerId);
+        public CareTaker UpdateCareTaker(CareTaker careTaker);
     }
 }

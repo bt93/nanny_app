@@ -14,13 +14,11 @@ namespace NannyApi.Controllers
     [ApiController]
     public class CaretakersController : ControllerBase
     {
-        private IConfiguration configuration;
-        private CareTakerSqlDAO careTakerDao;
+        private ICareTakerDAO careTakerDao;
 
-        public CaretakersController(IConfiguration config)
+        public CaretakersController(ICareTakerDAO careTakerDao)
         {
-            configuration = config;
-            careTakerDao = new CareTakerSqlDAO(configuration.GetConnectionString("NannyDB"));
+            this.careTakerDao = careTakerDao;
         }
 
         // Get for api/caretakers
@@ -53,7 +51,7 @@ namespace NannyApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker, int id)
         {
-            return careTakerDao.UpdateCareTaker(careTaker, id);
+            return careTakerDao.UpdateCareTaker(careTaker);
         }
     }
 }

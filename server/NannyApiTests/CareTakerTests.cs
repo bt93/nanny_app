@@ -141,6 +141,7 @@ namespace NannyApiTests
             CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
             CareTaker testCareTaker = new CareTaker()
             {
+                CareTakerId = ruth,
                 AddressId = berkshire,
                 FirstName = "Ru",
                 LastName = "Howie",
@@ -156,7 +157,7 @@ namespace NannyApiTests
             };
 
             // Act
-            dao.UpdateCareTaker(testCareTaker, ruth);
+            dao.UpdateCareTaker(testCareTaker);
             CareTaker careTaker = dao.GetCareTakerById(ruth);
 
 

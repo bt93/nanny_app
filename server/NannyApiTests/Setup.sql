@@ -54,17 +54,20 @@ SELECT @megan = @@IDENTITY;
 
 INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
 	VALUES (@mayfield, 'Matt', 'Kwecien', 'Matt@matt.com', '216-222-5555')
+DECLARE @matt int
+SELECT @matt = @@IDENTITY;
 
 INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
 	VALUES (@street, 'Jane', 'Doe', 'jane@doe.com', '216-222-5555')
-
+DECLARE @jane int
+SELECT @jane = @@IDENTITY;
 -- Test if they work
 --SELECT * FROM address
 --SELECT * FROM caretaker
 
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
-@ruth AS ruth, @megan AS megan;
+@ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

@@ -87,13 +87,14 @@ namespace NannyApiTests
                 EmailAddress = "askdfja",
                 Password = "pass",
                 PhoneNumber = "342342432",
-                Street = "34243243",
-                City = "sdlktgj",
-                State = "akedgihj",
-                Zip = 324234,
-                County = "asf",
-                Country = "ertwseg"
             };
+
+            testCareTaker.Address.Street = "34243243";
+            testCareTaker.Address.City = "sdlktgj";
+            testCareTaker.Address.State = "akedgihj";
+            testCareTaker.Address.Zip = 324234;
+            testCareTaker.Address.County = "asf";
+            testCareTaker.Address.Country = "ertwseg";
 
             // Act
             dao.AddCareTaker(testCareTaker);
@@ -117,13 +118,13 @@ namespace NannyApiTests
                 EmailAddress = "askdfja",
                 Password = "pass",
                 PhoneNumber = "342342432",
-                Street = "34243243",
-                City = "sdlktgj",
-                State = "akedgihj",
-                Zip = 324234,
-                County = "asf",
-                Country = "ertwseg"
             };
+            testCareTaker.Address.Street = "34243243";
+            testCareTaker.Address.City = "sdlktgj";
+            testCareTaker.Address.State = "akedgihj";
+            testCareTaker.Address.Zip = 324234;
+            testCareTaker.Address.County = "asf";
+            testCareTaker.Address.Country = "ertwseg";
 
             // Act
             dao.AddCareTaker(testCareTaker);
@@ -148,13 +149,13 @@ namespace NannyApiTests
                 EmailAddress = "askdfja",
                 Password = "pass",
                 PhoneNumber = "342342432",
-                Street = "34243243",
-                City = "sdlktgj",
-                State = "akedgihj",
-                Zip = 324234,
-                County = "asf",
-                Country = "ertwseg"
             };
+            testCareTaker.Address.Street = "34243243";
+            testCareTaker.Address.City = "sdlktgj";
+            testCareTaker.Address.State = "akedgihj";
+            testCareTaker.Address.Zip = 324234;
+            testCareTaker.Address.County = "asf";
+            testCareTaker.Address.Country = "ertwseg";
 
             // Act
             dao.UpdateCareTaker(testCareTaker);

@@ -53,12 +53,12 @@ namespace NannyApi.DAL
             parent.PhoneNumber = Convert.ToString(rdr["phone_number"]);
 
             // Parent Address Info
-            parent.Street = Convert.ToString(rdr["street"]);
-            parent.City = Convert.ToString(rdr["city"]);
-            parent.State = Convert.ToString(rdr["state"]);
-            parent.Zip = Convert.ToInt32(rdr["zip"]);
-            parent.County = Convert.ToString(rdr["county"]);
-            parent.Country = Convert.ToString(rdr["country"]);
+            parent.Address.Street = Convert.ToString(rdr["street"]);
+            parent.Address.City = Convert.ToString(rdr["city"]);
+            parent.Address.State = Convert.ToString(rdr["state"]);
+            parent.Address.Zip = Convert.ToInt32(rdr["zip"]);
+            parent.Address.County = Convert.ToString(rdr["county"]);
+            parent.Address.Country = Convert.ToString(rdr["country"]);
 
             return parent;
         }

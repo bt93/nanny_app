@@ -38,6 +38,7 @@ namespace NannyApi
             string connectionString = configuration.GetConnectionString("NannyDB");
 
             services.AddTransient<ICareTakerDAO, CareTakerSqlDAO>(sv => new CareTakerSqlDAO(connectionString));
+            services.AddTransient<IParentDAO, ParentSqlDAO>(sv => new ParentSqlDAO(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

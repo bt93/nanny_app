@@ -61,13 +61,24 @@ INSERT INTO parent (address_id, first_name, last_name, email_address, phone_numb
 	VALUES (@street, 'Jane', 'Doe', 'jane@doe.com', '216-222-5555')
 DECLARE @jane int
 SELECT @jane = @@IDENTITY;
+
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
+	VALUES ('Ellie', 'Kwecien', 'F', '2020-08-25', 6.50, 1);
+DECLARE @ellie int
+SELECT @ellie = @@IDENTITY;
+
+INSERT INTO child_parent (child_id, parent_id)
+	VALUES (@ellie, @megan);
+INSERT INTO child_parent (child_id, parent_id)
+	VALUES (@ellie, @matt);
+
 -- Test if they work
 --SELECT * FROM address
 --SELECT * FROM caretaker
 
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
-@ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane;
+@ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @ellie AS ellie;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

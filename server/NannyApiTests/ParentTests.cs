@@ -18,6 +18,8 @@ namespace NannyApiTests
 
         // A place to hold the id's that were added to the database
         private int megan;
+        private int mayfield;
+        private int ellie;
 
         [TestInitialize]
         public void SetupDB()
@@ -35,6 +37,8 @@ namespace NannyApiTests
                 if (rdr.Read())
                 {
                     megan = Convert.ToInt32(rdr["megan"]);
+                    mayfield = Convert.ToInt32(rdr["mayfield"]);
+                    ellie = Convert.ToInt32(rdr["ellie"]);
                 }
             }
         }
@@ -57,6 +61,46 @@ namespace NannyApiTests
 
             // Assert
             Assert.AreEqual(3, parents.Count);
+        }
+
+        [TestMethod]
+        public void TestGetParentById()
+        {
+            // Arrange
+            ParentSqlDAO dao = new ParentSqlDAO(this.connectionString);
+            Parent testParent = new Parent()
+            {
+                AddressId = mayfield,
+                FirstName = "Megan",
+                LastName = "Kweicen",
+                EmailAddress = "askdfja",
+                PhoneNumber = "342342432",
+            };
+            testParent.Address.Street = "34243243";
+            testParent.Address.City = "sdlktgj";
+            testParent.Address.State = "akedgihj";
+            testParent.Address.Zip = 324234;
+            testParent.Address.County = "asf";
+            testParent.Address.Country = "ertwseg";
+
+            // Act
+            Parent parent = dao.GetParentById(megan);
+
+            // Assert
+            Assert.AreEqual("Megan", parent.FirstName);
+        }
+
+        [TestMethod]
+        public void TestGetParentsByChildCount()
+        {
+            // Arrange
+            ParentSqlDAO dao = new ParentSqlDAO(this.connectionString);
+
+            // Act
+            List<Parent> parents = dao.GetParentsByChild(ellie);
+
+            // Assert
+            Assert.AreEqual(2, parents.Count);
         }
     }
 }

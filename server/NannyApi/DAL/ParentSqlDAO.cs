@@ -40,6 +40,57 @@ namespace NannyApi.DAL
             return parents;
         }
 
+        public List<Parent> GetParentsByChild(int childId)
+        {
+            List<Parent> parents = new List<Parent>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string sql = @"SELECT *
+	                                    FROM parent
+                                        JOIN address ON parent.address_id = address.address_id
+	                                    JOIN child_parent ON parent.parent_id = child_parent.parent_id
+	                                    WHERE child_id = @child_id;";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    parents.Add(ParseRow(rdr));
+                }
+            }
+
+            return parents;
+        }
+
+        public Parent GetParentById(int id)
+        {
+            Parent parent = new Parent();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string sql = @"SELECT * FROM parent
+                                        JOIN address ON parent.address_id = address.address_id
+                                        WHERE parent_id = @parent_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@parent_id", id);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    parent = ParseRow(rdr);
+                }
+            }
+
+            return parent;
+        }
+
         private Parent ParseRow(SqlDataReader rdr)
         {
             Parent parent = new Parent();

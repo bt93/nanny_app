@@ -12,5 +12,9 @@ namespace NannyApi.DAL
         /// </summary>
         /// <returns>List of Parent Objects</returns>
         public List<Parent> GetParents();
+
+        public List<Parent> GetParentsByChild(int childId);
+
+        public Parent GetParentById(int id);
     }
 }

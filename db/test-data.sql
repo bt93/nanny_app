@@ -74,6 +74,14 @@ INSERT INTO parent (address_id, first_name, last_name, email_address, phone_numb
 INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
 	VALUES (2, 'Matt', 'Kwecien', 'mat.1@gmail.com', '330-222-2222')
 
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	VALUES (1, 'Bob', 'Boob', 'mat.1@gmail.com', '330-222-2222')
+
+	INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers) 
+	VALUES ('Bobby', 'Boob', 'M', '2018-08-25', 6.30, 1)
+	INSERT INTO child_parent (child_id, parent_id)
+	VALUES (2, 3)
+
 SELECT * FROM parent
 
 INSERT INTO child_parent (child_id, parent_id)
@@ -91,7 +99,10 @@ SELECT address = (SELECT address_id FROM caretaker WHERE caretaker_id = 45)
 DELETE FROM caretaker WHERE caretaker_id = 45;
 DELETE FROM address WHERE address_id = @address;
 
-
+SELECT *
+	FROM parent
+	JOIN child_parent ON parent.parent_id = child_parent.parent_id
+	WHERE child_id = 2;
 
 
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)

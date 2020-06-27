@@ -56,8 +56,21 @@ namespace NannyApi.Controllers
             {
                 return NotFound();
             }
+
             careTaker.CareTakerId = id;
-            return careTakerDao.UpdateCareTaker(careTaker);
+            return Created($"caretakers/{careTaker.CareTakerId}", careTakerDao.UpdateCareTaker(careTaker));
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCareTaker(int id)
+        {
+            if (careTakerDao.GetCareTakerById(id) == null)
+            {
+                return NotFound();
+            }
+
+            careTakerDao.DeleteCareTaker(id);
+            return NoContent();
         }
     }
 }

@@ -111,6 +111,7 @@ namespace NannyApi.DAL
                 // Two inserts, first is done on Address then selects that id
                 const string sql = @"INSERT INTO address (street, city, state, zip, county, country)
 	                                        VALUES (@street, @city, @state, @zip, @county, @country)
+                                            SELECT @@Identity
                                             INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
 	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @password, @phone_number);
                                             SELECT @@Identity";
@@ -186,11 +187,21 @@ namespace NannyApi.DAL
             }
         }
 
-        public void DeleteCareTaker(int id)
+        public bool DeleteCareTaker(int caretakerId)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
+                conn.Open();
 
+                int rowsAffected = 0;
+                const string caretakerSql = @"DELETE FROM caretaker
+                                        WHERE caretaker_id = @caretaker_id";
+                SqlCommand cmd = new SqlCommand(caretakerSql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+                rowsAffected += cmd.ExecuteNonQuery();
+                // TODO: Figure out way to delete both caretaker and address in same query
+
+                return (rowsAffected == 1);
             }
         }
 

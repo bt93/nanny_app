@@ -33,5 +33,7 @@ namespace NannyApi.DAL
         public CareTaker AddCareTaker(CareTaker careTaker);
 
         public CareTaker UpdateCareTaker(CareTaker careTaker);
+
+        public bool DeleteCareTaker(int caretakerId);
     }
 }

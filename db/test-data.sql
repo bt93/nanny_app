@@ -104,3 +104,8 @@ UPDATE caretaker
 	email_address = 'Ruth@ruth.com',
 	password = 'pass'
 	WHERE caretaker_id = 1;
+
+	DELETE FROM caretaker
+   WHERE caretaker_id = 2
+  DELETE FROM address
+   WHERE address_id = 3

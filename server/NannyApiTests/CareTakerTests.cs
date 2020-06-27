@@ -164,5 +164,18 @@ namespace NannyApiTests
             // Assert
             Assert.AreEqual("Ru", careTaker.FirstName);
         }
+
+        [TestMethod]
+        public void TestDeleteCareTaker()
+        {
+            // Arrange
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
+
+            // Act
+            bool isDeleted = dao.DeleteCareTaker(ruth);            
+
+            // Assert
+            Assert.AreEqual(true, isDeleted);
+        }
     }
 }

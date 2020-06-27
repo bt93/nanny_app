@@ -102,5 +102,33 @@ namespace NannyApiTests
             // Assert
             Assert.AreEqual(2, parents.Count);
         }
+
+        [TestMethod]
+        public void TestAddParent()
+        {
+            // Arrange
+            ParentSqlDAO dao = new ParentSqlDAO(this.connectionString);
+            Parent testParent = new Parent()
+            {
+                AddressId = mayfield,
+                FirstName = "Megan",
+                LastName = "Kweicen",
+                EmailAddress = "askdfja",
+                PhoneNumber = "342342432",
+            };
+            testParent.Address.Street = "34243243";
+            testParent.Address.City = "sdlktgj";
+            testParent.Address.State = "akedgihj";
+            testParent.Address.Zip = 324234;
+            testParent.Address.County = "asf";
+            testParent.Address.Country = "ertwseg";
+
+            // Act
+            dao.AddParent(testParent);
+            Parent parent = dao.GetParentById(megan);
+
+            // Assert
+            Assert.AreEqual("Megan", parent.FirstName);
+        }
     }
 }

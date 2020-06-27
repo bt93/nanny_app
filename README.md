@@ -127,3 +127,11 @@ GET - `/api/parents` - Returns a list of all parents in the database.
 **Get all Parents by Child**
 
 GET - `/api/parents/child/{child-id}` - Returns a list of any parent connected to a child.
+
+**Get parent by id**
+
+GET - `/api/parents/{id}` - Returns a single parent by id.
+
+**Add new Parent**
+
+POST - `/api/parents` - Creates a new parent in the database and returns it back.

@@ -91,6 +91,43 @@ namespace NannyApi.DAL
             return parent;
         }
 
+        public Parent AddParent(Parent parent)
+        {
+           using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string addressSql = @"INSERT INTO address(street, city, state, zip, county, country)
+                                           VALUES(@street, @city, @state, @zip, @county, @country)
+                                            SELECT @@Identity";
+                // Insert address
+                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                cmd.Parameters.AddWithValue("@street", parent.Address.Street);
+                cmd.Parameters.AddWithValue("@city", parent.Address.City);
+                cmd.Parameters.AddWithValue("@state", parent.Address.State);
+                cmd.Parameters.AddWithValue("@zip", parent.Address.Zip);
+                cmd.Parameters.AddWithValue("@county", parent.Address.County);
+                cmd.Parameters.AddWithValue("@country", parent.Address.Country);
+
+                parent.AddressId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                const string careTakerSql = @"INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @phone_number);
+                                            SELECT @@Identity";
+
+                // Starts parent insert with address id added from above
+                cmd = new SqlCommand(careTakerSql, conn);
+                cmd.Parameters.AddWithValue("@first_name", parent.FirstName);
+                cmd.Parameters.AddWithValue("@last_name", parent.LastName);
+                cmd.Parameters.AddWithValue("@email_address", parent.EmailAddress);
+                cmd.Parameters.AddWithValue("@phone_number", parent.PhoneNumber);
+
+                // Finally, executes the parent insert
+                parent.ParentId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return parent;
+            }
+        }
+
         private Parent ParseRow(SqlDataReader rdr)
         {
             Parent parent = new Parent();

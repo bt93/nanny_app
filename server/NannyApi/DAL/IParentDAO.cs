@@ -22,7 +22,13 @@ namespace NannyApi.DAL
         /// Returns a single parent from their id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Single Parent Object</returns>
+        /// <returns>Parent Object</returns>
         public Parent GetParentById(int id);
+        /// <summary>
+        /// Creates a new parent and returns it
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns>Parent Object</returns>
+        public Parent AddParent(Parent parent);
     }
 }

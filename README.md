@@ -4,16 +4,37 @@ An app that allows a nanny or caretaker to keep track of dates, times, and other
 
 ## Endpoints
 
-### Caretakers
+### Login and Register
 
-**Get all Caretakers**
+This API uses [JSON Web Tokens](https://www.jsonwebtoken.io/) (JWT) to authenticate the main users, which will be the caretaker.
 
-GET - `/api/caretakers` - Will return a list of all the caretakers in the database
+**Login**
 
+POST - `/api/login` - Takes an email address and password and checks if the hashed password is equal to what is on the database. If the user doesn't exist or the email address and/or password are incorrect, returns `400`. If email and password are a match will return a JWT.
+
+*Request Body*
+```
+{
+    "emailAddress": "example@example.com",
+    "password": "password"
+}
+```
+*Response Body*
 ```
 {
     "careTakerId": 1,
-    "addressId": 1,
+    "emailAddress": "example@example.com",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6Imhvd2llamFzb245M0BnbWFpbC5jb20iLCJuYmYiOjE1OTM3OTkyMzIsImV4cCI6MTU5NDQwNDAzMiwiaWF0IjoxNTkzNzk5MjMyfQ.x-LtX2cTPSqdFKXklC9MDPkuz_bNbE676kgSN0cvTAY"
+}
+```
+
+**Register**
+
+POST - `/api/login/register` - Takes in a new caretaker object, and hashes the password, and returns a `201`.
+
+*Request Body*
+```
+{
     "firstName": "Jane",
     "lastName": "Doe",
     "emailAddress": "jane@doe.com",
@@ -27,6 +48,34 @@ GET - `/api/caretakers` - Will return a list of all the caretakers in the databa
         "county": "New York",
         "country": "United States of America"
     }
+}
+```
+
+### Caretakers
+
+## NOTE: This endpoint is currently not being considered for the final product
+**Get all Caretakers**
+
+GET - `/api/caretakers` - Will return a list of all the caretakers in the database
+
+```
+{
+    "careTakerId": 1,
+    "addressId": 1,
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "emailAddress": "jane@doe.com",
+    "password": "H2tL5RqyydUVbwTx9j1MUQ4hLmM=",
+    "phoneNumber": "xxx-xxx-xxxx",
+    "address": {
+        "street": "1111 Example BlVD",
+        "city": "New York",
+        "state": "NY",
+        "zip": 10004,
+        "county": "New York",
+        "country": "United States of America"
+    },
+    "salt": "vG/qDBiBzvA=",
 },
 {
     "careTakerId": 2,
@@ -34,7 +83,7 @@ GET - `/api/caretakers` - Will return a list of all the caretakers in the databa
     "firstName": "Bob",
     "lastName": "Person",
     "emailAddress": "bob@bob.com",
-    "password": "bob",
+    "password": "Djp/qTSsnNeibLwE7n33Q+bzv70=",
     "phoneNumber": "xxx-xxx-xxxx",
     "address": {
         "street": "1232 Street ST",
@@ -43,13 +92,13 @@ GET - `/api/caretakers` - Will return a list of all the caretakers in the databa
         "zip": 30231,
         "county": "Example",
         "country": "United States of America"
-    }
+    },
+    "salt": "0zRlA9sK/KY="
 }
 ```
+**Get the current caretaker**
 
-**Get a single Caretaker by id**
-
-GET - `/api/caretakers/{id}` - Returns a single caretaker given an id. If id doesn't exist, will return `404`.
+GET - `/api/caretakers/current` - Returns a single caretaker that is logged in. If id doesn't exist, will return `404`.
 
 ```
 {
@@ -71,17 +120,13 @@ GET - `/api/caretakers/{id}` - Returns a single caretaker given an id. If id doe
 }
 ```
 
-**Add a Caretaker**
-
-POST - `/api/caretakers` - Creates a new Caretaker and if successful returns that data in JSON and `201`. 
-
 **Update Caretaker**
 
-PUT - `/api/caretakers/{id}` - Will update the caretaker given and return that data in JSON and `201`. If caretaker doesn't exist, returns a `404`.
+PUT - `/api/caretakers` - Will update the current caretaker and return that data in JSON and `201`. If caretaker doesn't exist, returns a `404`.
 
 **Delete Caretaker**
 
-DELETE - `/api/caretakers/{id}` - Will delete the caretaker info at that id and return a `204`. If caretaker doesn't exist, returns a `404`.
+DELETE - `/api/caretakers` - Will delete the current caretaker info and return a `204`. If caretaker doesn't exist, returns a `404`.
 
 ### Parents
 

@@ -148,6 +148,9 @@ namespace NannyApi.DAL
 
         public CareTaker UpdateCareTaker(CareTaker careTaker)
         {
+            IPasswordHasher passwordHasher = new PasswordHasher();
+            PasswordHash hash = passwordHasher.ComputeHash(careTaker);
+
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
@@ -167,7 +170,9 @@ namespace NannyApi.DAL
 	                                            SET first_name = @first_name,
 	                                            last_name = @last_name,
 	                                            email_address = @email_address,
-	                                            password = @password
+	                                            password = @password,
+                                                phone_number = @phone_number,
+                                                salt = @salt
                                                 OUTPUT INSERTED.caretaker_id
 	                                            WHERE caretaker_id = @caretaker_id;";
                 
@@ -188,11 +193,14 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                cmd.Parameters.AddWithValue("@password", careTaker.Password);
+                cmd.Parameters.AddWithValue("@password", hash.Password);
+                cmd.Parameters.AddWithValue("@salt", hash.Salt);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
 
                 // Finally, executes the caretaker insert
                 careTaker.CareTakerId = Convert.ToInt32(cmd.ExecuteScalar());
+                careTaker.Password = hash.Password;
+                careTaker.Salt = hash.Salt;
 
                 return careTaker;
             }

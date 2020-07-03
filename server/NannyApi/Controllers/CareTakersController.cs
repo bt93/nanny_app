@@ -45,11 +45,11 @@ namespace NannyApi.Controllers
         }
 
         // Get for api/caretakers
-        [HttpGet]
-        public ActionResult<IList<CareTaker>> GetCareTakers()
-        {
-            return Ok(careTakerDao.GetAllCareTakers());
-        }
+        //[HttpGet]
+        //public ActionResult<IList<CareTaker>> GetCareTakers()
+        //{
+        //    return Ok(careTakerDao.GetAllCareTakers());
+        //}
 
         // Get for api/caretakers/current
         [HttpGet("current")]
@@ -65,34 +65,29 @@ namespace NannyApi.Controllers
             return NotFound();
         }
 
-        [HttpPost]
-        public ActionResult<CareTaker> AddCareTaker(CareTaker careTaker)
+        [HttpPut]
+        public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker)
         {
-            CareTaker newCareTaker = careTakerDao.AddCareTaker(careTaker);
-            return Created($"api/caretakers/{newCareTaker.CareTakerId}", newCareTaker);
-        }
+            CareTaker updatedCareTaker = careTakerDao.GetCareTakerById(userId);
 
-        [HttpPut("{id}")]
-        public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker, int id)
-        {
-            if (careTakerDao.GetCareTakerById(id) == null)
+            if (updatedCareTaker == null)
             {
                 return NotFound();
             }
 
-            careTaker.CareTakerId = id;
+            careTaker.CareTakerId = userId;
             return Created($"api/caretakers/{careTaker.CareTakerId}", careTakerDao.UpdateCareTaker(careTaker));
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult DeleteCareTaker(int id)
+        [HttpDelete]
+        public ActionResult DeleteCareTaker()
         {
-            if (careTakerDao.GetCareTakerById(id) == null)
+            if (careTakerDao.GetCareTakerById(userId) == null)
             {
                 return NotFound();
             }
 
-            careTakerDao.DeleteCareTaker(id);
+            careTakerDao.DeleteCareTaker(userId);
             return NoContent();
         }
     }

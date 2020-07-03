@@ -22,6 +22,8 @@ namespace NannyApi.Models
         [Required(ErrorMessage = "The 'Phone Number' field is required.")]
         public string PhoneNumber { get; set; }
         public Address Address { get; set; } = new Address();
+        public string Salt { get; internal set; }
+        public string Token { get; internal set; }
 
         public string GetAddress()
         {

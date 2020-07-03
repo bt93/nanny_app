@@ -13,13 +13,6 @@ namespace NannyApi.DAL
         /// <returns>IList of CareTaker objects</returns>
         public IList<CareTaker> GetAllCareTakers();
         /// <summary>
-        /// Gets a single caretaker by first and last name
-        /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <returns>CareTaker Object</returns>
-        public CareTaker GetCareTakerByName(string firstName, string lastName);
-        /// <summary>
         /// Gets a single caretaker by an id
         /// </summary>
         /// <param name="id"></param>
@@ -35,5 +28,6 @@ namespace NannyApi.DAL
         public CareTaker UpdateCareTaker(CareTaker careTaker);
 
         public bool DeleteCareTaker(int caretakerId);
+        public CareTaker GetCareTakerByEmail(string email);
     }
 }

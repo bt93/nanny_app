@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
+using NannyApi.Security.Models;
+using Microsoft.AspNetCore.Identity;
+using NannyApi.Security;
 
 namespace NannyApi.DAL
 {
@@ -48,7 +51,7 @@ namespace NannyApi.DAL
             return careTakers;
         }
 
-        public CareTaker GetCareTakerByName(string firstName, string lastName)
+        public CareTaker GetCareTakerByEmail(string email)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
@@ -58,12 +61,10 @@ namespace NannyApi.DAL
                 const string sql = @"SELECT *
                                         FROM caretaker
                                         JOIN address ON caretaker.address_id = address.address_id
-                                        WHERE first_name = @first_name
-                                        AND last_name = @last_name";
+                                        WHERE email_address = @email_address";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@first_name", firstName);
-                cmd.Parameters.AddWithValue("@last_name", lastName);
+                cmd.Parameters.AddWithValue("@email_address", email);
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -104,6 +105,9 @@ namespace NannyApi.DAL
 
         public CareTaker AddCareTaker(CareTaker careTaker)
         {
+            IPasswordHasher passwordHasher = new PasswordHasher();
+            PasswordHash hash = passwordHasher.ComputeHash(careTaker);
+
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
@@ -131,7 +135,7 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                cmd.Parameters.AddWithValue("@password", careTaker.Password);
+                cmd.Parameters.AddWithValue("@password", hash.Password);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
                 
                 // Finally, executes the caretaker insert

@@ -25,9 +25,23 @@ namespace NannyApi.DAL
         /// <returns>Intiger of rows affected</returns>
         public CareTaker AddCareTaker(CareTaker careTaker);
 
+        /// <summary>
+        /// Updates a caretaker
+        /// </summary>
+        /// <param name="careTaker"></param>
+        /// <returns>Caretaker Object</returns>
         public CareTaker UpdateCareTaker(CareTaker careTaker);
-
-        public bool DeleteCareTaker(int caretakerId);
+        /// <summary>
+        /// Deletes a caretaker
+        /// </summary>
+        /// <param name="careTaker"></param>
+        /// <returns>Bool</returns>
+        public bool DeleteCareTaker(CareTaker careTaker);
+        /// <summary>
+        /// Gets a caretaker by their email address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>Caretaker</returns>
         public CareTaker GetCareTakerByEmail(string email);
     }
 }

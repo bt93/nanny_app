@@ -82,12 +82,14 @@ namespace NannyApi.Controllers
         [HttpDelete]
         public ActionResult DeleteCareTaker()
         {
-            if (careTakerDao.GetCareTakerById(userId) == null)
+            CareTaker careTaker = careTakerDao.GetCareTakerById(userId);
+
+            if (careTaker == null)
             {
                 return NotFound();
             }
 
-            careTakerDao.DeleteCareTaker(userId);
+            careTakerDao.DeleteCareTaker(careTaker);
             return NoContent();
         }
     }

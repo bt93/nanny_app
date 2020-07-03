@@ -35,16 +35,16 @@ DECLARE @mayfield int
 SELECT @mayfield = @@IDENTITY;
 
 -- Caretaker tests
-INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (@berkshire, 'Ruth', 'Howie', 'ruth@ruth.com', 'pass', '216-222-0123');
+INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (@berkshire, 'Ruth', 'Howie', 'ruth@ruth.com', 'pass', '216-222-0123', 'asfed');
 DECLARE @ruth int
 SELECT @ruth = @@IDENTITY;
 
-INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (@fleet, 'Person', 'Guy', 'person@guy.com', 'word', '216-111-2243');
+INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (@fleet, 'Person', 'Guy', 'person@guy.com', 'word', '216-111-2243', 'asf');
 
-INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (@berkshire, 'Person', 'Thing', 'person@Thing.com', 'word', '216-111-2243');
+INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (@street, 'Person', 'Thing', 'person@Thing.com', 'word', '216-111-2243', 'safgg');
 
 -- Parent Tests
 INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)

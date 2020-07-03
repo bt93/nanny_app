@@ -61,17 +61,17 @@ namespace NannyApiTests
         }
 
         [TestMethod]
-        public void TestGetCareTakerByName()
+        public void TestGetCareTakerByEmail()
         {
             // Arrange
             CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
 
             // Act
-            CareTaker careTaker = dao.GetCareTakerByName("Ruth", "Howie");
+            CareTaker careTaker = dao.GetCareTakerByEmail("ruth@ruth.com");
             
 
             // Assert
-            Assert.AreEqual("Ruth", careTaker.FirstName);
+            Assert.AreEqual("ruth@ruth.com", careTaker.EmailAddress);
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace NannyApiTests
                 AddressId = berkshire,
                 FirstName = "Jason",
                 LastName = "Howie",
-                EmailAddress = "askdfja",
+                EmailAddress = "jason@jason.com",
                 Password = "pass",
                 PhoneNumber = "342342432",
             };
@@ -98,11 +98,11 @@ namespace NannyApiTests
 
             // Act
             dao.AddCareTaker(testCareTaker);
-            CareTaker careTaker = dao.GetCareTakerByName("Jason", "Howie");
+            CareTaker careTaker = dao.GetCareTakerByEmail("jason@jason.com");
 
 
             // Assert
-            Assert.AreEqual("Jason", careTaker.FirstName);
+            Assert.AreEqual("jason@jason.com", careTaker.EmailAddress);
         }
 
         [TestMethod]
@@ -171,9 +171,25 @@ namespace NannyApiTests
         {
             // Arrange
             CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
+            CareTaker testCareTaker = new CareTaker()
+            {
+                CareTakerId = ruth,
+                AddressId = berkshire,
+                FirstName = "Ru",
+                LastName = "Howie",
+                EmailAddress = "askdfja",
+                Password = "pass",
+                PhoneNumber = "342342432",
+            };
+            testCareTaker.Address.Street = "34243243";
+            testCareTaker.Address.City = "sdlktgj";
+            testCareTaker.Address.State = "akedgihj";
+            testCareTaker.Address.Zip = 324234;
+            testCareTaker.Address.County = "asf";
+            testCareTaker.Address.Country = "ertwseg";
 
             // Act
-            bool isDeleted = dao.DeleteCareTaker(ruth);            
+            bool isDeleted = dao.DeleteCareTaker(testCareTaker);            
 
             // Assert
             Assert.AreEqual(true, isDeleted);

@@ -206,7 +206,7 @@ namespace NannyApi.DAL
             }
         }
 
-        public bool DeleteCareTaker(int caretakerId)
+        public bool DeleteCareTaker(CareTaker careTaker)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -214,13 +214,20 @@ namespace NannyApi.DAL
 
                 int rowsAffected = 0;
                 const string caretakerSql = @"DELETE FROM caretaker
-                                        WHERE caretaker_id = @caretaker_id";
+                                                WHERE caretaker_id = @caretaker_id";
                 SqlCommand cmd = new SqlCommand(caretakerSql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
                 rowsAffected += cmd.ExecuteNonQuery();
+
+                const string addressSql = @"DELETE FROM address
+                                                WHERE address_id = @address_id";
+                cmd = new SqlCommand(addressSql, conn);
+                cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
+                rowsAffected += cmd.ExecuteNonQuery();
+
                 // TODO: Figure out way to delete both caretaker and address in same query
 
-                return (rowsAffected == 1);
+                return (rowsAffected == 2);
             }
         }
 

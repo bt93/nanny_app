@@ -8,7 +8,7 @@ namespace NannyApi.Security
 {
     public class PasswordHasher : IPasswordHasher
     {
-        private const int WorkFactor = 10000;
+        private const int WorkFactor = 12423;
 
         /// <summary>
         /// Hashes a plain text password.

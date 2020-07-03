@@ -1,10 +1,8 @@
 ﻿using NannyApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.SqlClient;
 using NannyApi.Security.Models;
-using Microsoft.AspNetCore.Identity;
 using NannyApi.Security;
 
 namespace NannyApi.DAL
@@ -20,10 +18,6 @@ namespace NannyApi.DAL
         public CareTakerSqlDAO(string dbconnectionString)
         {
             this.connectionString = dbconnectionString;
-        }
-
-        public CareTakerSqlDAO()
-        {
         }
 
         public IList<CareTaker> GetAllCareTakers()

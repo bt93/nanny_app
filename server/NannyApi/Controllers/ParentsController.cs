@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NannyApi.DAL;
 using NannyApi.Models;
@@ -11,6 +8,7 @@ namespace NannyApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ParentsController : ControllerBase
     {
         private IParentDAO parentDao;
@@ -76,6 +74,20 @@ namespace NannyApi.Controllers
         {
             Parent newParent = parentDao.AddParent(parent);
             return Created($"api/parents/{newParent.ParentId}", newParent);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<Parent> UpdateParent(Parent parent)
+        {
+            Parent parentCheck = parentDao.GetParentById(parent.ParentId);
+
+            if (parentCheck == null)
+            {
+                return NotFound();
+            }
+
+            parent.ParentId = parent.ParentId;
+            return Created($"api/parents/{parent.ParentId}", parentDao.UpdateParent(parent));
         }
     }
 }

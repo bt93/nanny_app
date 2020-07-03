@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -68,9 +67,9 @@ namespace NannyApi.Controllers
         [HttpPut]
         public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker)
         {
-            CareTaker updatedCareTaker = careTakerDao.GetCareTakerById(userId);
+            CareTaker careTakerCheck = careTakerDao.GetCareTakerById(userId);
 
-            if (updatedCareTaker == null)
+            if (careTakerCheck == null)
             {
                 return NotFound();
             }

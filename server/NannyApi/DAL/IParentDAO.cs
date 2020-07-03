@@ -1,7 +1,5 @@
 ﻿using NannyApi.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace NannyApi.DAL
 {
@@ -30,5 +28,11 @@ namespace NannyApi.DAL
         /// <param name="parent"></param>
         /// <returns>Parent Object</returns>
         public Parent AddParent(Parent parent);
+        /// <summary>
+        /// Updates a parent in the database
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns>Parent Object</returns>
+        Parent UpdateParent(Parent parent);
     }
 }

@@ -6,9 +6,9 @@ namespace NannyApi.Models
     {
         public int CareTakerId { get; set; }
         public int AddressId { get; set; }
-        [Required(ErrorMessage = "The 'First Name field is required.")]
+        [Required(ErrorMessage = "The 'First Name' field is required.")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "The 'Last Name field is required.")]
+        [Required(ErrorMessage = "The 'Last Name' field is required.")]
         public string LastName { get; set; }
         [EmailAddress(ErrorMessage = "Please provide a valid email address")]
         [Required(ErrorMessage = "The 'Email Address' field is required.")]

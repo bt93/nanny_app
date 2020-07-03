@@ -219,8 +219,6 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
                 rowsAffected += cmd.ExecuteNonQuery();
 
-                // TODO: Figure out way to delete both caretaker and address in same query
-
                 return (rowsAffected == 2);
             }
         }

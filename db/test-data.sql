@@ -3,17 +3,17 @@ INSERT INTO address (street, city, state, zip, county, country)
 
 SELECT * from address
 
-INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (1, 'Ruth', 'Howie', 'rudih@windstream.net', 'password', '216-262-9355')
+INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (1, 'Ruth', 'Howie', 'rudih@windstream.net', 'password', '216-262-9355', 'asfojopewqf')
 
-	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (1, 'Jason', 'Howie', 'jason@windstream.net', 'password', '216-262-9355')
-	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (1, 'Jay', 'Howie', 'rudih@windstream.net', 'password', '216-262-9355')
-	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (1, 'John', 'Doe', 'rudih@windstream.net', 'password', '216-262-9355')
-	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	VALUES (1, 'Jane', 'Doe', 'rudih@windstream.net', 'password', '216-262-9355')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (1, 'Jason', 'Howie', 'jason@windstream.net', 'password', '216-262-9355', 'asfd')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (1, 'Jay', 'Howie', 'rudih@windstream.net', 'password', '216-262-9355', 'asdf')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (1, 'John', 'Doe', 'rudih@windstream.net', 'password', '216-262-9355', 'sasfa')
+	INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (1, 'Jane', 'Doe', 'rudih@windstream.net', 'password', '216-262-9355', 'asdadee')
 
 SELECT *
 	FROM caretaker c
@@ -27,10 +27,13 @@ SELECT *
 
 
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers) 
-	VALUES ('Ellie', 'Kwecien', 'Female', '2018-08-25', 6.30, 1)
+	VALUES ('Ellie', 'Kwecien', 'F', '2018-08-25', 6.30, 1)
 
 SELECT *
 	FROM child
+	JOIN child_parent ON child.child_id = child_parent.child_id
+	JOIN parent ON child_parent.parent_id = parent.parent_id
+	WHERE child.child_id = 8
 
 DECLARE @Existingdate datetime
 SET @Existingdate=GETDATE()

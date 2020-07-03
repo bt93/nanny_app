@@ -62,6 +62,7 @@ namespace NannyApi
             services.AddSingleton<IPasswordHasher>(ph => new PasswordHasher());
             services.AddTransient<ICareTakerDAO, CareTakerSqlDAO>(sv => new CareTakerSqlDAO(connectionString));
             services.AddTransient<IParentDAO, ParentSqlDAO>(sv => new ParentSqlDAO(connectionString));
+            services.AddTransient<IChildDAO, ChildSqlDAO>(sv => new ChildSqlDAO(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

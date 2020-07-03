@@ -48,10 +48,11 @@ CREATE TABLE child (
 	child_id INT IDENTITY PRIMARY KEY,
 	first_name NVARCHAR(80) NOT NULL,
 	last_name NVARCHAR(80) NOT NULL,
-	gender NVARCHAR(11),
+	gender NVARCHAR(1),
 	date_of_birth DATE,
 	rate_per_hour MONEY NOT NULL,
 	needs_diapers BIT NOT NULL,
+	image_url NVARCHAR(100)
 )
 
 CREATE TABLE child_parent (

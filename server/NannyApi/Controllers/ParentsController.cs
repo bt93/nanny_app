@@ -77,16 +77,17 @@ namespace NannyApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Parent> UpdateParent(Parent parent)
+        public ActionResult<Parent> UpdateParent(Parent parent, int id)
         {
-            Parent parentCheck = parentDao.GetParentById(parent.ParentId);
+            Parent parentCheck = parentDao.GetParentById(id);
 
             if (parentCheck == null)
             {
                 return NotFound();
             }
 
-            parent.ParentId = parent.ParentId;
+            parent.ParentId = parentCheck.ParentId;
+            parent.AddressId = parentCheck.AddressId;
             return Created($"api/parents/{parent.ParentId}", parentDao.UpdateParent(parent));
         }
     }

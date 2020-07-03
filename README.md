@@ -180,3 +180,7 @@ GET - `/api/parents/{id}` - Returns a single parent by id.
 **Add new Parent**
 
 POST - `/api/parents` - Creates a new parent in the database and returns it back.
+
+**Update a Parent**
+
+PUT - `/api/parents/{id}` - Updates a parent given a parent object. If parent doesn't exist, returns `404`. If it does, returns `201` and updated parent.

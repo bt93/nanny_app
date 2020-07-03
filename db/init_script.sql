@@ -30,6 +30,7 @@ CREATE TABLE caretaker (
 	email_address NVARCHAR(120) NOT NULL,
 	password NVARCHAR (60) NOT NULL,
 	phone_number NVARCHAR(20) NOT NULL,
+	salt NVARCHAR(20) NOT NULL,
 	CONSTRAINT fk_caretaker_address FOREIGN KEY (address_id) REFERENCES address(address_id)
 )
 

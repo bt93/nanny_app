@@ -35,4 +35,24 @@ namespace NannyApi.Models
             return $"{this.FirstName} {this.LastName}";
         }
     }
+
+    /// <summary>
+    /// Model to return upon successful login
+    /// </summary>
+    public class ReturnCareTaker
+    {
+        public int CareTakerId { get; set; }
+        public string EmailAddress { get; set; }
+        //public string Role { get; set; }
+        public string Token { get; set; }
+    }
+
+    /// <summary>
+    /// Model to accept login parameters
+    /// </summary>
+    public class LoginCareTaker
+    {
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+    }
 }

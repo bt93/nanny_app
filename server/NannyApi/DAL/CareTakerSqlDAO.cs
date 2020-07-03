@@ -116,8 +116,8 @@ namespace NannyApi.DAL
                 const string addressSql = @"INSERT INTO address (street, city, state, zip, county, country)
 	                                        VALUES (@street, @city, @state, @zip, @county, @country)
                                             SELECT @@Identity";
-                const string careTakerSql = @"INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number)
-	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @password, @phone_number);
+                const string careTakerSql = @"INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @password, @phone_number, @salt);
                                             SELECT @@Identity";
                 // Address insert done first 
                 SqlCommand cmd = new SqlCommand(addressSql, conn);
@@ -136,6 +136,7 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
                 cmd.Parameters.AddWithValue("@password", hash.Password);
+                cmd.Parameters.AddWithValue("@salt", hash.Salt);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
                 
                 // Finally, executes the caretaker insert
@@ -227,6 +228,7 @@ namespace NannyApi.DAL
             careTaker.EmailAddress = Convert.ToString(rdr["email_address"]);
             careTaker.Password = Convert.ToString(rdr["password"]);
             careTaker.PhoneNumber = Convert.ToString(rdr["phone_number"]);
+            careTaker.Salt = Convert.ToString(rdr["salt"]);
 
             // Caretaker Address info
             careTaker.Address.Street = Convert.ToString(rdr["street"]);

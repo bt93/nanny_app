@@ -21,7 +21,7 @@ namespace NannyApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Authenticate(CareTaker userParam)
+        public IActionResult Authenticate(LoginCareTaker userParam)
         {
             // Default to bad username/password message
             IActionResult result = BadRequest(new { message = "Username or password is incorrect" });
@@ -30,13 +30,13 @@ namespace NannyApi.Controllers
             CareTaker user = careTakerDAO.GetCareTakerByEmail(userParam.EmailAddress);
 
             // If we found a user and the password hash matches
-            if (user != null && passwordHasher.VerifyHashMatch(user.EmailAddress, userParam.Password, user.Salt))
+            if (user != null && passwordHasher.VerifyHashMatch(user.Password, userParam.Password, user.Salt))
             {
                 // Create an authentication token
                 string token = tokenGenerator.GenerateToken(user.CareTakerId, user.EmailAddress /*, user.Role*/);
 
                 // Create a ReturnUser object to return to the client
-                CareTaker retUser = new CareTaker() { CareTakerId = user.CareTakerId, EmailAddress = user.EmailAddress, /*Role = user.Role,*/ Token = token };
+                ReturnCareTaker retUser = new ReturnCareTaker() { CareTakerId = user.CareTakerId, EmailAddress = user.EmailAddress, /*Role = user.Role,*/ Token = token };
 
                 // Switch to 200 OK
                 result = Ok(retUser);

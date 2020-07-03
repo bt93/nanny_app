@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using NannyApi.DAL;
 using NannyApi.Models;
 
@@ -12,8 +10,33 @@ namespace NannyApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CaretakersController : ControllerBase
     {
+        private string userName
+        {
+            get
+            {
+                return User?.Identity?.Name;
+            }
+        }
+
+        private int userId
+        {
+            get
+            {
+                foreach (Claim claim in User.Claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        return Convert.ToInt32(claim.Value);
+                    }
+                }
+
+                return 0;
+            }
+        }
+
         private ICareTakerDAO careTakerDao;
 
         public CaretakersController(ICareTakerDAO careTakerDao)
@@ -28,11 +51,11 @@ namespace NannyApi.Controllers
             return Ok(careTakerDao.GetAllCareTakers());
         }
 
-        // Get for api/caretakers/:id
-        [HttpGet("{id}")]
-        public ActionResult<CareTaker> GetCareTaker(int id)
+        // Get for api/caretakers/current
+        [HttpGet("current")]
+        public ActionResult<CareTaker> GetCareTaker()
         {
-            CareTaker careTaker = careTakerDao.GetCareTakerById(id);
+            CareTaker careTaker = careTakerDao.GetCareTakerById(userId);
 
             if (careTaker != null)
             {

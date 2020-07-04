@@ -73,5 +73,12 @@ namespace NannyApi.Controllers
 
             return Ok(child);
         }
+
+        [HttpPost]
+        public ActionResult<Child> AddChild(Child child)
+        {
+            Child newChild = childDao.AddChild(child, userId);
+            return Created($"/api/children/{newChild.ChildId}", newChild);
+        }
     }
 }

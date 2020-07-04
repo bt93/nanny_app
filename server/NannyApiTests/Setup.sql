@@ -7,6 +7,7 @@ DELETE FROM meal;
 DELETE FROM diaper;
 DELETE FROM session_caretaker;
 DELETE FROM session;
+DELETE FROM child_caretaker;
 DELETE FROM caretaker;
 DELETE FROM child_parent;
 DELETE FROM child;

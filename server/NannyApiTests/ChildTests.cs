@@ -92,7 +92,7 @@ namespace NannyApiTests
             };
 
             // Act
-            Child checkChild = dao.AddChild(newChild);
+            Child checkChild = dao.AddChild(newChild, ruth);
 
             // Assert
             Assert.AreEqual("Ellie", checkChild.FirstName);

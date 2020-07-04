@@ -13,7 +13,7 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="child"></param>
         /// <returns></returns>
-        Child AddChild(Child child);
+        Child AddChild(Child child, int caretakerId);
 
         /// <summary>
         /// Returns a child by its id

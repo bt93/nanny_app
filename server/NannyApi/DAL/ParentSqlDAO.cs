@@ -91,6 +91,7 @@ namespace NannyApi.DAL
             return parent;
         }
 
+        // TODO: Fix query so it'll insert into child_parent as well
         public Parent AddParent(Parent parent)
         {
            using (SqlConnection conn = new SqlConnection(this.connectionString))
@@ -128,6 +129,7 @@ namespace NannyApi.DAL
             }
         }
 
+        // TODO: Fix query so it'll update child_parent as well
         public Parent UpdateParent(Parent parent)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))

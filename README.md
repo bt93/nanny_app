@@ -184,3 +184,86 @@ POST - `/api/parents` - Creates a new parent in the database and returns it back
 **Update a Parent**
 
 PUT - `/api/parents/{id}` - Updates a parent given a parent object. If parent doesn't exist, returns `404`. If it does, returns `201` and updated parent.
+
+### Children
+
+**Get all children for caretaker**
+
+Get - `/api/children` - Gets a list of all the children attributed to the current caretaker logged in
+
+```
+[
+    {
+        "childId": 1,
+        "firstName": "Bobby",
+        "lastName": "Example",
+        "gender": "M",
+        "dateOfBirth": "2018-08-25T00:00:00",
+        "ratePerHour": 6.3000,
+        "needsDiapers": true,
+        "imageUrl": "",
+        "parents": [
+            {
+            "parentId": 1,
+            "addressId": 3,
+            "firstName": "Sally",
+            "lastName": "Example",
+            "emailAddress": "Sally@example.com",
+            "phoneNumber": "xxx-xxx-xxxx",
+            "address": {
+                "street": "12312 Example RD",
+                "city": "Someplace",
+                "state": "TN",
+                "zip": 44231,
+                "county": "Place",
+                "country": "United States of America"
+                }
+            },
+            {
+                "parentId": 2,
+                "addressId": 4,
+                "firstName": "Bob",
+                "lastName": "Example",
+                "emailAddress": "myemail@email.com",
+                "phoneNumber": "xxx-xxx-xxxx",
+                "address": {
+                    "street": "2314 Some RD",
+                    "city": "Another Place",
+                    "state": "TN",
+                    "zip": 2342,
+                    "county": "Place",
+                    "country": "United States of America"
+                }
+            }
+        ]
+    },
+    {
+        "childId": 2,
+        "firstName": "Tina",
+        "lastName": "Person",
+        "gender": "F",
+        "dateOfBirth": "2016-08-25T00:00:00",
+        "ratePerHour": 9.2000,
+        "needsDiapers": false,
+        "imageUrl": "",
+        "parents": [
+            {
+                "parentId": 3,
+                "addressId": 1,
+                "firstName": "Jerry",
+                "lastName": "Person",
+                "emailAddress": "person@gmail.com",
+                "phoneNumber": "xxx-xxx-xxxx",
+                "address": {
+                    "street": "2135 Our Road",
+                    "city": "This Place",
+                    "state": "TN",
+                    "zip": 44056,
+                    "county": "Summit",
+                    "country": "United States of America"
+                }
+            }
+        ]
+    }
+]
+```

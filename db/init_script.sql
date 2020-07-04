@@ -55,12 +55,20 @@ CREATE TABLE child (
 	image_url NVARCHAR(100)
 )
 
+CREATE TABLE child_caretaker (
+	child_id INT NOT NULL,
+	caretaker_id INT NOT NULL,
+	CONSTRAINT pk_child_caretaker PRIMARY KEY (child_id, caretaker_id),
+	CONSTRAINT fk_child_to_caretaker FOREIGN KEY (child_id) REFERENCES child(child_id),
+	CONSTRAINT fk_caretaker_to_child FOREIGN KEY (caretaker_id) REFERENCES caretaker(caretaker_id)
+)
+
 CREATE TABLE child_parent (
 	child_id INT NOT NULL,
 	parent_id INT NOT NULL,
 	CONSTRAINT pk_child_parent PRIMARY KEY (child_id, parent_id),
-	CONSTRAINT fk_child FOREIGN KEY (child_id) REFERENCES child(child_id),
-	CONSTRAINT fk_parent FOREIGN KEY (parent_id) REFERENCES parent(parent_id)
+	CONSTRAINT fk_child_to_parent FOREIGN KEY (child_id) REFERENCES child(child_id),
+	CONSTRAINT fk_parent_to_child FOREIGN KEY (parent_id) REFERENCES parent(parent_id)
 )
 
 CREATE TABLE session (

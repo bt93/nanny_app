@@ -58,9 +58,8 @@ namespace NannyApi.DAL
 
                 const string sql = @"SELECT child.*
 	                                    FROM child
-	                                    JOIN session ON child.child_id = session.child_id
-	                                    JOIN session_caretaker ON session.session_id = session_caretaker.session_id
-	                                    JOIN caretaker ON session_caretaker.caretaker_id = caretaker.caretaker_id
+	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
 	                                    WHERE caretaker.caretaker_id = @caretaker_id
                                         AND child.child_id = @child_id
 	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
@@ -80,6 +79,31 @@ namespace NannyApi.DAL
             }
 
             return null;
+        }
+
+        public Child AddChild(Child child)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, image_url)
+                                        VALUES (@first_name, @last_name, @gender, @date_of_birth, @rate_per_hour, @needs_diapers, @image_url)
+                                        SELECT @@Identity";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@first_name", child.FirstName);
+                cmd.Parameters.AddWithValue("@last_name", child.LastName);
+                cmd.Parameters.AddWithValue("@gender", child.Gender);
+                cmd.Parameters.AddWithValue("@date_of_birth", child.DateOfBirth);
+                cmd.Parameters.AddWithValue("@rate_per_hour", child.RatePerHour);
+                cmd.Parameters.AddWithValue("@needs_diapers", child.NeedsDiapers);
+                cmd.Parameters.AddWithValue("@image_url", child.ImageUrl);
+
+                child.ChildId = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+
+            return child;
         }
 
         private Child ParseRow(SqlDataReader rdr)

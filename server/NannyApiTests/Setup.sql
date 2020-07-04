@@ -79,6 +79,15 @@ INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, 
 DECLARE @joey int
 SELECT @joey = @@IDENTITY;
 
+INSERT INTO child_caretaker (child_id, caretaker_id)
+	VALUES (@ellie, @ruth)
+
+INSERT INTO child_caretaker (child_id, caretaker_id)
+	VALUES (@bobby, @ruth)
+
+INSERT INTO child_caretaker (child_id, caretaker_id)
+	VALUES (@joey, @person)
+
 INSERT INTO child_parent (child_id, parent_id)
 	VALUES (@ellie, @megan);
 INSERT INTO child_parent (child_id, parent_id)
@@ -132,6 +141,7 @@ INSERT INTO session_caretaker (session_id, caretaker_id)
 --SELECT * FROM session
 --SELECT * FROM child
 --SELECT * FROM session_caretaker
+
 
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,

@@ -65,7 +65,7 @@ namespace NannyApi.Controllers
 
             if (child == null)
             {
-                return NotFound("Child either doesn't exist in the database, or you are not authorized to view such child.");
+                return Forbid();
             }
 
             List<Parent> parents = parentDao.GetParentsByChild(childId);

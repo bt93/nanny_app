@@ -9,6 +9,13 @@ namespace NannyApi.DAL
     public interface IChildDAO
     {
         /// <summary>
+        /// Creates a new child
+        /// </summary>
+        /// <param name="child"></param>
+        /// <returns></returns>
+        Child AddChild(Child child);
+
+        /// <summary>
         /// Returns a child by its id
         /// </summary>
         /// <param name="childId"></param>

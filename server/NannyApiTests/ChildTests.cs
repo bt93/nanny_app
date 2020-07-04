@@ -74,5 +74,28 @@ namespace NannyApiTests
             //Assert
             Assert.AreEqual("Ellie", child.FirstName);
         }
+
+        [TestMethod]
+        public void TestAddChild()
+        {
+            // Arrange
+            ChildSqlDAO dao = new ChildSqlDAO(this.connectionString);
+            Child newChild = new Child()
+            {
+                FirstName = "Ellie",
+                LastName = "Kweicen",
+                Gender = 'F',
+                DateOfBirth = DateTime.Now,
+                RatePerHour = 6.30M,
+                NeedsDiapers = true,
+                ImageUrl = ""
+            };
+
+            // Act
+            Child checkChild = dao.AddChild(newChild);
+
+            // Assert
+            Assert.AreEqual("Ellie", checkChild.FirstName);
+        }
     }
 }

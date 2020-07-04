@@ -57,5 +57,21 @@ namespace NannyApi.Controllers
 
             return Ok(children);
         }
+
+        [HttpGet("{childId}")]
+        public ActionResult<Child> GetChildById(int childId)
+        {
+            Child child = childDao.GetChildById(childId, userId);
+
+            if (child == null)
+            {
+                return NotFound("Child either doesn't exist in the database, or you are not authorized to view such child.");
+            }
+
+            List<Parent> parents = parentDao.GetParentsByChild(childId);
+            child.Parents = parents;
+
+            return Ok(child);
+        }
     }
 }

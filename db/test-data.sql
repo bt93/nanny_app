@@ -28,21 +28,39 @@ SELECT *
 
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers) 
 	VALUES ('Ellie', 'Kwecien', 'F', '2018-08-25', 6.30, 1)
+DECLARE @ellie int
+SELECT @ellie = @@IDENTITY
 
 SELECT *
 	FROM child
-	JOIN child_parent ON child.child_id = child_parent.child_id
-	JOIN parent ON child_parent.parent_id = parent.parent_id
-	WHERE child.child_id = 8
+
+SELECT * 
+	FROM parent
+	JOIN child_parent ON child_parent.parent_id = parent.parent_id
+	JOIN child ON child_parent.child_id = child.child_id
+
 
 DECLARE @Existingdate datetime
 SET @Existingdate=GETDATE()
 
 INSERT INTO session (child_id, drop_off, pick_up, notes)
-	VALUES (1, @Existingdate, @Existingdate, 'Ellie was a sweetheart!')
+	VALUES (3, @Existingdate, @Existingdate, 'Ellie was a sweetheart!')
 
 SELECT * FROM session
 	JOIN child ON session.child_id = child.child_id
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (5,2)
+
+SELECT child.*
+	FROM child
+	JOIN session ON child.child_id = session.child_id
+	JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+	JOIN caretaker ON session_caretaker.caretaker_id = caretaker.caretaker_id
+	WHERE caretaker.caretaker_id = 1
+	GROUP BY child.child_id, child.first_name, child.last_name, 
+	child.gender, child.date_of_birth, child.needs_diapers,
+	child.rate_per_hour, child.image_url;
 
 
 INSERT INTO diaper (session_id, time, notes)

@@ -206,10 +206,16 @@ namespace NannyApi.DAL
             {
                 conn.Open();
 
+                const string sessionSql = @"DELETE FROM session_caretaker
+                                                WHERE caretaker_id = @caretaker_id";
+                SqlCommand cmd = new SqlCommand(sessionSql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
+                cmd.ExecuteNonQuery();
+
                 int rowsAffected = 0;
                 const string caretakerSql = @"DELETE FROM caretaker
                                                 WHERE caretaker_id = @caretaker_id";
-                SqlCommand cmd = new SqlCommand(caretakerSql, conn);
+                cmd = new SqlCommand(caretakerSql, conn);
                 cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
                 rowsAffected += cmd.ExecuteNonQuery();
 

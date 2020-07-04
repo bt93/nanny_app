@@ -1,5 +1,5 @@
 ﻿-- Start a transactio
---BEGIN TRANSACTION
+ --BEGIN TRANSACTION
 
 -- REMOVE data from the database
 DELETE FROM nap;
@@ -42,6 +42,8 @@ SELECT @ruth = @@IDENTITY;
 
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
 	VALUES (@fleet, 'Person', 'Guy', 'person@guy.com', 'word', '216-111-2243', 'asf');
+DECLARE @person int
+SELECT @person = @@IDENTITY;
 
 INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
 	VALUES (@street, 'Person', 'Thing', 'person@Thing.com', 'word', '216-111-2243', 'safgg');
@@ -63,22 +65,77 @@ DECLARE @jane int
 SELECT @jane = @@IDENTITY;
 
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
-	VALUES ('Ellie', 'Kwecien', 'F', '2020-08-25', 6.50, 1);
+	VALUES ('Ellie', 'Kwecien', 'F', '2018-08-25', 6.50, 1);
 DECLARE @ellie int
 SELECT @ellie = @@IDENTITY;
+
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
+	VALUES ('Bobby', 'Doe', 'M', '2020-01-01', 7.50, 1);
+DECLARE @bobby int
+SELECT @bobby = @@IDENTITY;
+
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
+	VALUES ('Joey', 'Parentless', 'M', '2020-01-01', 7.50, 1);
+DECLARE @joey int
+SELECT @joey = @@IDENTITY;
 
 INSERT INTO child_parent (child_id, parent_id)
 	VALUES (@ellie, @megan);
 INSERT INTO child_parent (child_id, parent_id)
 	VALUES (@ellie, @matt);
+INSERT INTO child_parent (child_id, parent_id)
+	VALUES (@bobby, @jane);
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (@ellie, '2020-10-20', '2020-10-20', 'notes')
+DECLARE @session1 int
+SELECT @session1 = @@IDENTITY;
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (@ellie, '2020-10-20', '2020-10-20', 'notes')
+DECLARE @session2 int
+SELECT @session2 = @@IDENTITY;
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (@ellie, '2020-10-20', '2020-10-20', 'notes')
+DECLARE @session3 int
+SELECT @session3 = @@IDENTITY;
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (@bobby, '2020-10-20', '2020-10-20', 'notes')
+DECLARE @session4 int
+SELECT @session4 = @@IDENTITY;
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (@joey, '2020-10-20', '2020-10-20', 'notes')
+DECLARE @session5 int
+SELECT @session5 = @@IDENTITY;
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (@session1, @ruth)
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (@session2, @ruth)
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (@session3, @ruth)
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (@session4, @ruth)
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (@session5, @person)
 
 -- Test if they work
 --SELECT * FROM address
 --SELECT * FROM caretaker
+--SELECT * FROM session
+--SELECT * FROM child
+--SELECT * FROM session_caretaker
 
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
-@ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @ellie AS ellie;
+@ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @ellie AS ellie, @bobby AS bobby,@joey AS joey;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

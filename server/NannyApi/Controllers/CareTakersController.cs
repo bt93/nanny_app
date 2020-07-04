@@ -12,14 +12,6 @@ namespace NannyApi.Controllers
     [Authorize]
     public class CaretakersController : ControllerBase
     {
-        private string userName
-        {
-            get
-            {
-                return User?.Identity?.Name;
-            }
-        }
-
         private int userId
         {
             get

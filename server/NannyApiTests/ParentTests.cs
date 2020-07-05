@@ -21,6 +21,8 @@ namespace NannyApiTests
         private int mayfield;
         private int ellie;
         private int ruth;
+        private int johnny;
+        private int john;
 
         [TestInitialize]
         public void SetupDB()
@@ -41,6 +43,8 @@ namespace NannyApiTests
                     mayfield = Convert.ToInt32(rdr["mayfield"]);
                     ellie = Convert.ToInt32(rdr["ellie"]);
                     ruth = Convert.ToInt32(rdr["ruth"]);
+                    johnny = Convert.ToInt32(rdr["johnny"]);
+                    john = Convert.ToInt32(rdr["john"]);
                 }
             }
         }
@@ -126,7 +130,7 @@ namespace NannyApiTests
             testParent.Address.Country = "ertwseg";
 
             // Act
-            dao.AddParent(testParent);
+            dao.AddParent(testParent, ellie);
             Parent parent = dao.GetParentById(megan, ruth);
 
             // Assert
@@ -160,6 +164,18 @@ namespace NannyApiTests
 
             // Assert
             Assert.AreEqual("Meg", parent.FirstName);
+        }
+
+        [TestMethod]
+        public void TestAddExistingParent()
+        {
+            // Arrange
+            ParentSqlDAO dao = new ParentSqlDAO(this.connectionString);
+
+            // Act
+            bool isAdded = dao.AddExsistingParent(johnny, john);
+
+            Assert.AreEqual(true, isAdded);
         }
     }
 }

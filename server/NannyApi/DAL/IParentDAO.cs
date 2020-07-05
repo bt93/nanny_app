@@ -27,13 +27,18 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="parent"></param>
         /// <returns>Parent Object</returns>
-        public Parent AddParent(Parent parent);
+        public Parent AddParent(Parent parent, int childId);
         /// <summary>
         /// Updates a parent in the database
         /// </summary>
         /// <param name="parent"></param>
         /// <returns>Parent Object</returns>
         public Parent UpdateParent(Parent parent);
-        
+        /// <summary>
+        /// Updates child_parent table to add exsiting parent to a child
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="parentId"></param>
+        public bool AddExsistingParent(int childId, int parentId);
     }
 }

@@ -87,11 +87,24 @@ namespace NannyApi.Controllers
         /// </summary>
         /// <param name="parent"></param>
         /// <returns>ActionResult<Parent></returns>
-        [HttpPost]
-        public ActionResult<Parent> AddParent(Parent parent)
+        [HttpPost("child/{childId}")]
+        public ActionResult<Parent> AddParent(Parent parent, int childId)
         {
-            Parent newParent = parentDao.AddParent(parent);
+            Parent newParent = parentDao.AddParent(parent, childId);
             return Created($"api/parents/{newParent.ParentId}", newParent);
+        }
+
+        [HttpPost("{id}/child/{childId}")]
+        public ActionResult AddExsitingParent(int id, int childId)
+        {
+            bool isCreated = parentDao.AddExsistingParent(childId, id);
+
+            if (isCreated)
+            {
+                return Created($"api/parents/{id}", parentDao.GetParentById(id, userId));
+            }
+
+            return NotFound();
         }
 
         [HttpPut("{id}")]

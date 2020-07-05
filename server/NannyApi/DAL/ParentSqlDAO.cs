@@ -108,8 +108,7 @@ namespace NannyApi.DAL
             return parent;
         }
 
-        // TODO: Fix query so it'll insert into child_parent as well
-        public Parent AddParent(Parent parent)
+        public Parent AddParent(Parent parent, int childId)
         {
            using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
@@ -142,11 +141,37 @@ namespace NannyApi.DAL
                 // Finally, executes the parent insert
                 parent.ParentId = Convert.ToInt32(cmd.ExecuteScalar());
 
+                const string parentChildSql = @"INSERT INTO child_parent (child_id, parent_id)
+                                                VALUES (@child_id, @parent_id)";
+                cmd = new SqlCommand(parentChildSql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@parent_id", parent.ParentId);
+
+                cmd.ExecuteNonQuery();
+
                 return parent;
             }
         }
 
-        // TODO: Fix query so it'll update child_parent as well
+        public bool AddExsistingParent(int childId, int parentId)
+        {
+            int rowsAffected = 0;
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"INSERT INTO child_parent (child_id, parent_id)
+                                                VALUES (@child_id, @parent_id)";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@parent_id", parentId);
+
+                rowsAffected += cmd.ExecuteNonQuery();
+
+                return (rowsAffected == 1);
+            }
+        }
+
         public Parent UpdateParent(Parent parent)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))

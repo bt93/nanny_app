@@ -9,19 +9,19 @@ namespace NannyApi.DAL
         /// Returns A full list of parents on the database
         /// </summary>
         /// <returns>List of Parent Objects</returns>
-        public List<Parent> GetParents();
+        public List<Parent> GetParents(int caretakerId);
         /// <summary>
         /// Will return any parent that is connected to a single child
         /// </summary>
         /// <param name="childId"></param>
         /// <returns>List of Parent Objects</returns>
-        public List<Parent> GetParentsByChild(int childId);
+        public List<Parent> GetParentsByChild(int childId, int caretakerId);
         /// <summary>
         /// Returns a single parent from their id
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Parent Object</returns>
-        public Parent GetParentById(int id);
+        public Parent GetParentById(int id, int caretakerId);
         /// <summary>
         /// Creates a new parent and returns it
         /// </summary>
@@ -33,6 +33,7 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="parent"></param>
         /// <returns>Parent Object</returns>
-        Parent UpdateParent(Parent parent);
+        public Parent UpdateParent(Parent parent);
+        
     }
 }

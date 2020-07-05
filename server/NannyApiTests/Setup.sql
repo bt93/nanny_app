@@ -65,6 +65,11 @@ INSERT INTO parent (address_id, first_name, last_name, email_address, phone_numb
 DECLARE @jane int
 SELECT @jane = @@IDENTITY;
 
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	VALUES (@street, 'John', 'Doe', 'jane@doe.com', '216-222-5555')
+DECLARE @john int
+SELECT @john = @@IDENTITY;
+
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
 	VALUES ('Ellie', 'Kwecien', 'F', '2018-08-25', 6.50, 1);
 DECLARE @ellie int
@@ -95,6 +100,8 @@ INSERT INTO child_parent (child_id, parent_id)
 	VALUES (@ellie, @matt);
 INSERT INTO child_parent (child_id, parent_id)
 	VALUES (@bobby, @jane);
+INSERT INTO child_parent (child_id, parent_id)
+	VALUES (@joey, @john);
 
 INSERT INTO session (child_id, drop_off, pick_up, notes)
 	VALUES (@ellie, '2020-10-20', '2020-10-20', 'notes')

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NannyApi.DAL;
@@ -11,6 +13,22 @@ namespace NannyApi.Controllers
     [Authorize]
     public class ParentsController : ControllerBase
     {
+        private int userId
+        {
+            get
+            {
+                foreach (Claim claim in User.Claims)
+                {
+                    if (claim.Type == "sub")
+                    {
+                        return Convert.ToInt32(claim.Value);
+                    }
+                }
+
+                return 0;
+            }
+        }
+
         private IParentDAO parentDao;
 
         public ParentsController(IParentDAO parentDao)
@@ -25,7 +43,7 @@ namespace NannyApi.Controllers
         [HttpGet]
         public ActionResult<List<Parent>> GetParents()
         {
-            return Ok(parentDao.GetParents());
+            return Ok(parentDao.GetParents(userId));
         }
 
         /// <summary>
@@ -36,7 +54,7 @@ namespace NannyApi.Controllers
         [HttpGet("child/{childId}")]
         public ActionResult<List<Parent>> GetParentsByChild(int childId)
         {
-            List<Parent> parents = parentDao.GetParentsByChild(childId);
+            List<Parent> parents = parentDao.GetParentsByChild(childId, userId);
 
             if (parents.Count == 0)
             {
@@ -54,7 +72,7 @@ namespace NannyApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<Parent> GetParentById(int id)
         {
-            Parent parent = parentDao.GetParentById(id);
+            Parent parent = parentDao.GetParentById(id, userId);
 
             if (parent == null)
             {
@@ -79,7 +97,7 @@ namespace NannyApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<Parent> UpdateParent(Parent parent, int id)
         {
-            Parent parentCheck = parentDao.GetParentById(id);
+            Parent parentCheck = parentDao.GetParentById(id, userId);
 
             if (parentCheck == null)
             {

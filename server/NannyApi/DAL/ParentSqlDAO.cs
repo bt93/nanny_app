@@ -18,7 +18,7 @@ namespace NannyApi.DAL
             this.connectionString = dbconnectionString;
         }
 
-        public List<Parent> GetParents()
+        public List<Parent> GetParents(int caretakerId)
         {
             List<Parent> parents = new List<Parent>();
 
@@ -26,8 +26,14 @@ namespace NannyApi.DAL
             {
                 conn.Open();
                 const string sql = @"SELECT * FROM parent
-                                        JOIN address ON parent.address_id = address.address_id";
+                                        JOIN address ON parent.address_id = address.address_id
+                                        JOIN child_parent ON parent.parent_id = child_parent.parent_id
+                                        JOIN child ON child_parent.child_id = child.child_id
+                                        JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
+                                        WHERE caretaker.caretaker_id = @caretaker_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -40,7 +46,7 @@ namespace NannyApi.DAL
             return parents;
         }
 
-        public List<Parent> GetParentsByChild(int childId)
+        public List<Parent> GetParentsByChild(int childId, int caretakerId)
         {
             List<Parent> parents = new List<Parent>();
 
@@ -50,11 +56,16 @@ namespace NannyApi.DAL
                 const string sql = @"SELECT *
 	                                    FROM parent
                                         JOIN address ON parent.address_id = address.address_id
-	                                    JOIN child_parent ON parent.parent_id = child_parent.parent_id
-	                                    WHERE child_id = @child_id;";
+                                        JOIN child_parent ON parent.parent_id = child_parent.parent_id
+                                        JOIN child ON child_parent.child_id = child.child_id
+                                        JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
+	                                    WHERE child.child_id = @child_id
+                                        AND caretaker.caretaker_id = @caretaker_id";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -67,7 +78,7 @@ namespace NannyApi.DAL
             return parents;
         }
 
-        public Parent GetParentById(int id)
+        public Parent GetParentById(int parentId, int caretakerId)
         {
             Parent parent = new Parent();
 
@@ -76,9 +87,15 @@ namespace NannyApi.DAL
                 conn.Open();
                 const string sql = @"SELECT * FROM parent
                                         JOIN address ON parent.address_id = address.address_id
-                                        WHERE parent_id = @parent_id";
+                                        JOIN child_parent ON parent.parent_id = child_parent.parent_id
+                                        JOIN child ON child_parent.child_id = child.child_id
+                                        JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
+                                        WHERE parent.parent_id = @parent_id
+                                        AND caretaker.caretaker_id = @caretaker_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@parent_id", id);
+                cmd.Parameters.AddWithValue("@parent_id", parentId);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 

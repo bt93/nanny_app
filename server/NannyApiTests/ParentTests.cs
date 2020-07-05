@@ -20,6 +20,7 @@ namespace NannyApiTests
         private int megan;
         private int mayfield;
         private int ellie;
+        private int ruth;
 
         [TestInitialize]
         public void SetupDB()
@@ -39,6 +40,7 @@ namespace NannyApiTests
                     megan = Convert.ToInt32(rdr["megan"]);
                     mayfield = Convert.ToInt32(rdr["mayfield"]);
                     ellie = Convert.ToInt32(rdr["ellie"]);
+                    ruth = Convert.ToInt32(rdr["ruth"]);
                 }
             }
         }
@@ -57,7 +59,7 @@ namespace NannyApiTests
             ParentSqlDAO dao = new ParentSqlDAO(this.connectionString);
 
             // Act
-            List<Parent> parents = dao.GetParents();
+            List<Parent> parents = dao.GetParents(ruth);
 
             // Assert
             Assert.AreEqual(3, parents.Count);
@@ -84,7 +86,7 @@ namespace NannyApiTests
             testParent.Address.Country = "ertwseg";
 
             // Act
-            Parent parent = dao.GetParentById(megan);
+            Parent parent = dao.GetParentById(megan, ruth);
 
             // Assert
             Assert.AreEqual("Megan", parent.FirstName);
@@ -97,7 +99,7 @@ namespace NannyApiTests
             ParentSqlDAO dao = new ParentSqlDAO(this.connectionString);
 
             // Act
-            List<Parent> parents = dao.GetParentsByChild(ellie);
+            List<Parent> parents = dao.GetParentsByChild(ellie, ruth);
 
             // Assert
             Assert.AreEqual(2, parents.Count);
@@ -125,7 +127,7 @@ namespace NannyApiTests
 
             // Act
             dao.AddParent(testParent);
-            Parent parent = dao.GetParentById(megan);
+            Parent parent = dao.GetParentById(megan, ruth);
 
             // Assert
             Assert.AreEqual("Megan", parent.FirstName);
@@ -154,7 +156,7 @@ namespace NannyApiTests
 
             // Act
             dao.UpdateParent(testParent);
-            Parent parent = dao.GetParentById(megan);
+            Parent parent = dao.GetParentById(megan, ruth);
 
             // Assert
             Assert.AreEqual("Meg", parent.FirstName);

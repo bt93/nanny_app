@@ -50,7 +50,7 @@ namespace NannyApi.Controllers
 
             foreach (Child child in children)
             {
-                List<Parent> parents = parentDao.GetParentsByChild(child.ChildId);
+                List<Parent> parents = parentDao.GetParentsByChild(child.ChildId, userId);
 
                 child.Parents = parents;
             }
@@ -68,7 +68,7 @@ namespace NannyApi.Controllers
                 return Forbid();
             }
 
-            List<Parent> parents = parentDao.GetParentsByChild(childId);
+            List<Parent> parents = parentDao.GetParentsByChild(childId, userId);
             child.Parents = parents;
 
             return Ok(child);

@@ -80,5 +80,19 @@ namespace NannyApi.Controllers
             Child newChild = childDao.AddChild(child, userId);
             return Created($"/api/children/{newChild.ChildId}", newChild);
         }
+
+        [HttpPut("{childId}")]
+        public ActionResult<Child> UpdateChild(Child child, int childId)
+        {
+            Child checkChild = childDao.GetChildById(childId, userId);
+
+            if (checkChild == null)
+            {
+                return NotFound();
+            }
+
+            child.ChildId = childId;
+            return Created($"api/children/{childId}", childDao.UpdateChild(child, childId, userId));
+        }
     }
 }

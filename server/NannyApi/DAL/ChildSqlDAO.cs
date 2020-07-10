@@ -108,6 +108,42 @@ namespace NannyApi.DAL
             return child;
         }
 
+        public Child UpdateChild(Child child, int childId, int caretakerId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"UPDATE child
+                                        SET child.first_name = @first_name,
+                                            child.last_name = @last_name,
+                                            child.gender = @gender,
+                                            child.date_of_birth = @date_of_birth,
+                                            child.rate_per_hour = @rate_per_hour,
+                                            child.needs_diapers = @needs_diapers,
+                                            child.image_url = @image_url
+                                            OUTPUT INSERTED.child_id
+                                            FROM child
+                                            JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                            WHERE child.child_id = @child_id
+                                            AND child_caretaker.caretaker_id = @caretaker_id;";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@first_name", child.FirstName);
+                cmd.Parameters.AddWithValue("@last_name", child.LastName);
+                cmd.Parameters.AddWithValue("@gender", child.Gender);
+                cmd.Parameters.AddWithValue("@date_of_birth", child.DateOfBirth);
+                cmd.Parameters.AddWithValue("@rate_per_hour", child.RatePerHour);
+                cmd.Parameters.AddWithValue("@needs_diapers", child.NeedsDiapers);
+                cmd.Parameters.AddWithValue("@image_url", child.ImageUrl);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+
+                child.ChildId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return child;
+            }
+        }
+
         private Child ParseRow(SqlDataReader rdr)
         {
             Child child = new Child();

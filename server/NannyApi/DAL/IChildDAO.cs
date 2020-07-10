@@ -28,5 +28,12 @@ namespace NannyApi.DAL
         /// </summary>
         /// <returns>List<Child> Objects</returns>
         List<Child> GetChildren(int careTakerId);
+        /// <summary>
+        /// Updates a child
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="caretakerId"></param>
+        /// <returns>Child Object</returns>
+        Child UpdateChild(Child child, int childId, int caretakerId);
     }
 }

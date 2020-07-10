@@ -13,14 +13,14 @@ This API uses [JSON Web Tokens](https://www.jsonwebtoken.io/) (JWT) to authentic
 POST - `/api/login` - Takes an email address and password and checks if the hashed password is equal to what is on the database. If the user doesn't exist or the email address and/or password are incorrect, returns `400`. If email and password are a match will return a JWT.
 
 *Request Body*
-```
+```json
 {
     "emailAddress": "example@example.com",
     "password": "password"
 }
 ```
 *Response Body*
-```
+```json
 {
     "careTakerId": 1,
     "emailAddress": "example@example.com",
@@ -33,7 +33,7 @@ POST - `/api/login` - Takes an email address and password and checks if the hash
 POST - `/api/login/register` - Takes in a new caretaker object, and hashes the password, and returns a `201`.
 
 *Request Body*
-```
+```json
 {
     "firstName": "Jane",
     "lastName": "Doe",
@@ -58,7 +58,7 @@ POST - `/api/login/register` - Takes in a new caretaker object, and hashes the p
 
 GET - `/api/caretakers` - Will return a list of all the caretakers in the database
 
-```
+```json
 {
     "careTakerId": 1,
     "addressId": 1,
@@ -100,7 +100,7 @@ GET - `/api/caretakers` - Will return a list of all the caretakers in the databa
 
 GET - `/api/caretakers/current` - Returns a single caretaker that is logged in. If id doesn't exist, will return `404`.
 
-```
+```json
 {
     "careTakerId": 2,
     "addressId": 2,
@@ -132,9 +132,9 @@ DELETE - `/api/caretakers` - Will delete the current caretaker info and return a
 
 **Get all Parents**
 
-GET - `/api/parents` - Returns a list of all parents in the database.
+GET - `/api/parents` - Returns a list of all parents related to the current caretaker in the database.
 
-```
+```json
 {
         "parentId": 1,
         "addressId": 3,
@@ -171,15 +171,15 @@ GET - `/api/parents` - Returns a list of all parents in the database.
 
 **Get all Parents by Child**
 
-GET - `/api/parents/child/{child-id}` - Returns a list of any parent connected to a child.
+GET - `/api/parents/child/{child-id}` - Returns a list of any parent connected to a child and current caretaker.
 
 **Get parent by id**
 
-GET - `/api/parents/{id}` - Returns a single parent by id.
+GET - `/api/parents/{id}` - Returns a single parent by id that is also connected to the parent.
 
 **Add new Parent**
 
-POST - `/api/parents` - Creates a new parent in the database and returns it back.
+POST - `/api/parents/child/{child-id}` - Creates a new parent and assigns it to a child in the database and returns it back.
 
 **Update a Parent**
 
@@ -189,9 +189,9 @@ PUT - `/api/parents/{id}` - Updates a parent given a parent object. If parent do
 
 **Get all children for caretaker**
 
-Get - `/api/children` - Gets a list of all the children attributed to the current caretaker logged in
+Get - `/api/children` - Gets a list of all the children attributed to the current caretaker logged in. Along with the child's parents.
 
-```
+```json
 [
     {
         "childId": 1,
@@ -267,3 +267,12 @@ Get - `/api/children` - Gets a list of all the children attributed to the curren
     }
 ]
 ```
+
+**Get a child by id for caretaker**
+
+Get - `/api/children/{child-id}` - Gets a single child by their id attributed to the current caretaker logged in. Along with the child's parents.
+
+**Create a new child**
+
+POST - `/api/children` -  Creates a new child given a child object, and returns that object back.
+

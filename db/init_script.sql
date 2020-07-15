@@ -108,8 +108,8 @@ CREATE TABLE meal (
 CREATE TABLE nap (
 	nap_id INT IDENTITY PRIMARY KEY,
 	session_id INT NOT NULL,
-	start_time DATETIME NOT NULL,
-	end_time DATETIME NOT NULL,
+	start_time DATETIME,
+	end_time DATETIME,
 	notes TEXT
 	CONSTRAINT fk_nap_session FOREIGN KEY (session_id) REFERENCES session(session_id)
 )

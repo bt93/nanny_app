@@ -14,6 +14,13 @@ namespace NannyApi.DAL
         /// <param name="child"></param>
         /// <returns></returns>
         Child AddChild(Child child, int caretakerId);
+        /// <summary>
+        /// Removes a child from the database
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="caretakerId"></param>
+        /// <returns>Bool</returns>
+        bool DeleteChild(int childId, int caretakerId);
 
         /// <summary>
         /// Returns a child by its id

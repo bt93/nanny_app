@@ -94,5 +94,19 @@ namespace NannyApi.Controllers
             child.ChildId = childId;
             return Created($"api/children/{childId}", childDao.UpdateChild(child, childId, userId));
         }
+
+        [HttpDelete("{childId}")]
+        public ActionResult DeleteChild(int childId)
+        {
+            Child checkChild = childDao.GetChildById(childId, userId);
+
+            if (checkChild == null)
+            {
+                return NotFound();
+            }
+
+            childDao.DeleteChild(childId, userId);
+            return NoContent();
+        }
     }
 }

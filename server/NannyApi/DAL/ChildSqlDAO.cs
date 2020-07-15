@@ -144,6 +144,63 @@ namespace NannyApi.DAL
             }
         }
 
+        public bool DeleteChild(int childId, int caretakerId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+                    const string parentSql = @"DELETE FROM child_parent
+                                        WHERE child_id = @child_id";
+
+                    SqlCommand cmd = new SqlCommand(parentSql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+
+                    cmd.ExecuteNonQuery();
+
+                    const string caretakerSql = @"DELETE FROM child_caretaker
+                                                WHERE child_id = @child_id
+                                                AND caretaker_id = @caretaker_id";
+
+                    cmd = new SqlCommand(caretakerSql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+                    cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+
+                    cmd.ExecuteNonQuery();
+
+                    const string sessionCaretakerSql = @"DELETE FROM session_caretaker
+                                                        WHERE caretaker_id = @caretaker_id";
+
+                    cmd = new SqlCommand(sessionCaretakerSql, conn);
+                    cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+
+                    cmd.ExecuteNonQuery();
+
+                    const string sessionSql = @"DELETE FROM session
+                                                WHERE child_id = @child_id";
+
+                    cmd = new SqlCommand(sessionSql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+
+                    cmd.ExecuteNonQuery();
+
+                    const string childSql = @"DELETE 
+                                            FROM child
+                                            WHERE child_id = @child_id";
+                    cmd = new SqlCommand(childSql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            } catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         private Child ParseRow(SqlDataReader rdr)
         {
             Child child = new Child();

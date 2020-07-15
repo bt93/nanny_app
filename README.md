@@ -276,3 +276,10 @@ Get - `/api/children/{child-id}` - Gets a single child by their id attributed to
 
 POST - `/api/children` -  Creates a new child given a child object, and returns that object back.
 
+**Update Existing Child**
+
+PUT - `/api/children/{child-id}` - Updates an existing child given an id and child object. If child isn't in the database, will return `404`.
+
+**Delete Existing child**
+
+DELETE - `/api/children/{child-id}` - Will delete a child from the database and delete sessions and connections to parent and caretaker. IF successful returns `204`, if not returns `404`.

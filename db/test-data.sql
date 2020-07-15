@@ -141,3 +141,15 @@ UPDATE caretaker
    WHERE caretaker_id = 2
   DELETE FROM address
    WHERE address_id = 3
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (1, GETDATE(), GETDATE() + 1, 'Ellie was good')
+
+INSERT INTO session (child_id, drop_off, pick_up, notes)
+	VALUES (1, GETDATE() - 2, GETDATE() - 1, 'Ellie was good')
+
+INSERT INTO session (child_id, drop_off, notes)
+	VALUES (1, GETDATE(), 'Ellie was good')
+
+SELECT * FROM session
+	WHERE pick_up = 0

@@ -56,6 +56,7 @@ namespace NannyApi.Controllers
             return NotFound();
         }
 
+        // PUT for api/caretakers
         [HttpPut]
         public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker)
         {

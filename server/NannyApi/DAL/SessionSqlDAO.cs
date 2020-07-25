@@ -19,6 +19,35 @@ namespace NannyApi.DAL
             this.connectionString = dbconnectionString;
         }
 
+        public Session GetSessionById(int sessionId, int careTakerId)
+        {
+            Session session = new Session();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"SELECT *
+                                        FROM session
+                                        JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                        WHERE session.session_id = @session_id
+                                        AND session_caretaker.caretaker_id = @caretaker_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@session_id", sessionId);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    session = ParseRow(rdr);
+                }
+            }
+
+            return session;
+        }
+
         public Session CreateNewSession(Session session, int caretakerId, int childId)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
@@ -49,6 +78,20 @@ namespace NannyApi.DAL
 
                 return session;
             }
+        }
+
+        private Session ParseRow(SqlDataReader rdr)
+        {
+            Session session = new Session();
+
+            // Gets session details
+            session.SessionId = Convert.ToInt32(rdr["session_id"]);
+            session.ChildId = Convert.ToInt32(rdr["child_id"]);
+            session.DropOff = Convert.ToDateTime(rdr["drop_off"]);
+            session.PickUp = Convert.ToDateTime(rdr["pick_up"]);
+            session.Notes = Convert.ToString(rdr["notes"]);
+
+            return session;
         }
     }
 }

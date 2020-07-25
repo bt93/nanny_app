@@ -13,6 +13,7 @@ namespace NannyApi.Models
         public DateTime DropOff { get; set; }
         public DateTime PickUp { get; set; }
         public string Notes { get; set; }
+        public Child Child { get; set; }
         public List<Diaper> Diapers { get; set; }
         public List<Meal> Meals { get; set; }
         public List<Nap> Naps { get; set; }

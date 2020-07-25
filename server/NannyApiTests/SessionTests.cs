@@ -2,6 +2,7 @@
 using NannyApi.DAL;
 using NannyApi.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Transactions;
@@ -17,6 +18,7 @@ namespace NannyApiTests
         // A place to hold the id's that were added to the database
         private int ruth;
         private int ellie;
+        private int session1;
 
         [TestInitialize]
         public void SetupDB()
@@ -35,6 +37,7 @@ namespace NannyApiTests
                 {
                     ruth = Convert.ToInt32(rdr["ruth"]);
                     ellie = Convert.ToInt32(rdr["ellie"]);
+                    session1 = Convert.ToInt32(rdr["session1"]);
                 }
             }
         }
@@ -44,6 +47,45 @@ namespace NannyApiTests
         {
             // Roll back the transaction
             transaction.Dispose();
+        }
+
+        [TestMethod]
+        public void TestGetSessionById()
+        {
+            // Act
+            SessionSqlDAO dao = new SessionSqlDAO(this.connectionString);
+
+            // Arange
+            Session session = dao.GetSessionById(session1, ruth);
+
+            // Assert
+            Assert.AreEqual(ellie, session.ChildId);
+        }
+
+        [TestMethod]
+        public void TestGetAllSessionsByCareTakerId()
+        {
+            // Act
+            SessionSqlDAO dao = new SessionSqlDAO(this.connectionString);
+
+            // Arange
+            List<Session> sessions = dao.GetAllSessionsByCareTakerId(ruth);
+
+            // Assert
+            Assert.AreEqual(4, sessions.Count);
+        }
+
+        [TestMethod]
+        public void TestGetCurrentSessionsByCareTakerId()
+        {
+            // Act
+            SessionSqlDAO dao = new SessionSqlDAO(this.connectionString);
+
+            // Arange
+            List<Session> sessions = dao.GetCurrentSessionsByCareTakerId(ruth);
+
+            // Assert
+            Assert.AreEqual(2, sessions.Count);
         }
 
         [TestMethod]

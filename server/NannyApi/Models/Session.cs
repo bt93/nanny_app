@@ -10,6 +10,7 @@ namespace NannyApi.Models
     {
         public int SessionId { get; set; }
         public int ChildId { get; set; }
+        [Required(ErrorMessage = "Must have a dropoff time.")]
         public DateTime DropOff { get; set; }
         public DateTime PickUp { get; set; }
         public string Notes { get; set; }

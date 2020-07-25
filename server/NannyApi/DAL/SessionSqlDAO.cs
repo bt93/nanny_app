@@ -48,6 +48,62 @@ namespace NannyApi.DAL
             return session;
         }
 
+        public List<Session> GetAllSessionsByCareTakerId(int careTakerId)
+        {
+            List<Session> sessions = new List<Session>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"SELECT *
+                                        FROM session
+                                        JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                        WHERE session_caretaker.caretaker_id = @caretaker_id
+                                        ORDER BY session.drop_off DESC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    sessions.Add(ParseRow(rdr));
+                }
+            }
+
+            return sessions;
+        }
+
+        public List<Session> GetCurrentSessionsByCareTakerId(int caretakerId)
+        {
+            List<Session> sessions = new List<Session>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"SELECT *
+                                        FROM session
+                                        JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                        WHERE session.pick_up IS NULL
+                                        AND session_caretaker.caretaker_id = @caretaker_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    sessions.Add(ParseRow(rdr));
+                }
+            }
+
+            return sessions;
+        }
+
         public Session CreateNewSession(Session session, int caretakerId, int childId)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
@@ -88,8 +144,15 @@ namespace NannyApi.DAL
             session.SessionId = Convert.ToInt32(rdr["session_id"]);
             session.ChildId = Convert.ToInt32(rdr["child_id"]);
             session.DropOff = Convert.ToDateTime(rdr["drop_off"]);
-            session.PickUp = Convert.ToDateTime(rdr["pick_up"]);
-            session.Notes = Convert.ToString(rdr["notes"]);
+            if (rdr["pick_up"] != DBNull.Value)
+            {
+                session.PickUp = Convert.ToDateTime(rdr["pick_up"]);
+            } 
+
+            if (rdr["notes"] != DBNull.Value)
+            {
+                session.Notes = Convert.ToString(rdr["notes"]);
+            }
 
             return session;
         }

@@ -74,7 +74,7 @@ CREATE TABLE child_parent (
 CREATE TABLE session (
 	session_id INT IDENTITY PRIMARY KEY,
 	child_id INT NOT NULL,
-	drop_off DATETIME,
+	drop_off DATETIME NOT Null,
 	pick_up DATETIME,
 	notes TEXT
 	CONSTRAINT fk_session_child FOREIGN KEY (child_id) REFERENCES child(child_id)

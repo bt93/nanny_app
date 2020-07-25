@@ -151,5 +151,28 @@ INSERT INTO session (child_id, drop_off, pick_up, notes)
 INSERT INTO session (child_id, drop_off, notes)
 	VALUES (1, GETDATE(), 'Ellie was good')
 
+INSERT INTO child_caretaker (child_id, caretaker_id)
+	VALUES (1, 1)
+
+INSERT INTO session_caretaker (session_id, caretaker_id)
+ VALUES (2, 1)
+
+ INSERT INTO session_caretaker (session_id, caretaker_id)
+ VALUES (3, 1)
+
 SELECT * FROM session
-	WHERE pick_up = 0
+	JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+	WHERE session_caretaker.caretaker_id = 1
+	ORDER BY session.drop_off DESC
+
+INSERT INTO session (child_id, drop_off, notes)
+	VALUES (1, GETDATE(), 'Ellie was good')
+
+INSERT INTO session (child_id, drop_off, notes)
+	VALUES (2, GETDATE(), 'Ellie was good')
+
+SELECT *
+	FROM session
+	JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+	WHERE session.pick_up IS NULL
+	AND session_caretaker.caretaker_id = 1;

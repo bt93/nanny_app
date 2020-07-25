@@ -118,13 +118,13 @@ INSERT INTO session (child_id, drop_off, pick_up, notes)
 DECLARE @session2 int
 SELECT @session2 = @@IDENTITY;
 
-INSERT INTO session (child_id, drop_off, pick_up, notes)
-	VALUES (@ellie, '2020-10-20', '2020-10-20', 'notes')
+INSERT INTO session (child_id, drop_off, notes)
+	VALUES (@ellie, '2020-10-20', 'notes')
 DECLARE @session3 int
 SELECT @session3 = @@IDENTITY;
 
-INSERT INTO session (child_id, drop_off, pick_up, notes)
-	VALUES (@bobby, '2020-10-20', '2020-10-20', 'notes')
+INSERT INTO session (child_id, drop_off)
+	VALUES (@bobby, '2020-10-20')
 DECLARE @session4 int
 SELECT @session4 = @@IDENTITY;
 
@@ -159,7 +159,8 @@ INSERT INTO session_caretaker (session_id, caretaker_id)
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
 @ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @john as john,
-@ellie AS ellie, @bobby AS bobby,@joey AS joey, @johnny AS johnny;
+@ellie AS ellie, @bobby AS bobby,@joey AS joey, @johnny AS johnny,
+@session1 as session1;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

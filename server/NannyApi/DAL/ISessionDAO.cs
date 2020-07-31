@@ -36,11 +36,18 @@ namespace NannyApi.DAL
         /// <returns>Session Object</returns>
         List<Session> GetCurrentSessionsByCareTakerId(int caretakerId);
         /// <summary>
-        /// Updates a session
+        /// Updates a session currently underway
         /// </summary>
         /// <param name="session"></param>
         /// <param name="careTakerId"></param>
         /// <returns>Session Object</returns>
-        Session UpdateSession(Session session, int careTakerId);
+        Session UpdateOpenSession(Session session, int careTakerId);
+        /// <summary>
+        /// Ends a session currently underway
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="careTakerId"></param>
+        /// <returns>Session Object</returns>
+        Session EndSession(Session session, int careTakerId);
     }
 }

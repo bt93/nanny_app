@@ -27,7 +27,20 @@ namespace NannyApi.DAL
         /// Gets a list of all sessions for a specific caretaker
         /// </summary>
         /// <param name="careTakerId"></param>
-        /// <returns></returns>
+        /// <returns>Session Object</returns>
         public List<Session> GetAllSessionsByCareTakerId(int careTakerId);
+        /// <summary>
+        /// Gets a list of all the sessions that are currently underway
+        /// </summary>
+        /// <param name="caretakerId"></param>
+        /// <returns>Session Object</returns>
+        List<Session> GetCurrentSessionsByCareTakerId(int caretakerId);
+        /// <summary>
+        /// Updates a session
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="careTakerId"></param>
+        /// <returns>Session Object</returns>
+        Session UpdateSession(Session session, int careTakerId);
     }
 }

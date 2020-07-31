@@ -136,6 +136,33 @@ namespace NannyApi.DAL
             }
         }
 
+        public Session UpdateSession(Session session, int careTakerId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"UPDATE session
+                                    SET session.drop_off = @drop_off,
+                                    session.notes = @notes
+                                    OUTPUT INSERTED.session_id
+                                    FROM session
+                                    JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                    WHERE session.session_id = @session_id
+                                    AND session_caretaker.caretaker_id = @caretaker_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@drop_off", session.DropOff);
+                cmd.Parameters.AddWithValue("@notes", session.Notes);
+                cmd.Parameters.AddWithValue("@session_id", session.SessionId);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+
+                session.SessionId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return session;
+            }
+        }
+
         private Session ParseRow(SqlDataReader rdr)
         {
             Session session = new Session();

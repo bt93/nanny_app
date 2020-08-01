@@ -133,6 +133,22 @@ namespace NannyApi.DAL
             }
         }
 
+        public int DeleteMeal(int mealId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"DELETE FROM meal
+                                        WHERE meal_id = @meal_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@meal_id", mealId);
+
+                return cmd.ExecuteNonQuery();
+            }
+        }
+
         private Meal ParseRow(SqlDataReader rdr)
         {
             Meal meal = new Meal();

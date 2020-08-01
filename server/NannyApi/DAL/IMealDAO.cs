@@ -14,6 +14,12 @@ namespace NannyApi.DAL
         /// <param name="meal"></param>
         /// <returns>Meal Object</returns>
         public Meal AddMeal(Meal meal);
+        /// <summary>
+        /// Deletes a meal
+        /// </summary>
+        /// <param name="mealId"></param>
+        /// <returns>Int</returns>
+        public int DeleteMeal(int mealId);
 
         /// <summary>
         /// Lists all the meals by the session

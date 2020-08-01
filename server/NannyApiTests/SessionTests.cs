@@ -259,5 +259,18 @@ namespace NannyApiTests
             // Assert
             Assert.AreEqual("Snack", meal.Type);
         }
+
+        [TestMethod]
+        public void TestDeleteMeal()
+        {
+            // Arrange
+            MealSqlDAO dao = new MealSqlDAO(this.connectionString);
+
+            // Act
+            int rowsAffected = dao.DeleteMeal(meal1);
+
+            // Assert
+            Assert.AreEqual(1, rowsAffected);
+        }
     }
 }

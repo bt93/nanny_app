@@ -17,7 +17,7 @@ namespace NannyApiTests
 
         // A place to hold the id's that were added to the database
         private int ellie;
-        private int bobby;
+        private int johnny;
         private int ruth;
 
         [TestInitialize]
@@ -36,7 +36,7 @@ namespace NannyApiTests
                 if (rdr.Read())
                 {
                     ellie = Convert.ToInt32(rdr["ellie"]);
-                    bobby = Convert.ToInt32(rdr["bobby"]);
+                    johnny = Convert.ToInt32(rdr["johnny"]);
                     ruth = Convert.ToInt32(rdr["ruth"]);
                 }
             }
@@ -86,6 +86,19 @@ namespace NannyApiTests
 
             //Assert
             Assert.AreEqual("Ellie", child.FirstName);
+        }
+
+        [TestMethod]
+        public void TestGetDeactivatedChildById()
+        {
+            // Arrange
+            ChildSqlDAO dao = new ChildSqlDAO(this.connectionString);
+
+            // Act
+            Child child = dao.GetDeactivatedChildById(johnny, ruth);
+
+            //Assert
+            Assert.AreEqual("Johnny", child.FirstName);
         }
 
         [TestMethod]

@@ -74,6 +74,26 @@ namespace NannyApi.Controllers
             return Ok(child);
         }
 
+        [HttpGet("deactivated")]
+        public ActionResult<List<Child>> GetDeactivatedChildren()
+        {
+            List<Child> children = childDao.GetDeactivedChildren(userId);
+
+            if (children.Count == 0)
+            {
+                return NotFound();
+            }
+
+            foreach (Child child in children)
+            {
+                List<Parent> parents = parentDao.GetParentsByChild(child.ChildId, userId);
+
+                child.Parents = parents;
+            }
+
+            return Ok(children);
+        }
+
         [HttpPost]
         public ActionResult<Child> AddChild(Child child)
         {
@@ -93,6 +113,20 @@ namespace NannyApi.Controllers
 
             child.ChildId = childId;
             return Created($"api/children/{childId}", childDao.UpdateChild(child, childId, userId));
+        }
+
+        [HttpPut("reinstate/{childId}")]
+        public ActionResult<Child> ReinstateChild(int childId)
+        {
+            Child checkChild = childDao.GetDeactivatedChildById(childId, userId);
+
+            if (checkChild == null)
+            {
+                return NotFound();
+            }
+
+            checkChild.ChildId = childId;
+            return Created($"api/children/reinstate/{childId}", childDao.ReinstateChild(childId, userId));
         }
 
         [HttpDelete("{childId}")]

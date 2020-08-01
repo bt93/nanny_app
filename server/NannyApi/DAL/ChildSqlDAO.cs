@@ -93,7 +93,38 @@ namespace NannyApi.DAL
                                         JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
 	                                    WHERE caretaker.caretaker_id = @caretaker_id
                                         AND child.child_id = @child_id
-                                        AND child.active = 1
+	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
+	                                    child.gender, child.date_of_birth, child.needs_diapers,
+	                                    child.rate_per_hour, child.image_url, child.active;";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    return ParseRow(rdr);
+                }
+            }
+
+            return null;
+        }
+
+        public Child GetDeactivatedChildById(int childId, int careTakerId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"SELECT child.*
+	                                    FROM child
+	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
+	                                    WHERE caretaker.caretaker_id = @caretaker_id
+                                        AND child.child_id = @child_id
+                                        AND child.active = 0
 	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
 	                                    child.gender, child.date_of_birth, child.needs_diapers,
 	                                    child.rate_per_hour, child.image_url, child.active;";
@@ -135,6 +166,7 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@image_url", child.ImageUrl);
                 cmd.Parameters.AddWithValue("@caretaker_id", cartakerId);
 
+                child.Active = true;
                 child.ChildId = Convert.ToInt32(cmd.ExecuteScalar());
             }
 

@@ -36,6 +36,14 @@ namespace NannyApi.DAL
         /// <returns>List<Child> Objects</returns>
         public List<Child> GetChildren(int careTakerId);
         /// <summary>
+        /// Gets a single deactivated child by ID
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="careTakerId"></param>
+        /// <returns>Child Object</returns>
+        Child GetDeactivatedChildById(int childId, int careTakerId);
+
+        /// <summary>
         /// Gets all the deactivated children by caretaker
         /// </summary>
         /// <param name="careTakerId"></param>

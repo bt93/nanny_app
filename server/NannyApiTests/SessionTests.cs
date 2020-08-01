@@ -20,6 +20,8 @@ namespace NannyApiTests
         private int ellie;
         private int session1;
         private int meal1;
+        private int nap1;
+        private int diaper1;
 
         [TestInitialize]
         public void SetupDB()
@@ -40,6 +42,8 @@ namespace NannyApiTests
                     ellie = Convert.ToInt32(rdr["ellie"]);
                     session1 = Convert.ToInt32(rdr["session1"]);
                     meal1 = Convert.ToInt32(rdr["meal1"]);
+                    nap1 = Convert.ToInt32(rdr["nap1"]);
+                    //diaper1 = Convert.ToInt32(rdr["diaper1"]);
                 }
             }
         }
@@ -268,6 +272,86 @@ namespace NannyApiTests
 
             // Act
             int rowsAffected = dao.DeleteMeal(meal1);
+
+            // Assert
+            Assert.AreEqual(1, rowsAffected);
+        }
+
+        [TestMethod]
+        public void TestGetAllNapsBySession()
+        {
+            // Arrange
+            NapSqlDAO dao = new NapSqlDAO(this.connectionString);
+
+            // Act
+            List<Nap> naps = dao.GetAllNapsBySession(session1, ruth);
+
+            // Assert
+            Assert.AreEqual(2, naps.Count);
+        }
+
+        [TestMethod]
+        public void TestGetANapBySession()
+        {
+            // Arrange
+            NapSqlDAO dao = new NapSqlDAO(this.connectionString);
+
+            // Act
+            Nap nap = dao.GetANapBySession(session1, ruth, nap1);
+
+            // Assert
+            Assert.AreEqual("Didnt sleep good", nap.Notes);
+        }
+
+
+        [TestMethod]
+        public void TestAddNap()
+        {
+            // Arrange
+            NapSqlDAO dao = new NapSqlDAO(this.connectionString);
+            Nap newNap = new Nap()
+            {
+                SessionId = session1,
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now,
+                Notes = "Was Fussy"
+            };
+
+            // Act
+            Nap nap = dao.AddNap(newNap);
+
+            // Assert
+            Assert.AreEqual(newNap.Notes, nap.Notes);
+        }
+
+        [TestMethod]
+        public void TestUpdateNap()
+        {
+            // Arrange
+            NapSqlDAO dao = new NapSqlDAO(this.connectionString);
+            Nap newNap = new Nap()
+            {
+                SessionId = session1,
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now,
+                Notes = "Was not Fussy"
+            };
+
+            // Act
+            Nap nap = dao.UpdateNap(newNap, ruth);
+
+            // Assert
+            Assert.AreEqual(newNap.Notes, nap.Notes);
+        }
+
+        [TestMethod]
+        public void TestDeleteNap()
+        {
+            // Arrange
+            NapSqlDAO dao = new NapSqlDAO(this.connectionString);
+
+            // Act
+            int rowsAffected = dao.DeleteNap(nap1);
 
             // Assert
             Assert.AreEqual(1, rowsAffected);

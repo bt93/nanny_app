@@ -162,6 +162,11 @@ INSERT INTO session_caretaker (session_id, caretaker_id)
 
 INSERT INTO nap (session_id, start_time, end_time, notes)
 	VALUES (@session1, '2020-10-20 11:20:00', '2020-10-20 11:25:00', 'Didnt sleep good')
+DECLARE @nap1 int
+SELECT @nap1 = @@IDENTITY
+
+INSERT INTO nap (session_id, start_time, end_time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', '2020-10-20 11:25:00', 'ssleep good')
 
 INSERT INTO meal (session_id, time, type, notes)
 	VALUES (@session1, '2020-10-20 11:20:00', 'Breakfast', 'Ate it good')
@@ -192,7 +197,7 @@ INSERT INTO diaper (session_id, time, notes)
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
 @ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @john as john,
 @ellie AS ellie, @bobby AS bobby,@joey AS joey, @johnny AS johnny, @jinny AS jinny,
-@session1 as session1, @meal1 AS meal1;
+@session1 as session1, @meal1 AS meal1, @nap1 AS nap1;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

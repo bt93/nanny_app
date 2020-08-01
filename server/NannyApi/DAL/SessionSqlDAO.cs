@@ -177,7 +177,7 @@ namespace NannyApi.DAL
                                     FROM session
                                     JOIN session_caretaker ON session.session_id = session_caretaker.session_id
                                     WHERE session.session_id = @session_id
-                                    AND session_caretaker.cartaker_id = @caretaker_id";
+                                    AND session_caretaker.caretaker_id = @caretaker_id";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@drop_off", session.DropOff);
@@ -191,6 +191,47 @@ namespace NannyApi.DAL
                 return session;
             }
         }
+
+        public Session UpdateClosedSession(Session session, int careTakerId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"UPDATE session
+                                        SET session.drop_off = @drop_off,
+                                        session.pick_up = @pick_up,
+                                        session.notes = @notes
+                                        OUTPUT INSERTED.session_id
+                                        FROM session
+                                        JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                        WHERE session.session_id = @session_id
+                                        AND session_caretaker.caretaker_id = @caretaker_id
+                                        AND session.pick_up IS NOT NULL";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@drop_off", session.DropOff);
+                cmd.Parameters.AddWithValue("@pick_up", session.PickUp);
+                cmd.Parameters.AddWithValue("@notes", session.Notes);
+                cmd.Parameters.AddWithValue("@session_id", session.SessionId);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+
+                session.SessionId = Convert.ToInt32(cmd.ExecuteScalar());
+
+                return session;
+            }
+        }
+
+        //private bool DeleteSession(int sessionId, int careTakerId)
+        //{
+        //    try
+        //    {
+        //        return true;
+        //    } catch
+        //    {
+        //        return false;
+        //    }
+        //}
 
         private Session ParseRow(SqlDataReader rdr)
         {

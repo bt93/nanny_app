@@ -144,5 +144,25 @@ namespace NannyApiTests
             // Assert
             Assert.AreEqual(DateTime.Now.AddHours(7).ToString(), newSession.PickUp.ToString());
         }
+
+        [TestMethod]
+        public void TestUpdateClosedSession()
+        {
+            // Arrange
+            SessionSqlDAO dao = new SessionSqlDAO(this.connectionString);
+            Session session = new Session()
+            {
+                SessionId = session1,
+                DropOff = DateTime.Now,
+                PickUp = DateTime.Now.AddHours(7),
+                Notes = "Ellie was big mad today."
+            };
+
+            // Act
+            Session newSession = dao.UpdateClosedSession(session, ruth);
+
+            // Assert
+            Assert.AreEqual(session1, newSession.SessionId);
+        }
     }
 }

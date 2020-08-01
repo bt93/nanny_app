@@ -11,7 +11,7 @@ namespace NannyApi.DAL
     {
         private string connectionString { get; set; }
         /// <summary>
-        /// Creates a sql based caretaker DAO
+        /// Creates a sql based Session DAO
         /// </summary>
         /// <param name="dbconnectionString"></param>
         public SessionSqlDAO(string dbconnectionString)

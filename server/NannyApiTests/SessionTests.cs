@@ -19,6 +19,7 @@ namespace NannyApiTests
         private int ruth;
         private int ellie;
         private int session1;
+        private int meal1;
 
         [TestInitialize]
         public void SetupDB()
@@ -38,6 +39,7 @@ namespace NannyApiTests
                     ruth = Convert.ToInt32(rdr["ruth"]);
                     ellie = Convert.ToInt32(rdr["ellie"]);
                     session1 = Convert.ToInt32(rdr["session1"]);
+                    meal1 = Convert.ToInt32(rdr["meal1"]);
                 }
             }
         }
@@ -189,6 +191,73 @@ namespace NannyApiTests
 
             // Assert
             Assert.AreEqual(true, isDeleted);
+        }
+
+        [TestMethod]
+        public void TestGetAllMealsBySession()
+        {
+            // Arrange
+            MealSqlDAO dao = new MealSqlDAO(this.connectionString);
+
+            // Act
+            List<Meal> meals = dao.GetAllMealsBySession(session1, ruth);
+
+            // Assert
+            Assert.AreEqual(3, meals.Count);
+        }
+
+        [TestMethod]
+        public void TestGetAMealBySession()
+        {
+            // Arrange
+            MealSqlDAO dao = new MealSqlDAO(this.connectionString);
+
+            // Act
+            Meal meal = dao.GetAMealBySession(session1, ruth, meal1);
+
+            // Assert
+            Assert.AreEqual("Breakfast", meal.Type);
+        }
+
+        [TestMethod]
+        public void TestAddMeal()
+        {
+            // Arrange
+            MealSqlDAO dao = new MealSqlDAO(this.connectionString);
+            Meal newMeal = new Meal()
+            {
+                SessionId = session1,
+                Time = DateTime.Now,
+                Type = "Snack",
+                Notes = "She was hungry!"
+            };
+
+            // Act
+            Meal meal = dao.AddMeal(newMeal);
+
+            // Assert
+            Assert.AreEqual("Snack", meal.Type);
+        }
+
+        [TestMethod]
+        public void TestUpdateMeal()
+        {
+            // Arrange
+            MealSqlDAO dao = new MealSqlDAO(this.connectionString);
+            Meal newMeal = new Meal()
+            {
+                MealId = meal1,
+                SessionId = session1,
+                Time = DateTime.Now,
+                Type = "Snack",
+                Notes = "She was not hungry!"
+            };
+
+            // Act
+            Meal meal = dao.UpdateMeal(newMeal, ruth);
+
+            // Assert
+            Assert.AreEqual("Snack", meal.Type);
         }
     }
 }

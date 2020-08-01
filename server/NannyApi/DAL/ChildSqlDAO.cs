@@ -146,56 +146,81 @@ namespace NannyApi.DAL
 
         public bool DeleteChild(int childId, int caretakerId)
         {
+            return true;
             try
             {
                 using (SqlConnection conn = new SqlConnection(this.connectionString))
                 {
                     conn.Open();
-                    const string parentSql = @"DELETE FROM child_parent
+                    string sql = @"DELETE FROM child_parent
                                         WHERE child_id = @child_id";
 
-                    SqlCommand cmd = new SqlCommand(parentSql, conn);
+                    SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@child_id", childId);
 
                     cmd.ExecuteNonQuery();
 
-                    const string caretakerSql = @"DELETE FROM child_caretaker
+                    sql = @"DELETE FROM child_caretaker
                                                 WHERE child_id = @child_id
                                                 AND caretaker_id = @caretaker_id";
 
-                    cmd = new SqlCommand(caretakerSql, conn);
+                    cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@child_id", childId);
                     cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
 
                     cmd.ExecuteNonQuery();
 
-                    const string sessionCaretakerSql = @"DELETE FROM session_caretaker
+                    sql = @"DELETE FROM session_caretaker
                                                         WHERE caretaker_id = @caretaker_id";
 
-                    cmd = new SqlCommand(sessionCaretakerSql, conn);
+                    cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
 
                     cmd.ExecuteNonQuery();
 
-                    const string sessionSql = @"DELETE FROM session
-                                                WHERE child_id = @child_id";
+                    sql = @"DELETE FROM meal
+                                WHERE session_id = (SELECT session_id FROM session WHERE child_id = @child_id)";
 
-                    cmd = new SqlCommand(sessionSql, conn);
+                    cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@child_id", childId);
 
                     cmd.ExecuteNonQuery();
 
-                    const string childSql = @"DELETE 
+                    sql = @"DELETE FROM diaper
+                                WHERE session_id = (SELECT session_id FROM session WHERE child_id = @child_id)";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE FROM nap
+                                WHERE session_id = (SELECT session_id FROM session WHERE child_id = @child_id)";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE FROM session
+                                                WHERE child_id = @child_id";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@child_id", childId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE 
                                             FROM child
                                             WHERE child_id = @child_id";
-                    cmd = new SqlCommand(childSql, conn);
+                    cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@child_id", childId);
 
                     cmd.ExecuteNonQuery();
 
                     return true;
                 }
-            } catch
+            } catch (Exception ex)
             {
                 return false;
             }

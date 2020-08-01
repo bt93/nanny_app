@@ -148,6 +148,15 @@ INSERT INTO session_caretaker (session_id, caretaker_id)
 INSERT INTO session_caretaker (session_id, caretaker_id)
 	VALUES (@session5, @person)
 
+INSERT INTO nap (session_id, start_time, end_time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', '2020-10-20 11:25:00', 'Didnt sleep good')
+
+INSERT INTO meal (session_id, time, type, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', 'Breakfast', 'Ate it good')
+
+INSERT INTO diaper (session_id, time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
+
 -- Test if they work
 --SELECT * FROM address
 --SELECT * FROM caretaker

@@ -56,5 +56,12 @@ namespace NannyApi.DAL
         /// <param name="careTakerId"></param>
         /// <returns>Session Object</returns>
         Session UpdateClosedSession(Session session, int careTakerId);
+        /// <summary>
+        /// Deletes Session
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="careTakerId"></param>
+        /// <returns>bool</returns>
+        bool DeleteSession(int sessionId, int careTakerId);
     }
 }

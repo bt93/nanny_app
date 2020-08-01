@@ -222,16 +222,64 @@ namespace NannyApi.DAL
             }
         }
 
-        //private bool DeleteSession(int sessionId, int careTakerId)
-        //{
-        //    try
-        //    {
-        //        return true;
-        //    } catch
-        //    {
-        //        return false;
-        //    }
-        //}
+        public bool DeleteSession(int sessionId, int careTakerId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(this.connectionString))
+                {
+                    conn.Open();
+
+                    string sql = @"DELETE FROM session_caretaker
+                                            WHERE session_id = @session_id
+                                            AND caretaker_id = @caretaker_id";
+
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@session_id", sessionId);
+                    cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE FROM meal
+                                WHERE session_id = @session_id";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@session_id", sessionId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE FROM diaper
+                                WHERE session_id = @session_id";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@session_id", sessionId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE FROM nap
+                                WHERE session_id = @session_id";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@session_id", sessionId);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = @"DELETE FROM session
+                                WHERE session_id = @session_id";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@session_id", sessionId);
+
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         private Session ParseRow(SqlDataReader rdr)
         {

@@ -164,5 +164,18 @@ namespace NannyApiTests
             // Assert
             Assert.AreEqual(session1, newSession.SessionId);
         }
+
+        [TestMethod]
+        public void TestDeleteSession()
+        {
+            // Arrange
+            SessionSqlDAO dao = new SessionSqlDAO(this.connectionString);
+
+            // Act
+            bool isDeleted = dao.DeleteSession(session1, ruth);
+
+            // Assert
+            Assert.AreEqual(true, isDeleted);
+        }
     }
 }

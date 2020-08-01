@@ -76,6 +76,36 @@ namespace NannyApi.DAL
             return sessions;
         }
 
+
+        public List<int> GetAllSessionsByChildId(int childId, int careTakerId)
+        {
+            List<int> sessions = new List<int>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"SELECT *
+                                        FROM session
+                                        JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                        WHERE session_caretaker.caretaker_id = @caretaker_id
+                                        AND session.child_id = @child_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    sessions.Add(Convert.ToInt32(rdr["session_id"]));
+                }
+            }
+
+            return sessions;
+        }
+
         public List<Session> GetCurrentSessionsByCareTakerId(int caretakerId)
         {
             List<Session> sessions = new List<Session>();

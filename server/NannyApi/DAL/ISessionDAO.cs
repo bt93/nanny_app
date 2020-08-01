@@ -63,5 +63,12 @@ namespace NannyApi.DAL
         /// <param name="careTakerId"></param>
         /// <returns>bool</returns>
         bool DeleteSession(int sessionId, int careTakerId);
+        /// <summary>
+        /// Returns A list of all the session per child
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="careTakerId"></param>
+        /// <returns>List Of Ints</returns>
+        List<int> GetAllSessionsByChildId(int childId, int careTakerId);
     }
 }

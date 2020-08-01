@@ -70,23 +70,23 @@ INSERT INTO parent (address_id, first_name, last_name, email_address, phone_numb
 DECLARE @john int
 SELECT @john = @@IDENTITY;
 
-INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
-	VALUES ('Ellie', 'Kwecien', 'F', '2018-08-25', 6.50, 1);
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
+	VALUES ('Ellie', 'Kwecien', 'F', '2018-08-25', 6.50, 1, 1);
 DECLARE @ellie int
 SELECT @ellie = @@IDENTITY;
 
-INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
-	VALUES ('Bobby', 'Doe', 'M', '2020-01-01', 7.50, 1);
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
+	VALUES ('Bobby', 'Doe', 'M', '2020-01-01', 7.50, 1, 1);
 DECLARE @bobby int
 SELECT @bobby = @@IDENTITY;
 
-INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
-	VALUES ('Joey', 'Parentless', 'M', '2020-01-01', 7.50, 1);
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
+	VALUES ('Joey', 'Parentless', 'M', '2020-01-01', 7.50, 1, 1);
 DECLARE @joey int
 SELECT @joey = @@IDENTITY;
 
-INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers)
-	VALUES ('Johnny', 'Parentless', 'M', '2020-01-01', 7.50, 1);
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
+	VALUES ('Johnny', 'Parentless', 'M', '2020-01-01', 7.50, 1, 1);
 DECLARE @johnny int
 SELECT @johnny = @@IDENTITY;
 

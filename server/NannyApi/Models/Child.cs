@@ -18,6 +18,8 @@ namespace NannyApi.Models
         public decimal RatePerHour { get; set; }
         [Required(ErrorMessage = "The 'Needs diapers' field is required.")]
         public bool NeedsDiapers { get; set; }
+        [Required(ErrorMessage = "The 'Active' field is required.")]
+        public bool Active { get; set; }
         public string ImageUrl { get; set; }
         public List<Parent> Parents { get; set; }
     }

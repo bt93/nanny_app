@@ -52,6 +52,7 @@ CREATE TABLE child (
 	date_of_birth DATE,
 	rate_per_hour MONEY NOT NULL,
 	needs_diapers BIT NOT NULL,
+	active BIT NOT NULL,
 	image_url NVARCHAR(100)
 )
 

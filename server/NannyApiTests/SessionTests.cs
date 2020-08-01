@@ -76,6 +76,19 @@ namespace NannyApiTests
         }
 
         [TestMethod]
+        public void TestGetAllSessionsByChildId()
+        {
+            // Act
+            SessionSqlDAO dao = new SessionSqlDAO(this.connectionString);
+
+            // Arange
+            List<int> sessions = dao.GetAllSessionsByChildId(ellie, ruth);
+
+            // Assert
+            Assert.AreEqual(3, sessions.Count);
+        }
+
+        [TestMethod]
         public void TestGetCurrentSessionsByCareTakerId()
         {
             // Act

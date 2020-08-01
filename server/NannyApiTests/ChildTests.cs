@@ -128,10 +128,23 @@ namespace NannyApiTests
             ChildSqlDAO dao = new ChildSqlDAO(this.connectionString);
 
             // Act
-            bool isDeleted = dao.DeleteChild(ellie, ruth);
+            int childId = dao.DeleteChild(ellie, ruth);
 
             // Assert
-            Assert.AreEqual(true, isDeleted);
+            Assert.AreEqual(ellie, childId);
+        }
+
+        [TestMethod]
+        public void TestReinstateChild()
+        {
+            // Arrange
+            ChildSqlDAO dao = new ChildSqlDAO(this.connectionString);
+
+            // Act
+            int childId = dao.ReinstateChild(ellie, ruth);
+
+            // Assert
+            Assert.AreEqual(ellie, childId);
         }
     }
 }

@@ -32,9 +32,10 @@ namespace NannyApi.DAL
 	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
                                         JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
 	                                    WHERE caretaker.caretaker_id = @caretaker_id
+                                        AND child.active = 1
 	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
 	                                    child.gender, child.date_of_birth, child.needs_diapers,
-	                                    child.rate_per_hour, child.image_url;";
+	                                    child.rate_per_hour, child.image_url, child.active;";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
 
@@ -61,9 +62,10 @@ namespace NannyApi.DAL
                                         JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
 	                                    WHERE caretaker.caretaker_id = @caretaker_id
                                         AND child.child_id = @child_id
+                                        AND child.active = 1
 	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
 	                                    child.gender, child.date_of_birth, child.needs_diapers,
-	                                    child.rate_per_hour, child.image_url;";
+	                                    child.rate_per_hour, child.image_url, child.active;";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
@@ -86,8 +88,8 @@ namespace NannyApi.DAL
             {
                 conn.Open();
 
-                const string sql = @"INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, image_url)
-                                        VALUES (@first_name, @last_name, @gender, @date_of_birth, @rate_per_hour, @needs_diapers, @image_url)
+                const string sql = @"INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, image_url, active)
+                                        VALUES (@first_name, @last_name, @gender, @date_of_birth, @rate_per_hour, @needs_diapers, @image_url, 1)
                                         SELECT @@Identity
                                         INSERT INTO child_caretaker (child_id, caretaker_id)
                                         VALUES (@@Identity, @caretaker_id)";
@@ -144,85 +146,47 @@ namespace NannyApi.DAL
             }
         }
 
-        public bool DeleteChild(int childId, int caretakerId)
+        public int DeleteChild(int childId, int caretakerId)
         {
-            return true;
-            try
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(this.connectionString))
-                {
-                    conn.Open();
-                    string sql = @"DELETE FROM child_parent
-                                        WHERE child_id = @child_id";
+                conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE FROM child_caretaker
-                                                WHERE child_id = @child_id
-                                                AND caretaker_id = @caretaker_id";
-
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
-                    cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE FROM session_caretaker
-                                                        WHERE caretaker_id = @caretaker_id";
-
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE FROM meal
-                                WHERE session_id = (SELECT session_id FROM session WHERE child_id = @child_id)";
-
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE FROM diaper
-                                WHERE session_id = (SELECT session_id FROM session WHERE child_id = @child_id)";
-
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE FROM nap
-                                WHERE session_id = (SELECT session_id FROM session WHERE child_id = @child_id)";
-
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE FROM session
-                                                WHERE child_id = @child_id";
-
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
-
-                    cmd.ExecuteNonQuery();
-
-                    sql = @"DELETE 
+                const string sql = @"UPDATE child
+                                        SET child.active = 0
+                                            OUTPUT INSERTED.child_id
                                             FROM child
-                                            WHERE child_id = @child_id";
-                    cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@child_id", childId);
+                                            JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                            WHERE child.child_id = @child_id
+                                            AND child_caretaker.caretaker_id = @caretaker_id;";
 
-                    cmd.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
 
-                    return true;
-                }
-            } catch (Exception ex)
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
+
+        public int ReinstateChild(int childId, int caretakerId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
-                return false;
+                conn.Open();
+
+                const string sql = @"UPDATE child
+                                        SET child.active = 1
+                                            OUTPUT INSERTED.child_id
+                                            FROM child
+                                            JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                            WHERE child.child_id = @child_id
+                                            AND child_caretaker.caretaker_id = @caretaker_id;";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@caretaker_id", caretakerId);
+
+                return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
 
@@ -237,6 +201,7 @@ namespace NannyApi.DAL
             child.DateOfBirth = Convert.ToDateTime(rdr["date_of_birth"]);
             child.RatePerHour = Convert.ToDecimal(rdr["rate_per_hour"]);
             child.NeedsDiapers = Convert.ToBoolean(rdr["needs_diapers"]);
+            child.Active = Convert.ToBoolean(rdr["active"]);
             child.ImageUrl = Convert.ToString(rdr["image_url"]);
 
             return child;

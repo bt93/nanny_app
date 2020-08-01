@@ -63,6 +63,19 @@ namespace NannyApiTests
         }
 
         [TestMethod]
+        public void TestGetDeactivatedChildren()
+        {
+            // Arrange
+            ChildSqlDAO dao = new ChildSqlDAO(this.connectionString);
+
+            // Act
+            List<Child> children = dao.GetDeactivedChildren(ruth);
+
+            //Assert
+            Assert.AreEqual(2, children.Count);
+        }
+
+        [TestMethod]
         public void TestGetChildById()
         {
             // Arrange

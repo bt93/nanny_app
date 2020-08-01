@@ -50,6 +50,37 @@ namespace NannyApi.DAL
             return children;
         }
 
+        public List<Child> GetDeactivedChildren(int careTakerId)
+        {
+            List<Child> children = new List<Child>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"SELECT child.*
+	                                    FROM child
+	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
+                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
+	                                    WHERE caretaker.caretaker_id = @caretaker_id
+                                        AND child.active = 0
+	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
+	                                    child.gender, child.date_of_birth, child.needs_diapers,
+	                                    child.rate_per_hour, child.image_url, child.active;";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    children.Add(ParseRow(rdr));
+                }
+            }
+
+            return children;
+        }
+
         public Child GetChildById(int childId, int careTakerId)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))

@@ -81,14 +81,19 @@ DECLARE @bobby int
 SELECT @bobby = @@IDENTITY;
 
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
-	VALUES ('Joey', 'Parentless', 'M', '2020-01-01', 7.50, 1, 1);
+	VALUES ('Joey', 'Parentless', 'M', '2020-01-01', 7.50, 1, 0);
 DECLARE @joey int
 SELECT @joey = @@IDENTITY;
 
 INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
-	VALUES ('Johnny', 'Parentless', 'M', '2020-01-01', 7.50, 1, 1);
+	VALUES ('Johnny', 'Parentless', 'M', '2020-01-01', 7.50, 1, 0);
 DECLARE @johnny int
 SELECT @johnny = @@IDENTITY;
+
+INSERT INTO child (first_name, last_name, gender, date_of_birth, rate_per_hour, needs_diapers, active)
+	VALUES ('Jinny', 'Parentless', 'M', '2020-01-01', 7.50, 1, 0);
+DECLARE @jinny int
+SELECT @jinny = @@IDENTITY;
 
 INSERT INTO child_caretaker (child_id, caretaker_id)
 	VALUES (@ellie, @ruth)
@@ -98,6 +103,13 @@ INSERT INTO child_caretaker (child_id, caretaker_id)
 
 INSERT INTO child_caretaker (child_id, caretaker_id)
 	VALUES (@joey, @person)
+
+
+INSERT INTO child_caretaker (child_id, caretaker_id)
+	VALUES (@johnny, @ruth)
+
+INSERT INTO child_caretaker (child_id, caretaker_id)
+	VALUES (@jinny, @ruth)
 
 INSERT INTO child_parent (child_id, parent_id)
 	VALUES (@ellie, @megan);
@@ -168,7 +180,7 @@ INSERT INTO diaper (session_id, time, notes)
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
 @ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @john as john,
-@ellie AS ellie, @bobby AS bobby,@joey AS joey, @johnny AS johnny,
+@ellie AS ellie, @bobby AS bobby,@joey AS joey, @johnny AS johnny, @jinny AS jinny,
 @session1 as session1;
 
 -- Rollback Transaction

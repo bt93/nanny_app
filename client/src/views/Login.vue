@@ -6,19 +6,19 @@
         class="alert alert-danger"
         role="alert"
         v-if="invalidCredentials"
-      >Invalid username and password!</div>
+      >Invalid Email and password!</div>
       <div
         class="alert alert-success"
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <label for="username" class="sr-only">Username</label>
+      <label for="emailAddress" class="sr-only">Email</label>
       <input
         type="text"
-        id="username"
+        id="emailAddress"
         class="form-control"
-        placeholder="Username"
-        v-model="user.username"
+        placeholder="Email Address"
+        v-model="user.emailAddress"
         required
         autofocus
       />
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       user: {
-        username: "",
+        emailAddress: "",
         password: ""
       },
       invalidCredentials: false
@@ -59,7 +59,7 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
-            this.$store.commit("SET_USER", response.data.user);
+            this.$store.commit("SET_USER", response.data.emailAddress);
             this.$router.push("/");
           }
         })

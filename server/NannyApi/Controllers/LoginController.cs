@@ -45,10 +45,10 @@ namespace NannyApi.Controllers
                 ReturnCareTaker retUser = new ReturnCareTaker() { CareTakerId = user.CareTakerId, EmailAddress = user.EmailAddress, /*Role = user.Role,*/ Token = token };
 
                 // Switch to 200 OK
-                result = Ok(retUser);
+                return Ok(retUser);
             }
 
-            return result;
+            return Unauthorized(result);
         }
 
         /// <summary>

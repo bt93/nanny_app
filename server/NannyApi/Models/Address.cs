@@ -10,7 +10,6 @@ namespace NannyApi.Models
         public string City { get; set; }
         [Required(ErrorMessage = "The 'State' field is required.")]
         public string State { get; set; }
-        [Required(ErrorMessage = "The 'Zip Code' field is required.")]
         public int Zip { get; set; }
         public string County { get; set; }
         [Required(ErrorMessage = "The 'Country' field is required.")]

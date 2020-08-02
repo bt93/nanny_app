@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+      <h2 id="title">Nanny Tracker</h2>
+      <div id="links">
+        <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
+        <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+      </div>
     </div>
     <main>
       <router-view />
@@ -35,7 +38,19 @@
     padding: 20px;
   }
 
-  div > #nav > a {
+  div > #links {
+    display: inline;
+    padding-left: 20%;
+  }
+
+  div > #title {
+    padding-right: 50%;
+    display: inline;
+    font-size: 3vh;
+  }
+  
+
+  div > #nav > #links > a {
     color: rgb(72, 223, 185);
     text-decoration: none;
   }
@@ -48,9 +63,5 @@
     display: flex;
     flex-direction: column;
     margin: 0 20% 0 20%;
-  }
-
-  .text-center > form > div {
-    
   }
 </style>

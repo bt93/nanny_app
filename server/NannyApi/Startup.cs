@@ -24,6 +24,15 @@ namespace NannyApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("foo",
+                builder =>
+                {
+                    // Not a permanent solution, but just trying to isolate the problem
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
             services.AddAuthorization();
             services.AddControllers();
 
@@ -80,6 +89,8 @@ namespace NannyApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("foo");
 
             app.UseAuthentication();
 

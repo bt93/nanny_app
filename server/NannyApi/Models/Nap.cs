@@ -10,7 +10,7 @@ namespace NannyApi.Models
         public int NapId { get; set; }
         public int SessionId { get; set; }
         public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public string Notes { get; set; }
     }
 }

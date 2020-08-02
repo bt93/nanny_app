@@ -76,7 +76,7 @@ namespace NannyApi.Controllers
         {
             Session session = sessionDao.GetSessionById(sessionId, userId);
 
-            if (session == null)
+            if (session.SessionId == 0)
             {
                 return NotFound();
             }
@@ -139,6 +139,40 @@ namespace NannyApi.Controllers
             return Ok(sessions);
         }
 
+        [HttpGet("{sessionId}/naps")]
+        public ActionResult<List<Nap>> GetAllNaps(int sessionId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            List<Nap> naps = napDao.GetAllNapsBySession(sessionId, userId);
+            return Ok(naps);
+        }
+
+        [HttpGet("{sessionId}/naps/{napId}")]
+        public ActionResult<Nap> GetNapById(int sessionId, int napId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            Nap nap = napDao.GetANapBySession(sessionId, userId, napId);
+            
+            if (nap.NapId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(nap);
+        }
+
         [HttpPost("child/{childId}")]
         public ActionResult<Session> CreateSession(Session session, int childId)
         {
@@ -147,12 +181,27 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{newSession.SessionId}", newSession);
         }
 
+        [HttpPost("{sessionId}/naps")]
+        public ActionResult<Nap> CreateNap(Nap nap, int sessionId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            nap.SessionId = sessionId;
+            Nap newNap = napDao.AddNap(nap);
+            return Created($"/api/sessions/{sessionId}/naps/{newNap.NapId}", newNap);
+        }
+
         [HttpPut("end/{sessionId}")]
         public ActionResult<Session> EndSession(Session session, int sessionId) 
         {
             Session checkSession = sessionDao.GetSessionById(sessionId, userId);
 
-            if (checkSession == null)
+            if (checkSession.SessionId == 0)
             {
                 return NotFound();
             }
@@ -165,7 +214,7 @@ namespace NannyApi.Controllers
         {
             Session checkSession = sessionDao.GetSessionById(sessionId, userId);
 
-            if (checkSession == null)
+            if (checkSession.SessionId == 0)
             {
                 return NotFound();
             }
@@ -179,7 +228,7 @@ namespace NannyApi.Controllers
         {
             Session checkSession = sessionDao.GetSessionById(sessionId, userId);
 
-            if (checkSession == null)
+            if (checkSession.SessionId == 0)
             {
                 return NotFound();
             }
@@ -188,17 +237,46 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{updatedSession.SessionId}", updatedSession);
         }
 
+        [HttpPut("{sessionId}/naps/{napId}")]
+        public ActionResult<Nap> UpdateNap(int sessionId, int napId, Nap nap)
+        {
+            Session checkSession = sessionDao.GetSessionById(sessionId, userId);
+
+            if (checkSession.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            nap.NapId = napId;
+            Nap updatedNap = napDao.UpdateNap(nap, userId);
+            return Created($"/api/sessions/{sessionId}/naps/{updatedNap.NapId}", updatedNap);
+        }
+
         [HttpDelete("{sessionId}")]
         public ActionResult DeleteSession(int sessionId)
         {
             Session session = sessionDao.GetSessionById(sessionId, userId);
 
-            if (session == null)
+            if (session.SessionId == 0)
             {
                 return NotFound();
             }
 
             sessionDao.DeleteSession(sessionId, userId);
+            return NoContent();
+        }
+
+        [HttpDelete("{sessionId}/naps/{napId}")]
+        public ActionResult DeleteNap(int sessionId, int napId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            napDao.DeleteNap(napId);
             return NoContent();
         }
     }

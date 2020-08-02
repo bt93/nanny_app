@@ -87,14 +87,13 @@ namespace NannyApi.DAL
             {
                 conn.Open();
 
-                const string sql = @"INSERT INTO nap (session_id, start_time, end_time, notes)
-	                                    VALUES (@session_id, @start_time, @end_time, @notes)
+                const string sql = @"INSERT INTO nap (session_id, start_time, notes)
+	                                    VALUES (@session_id, @start_time, @notes)
                                         SELECT @@IDENTITY";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@session_id", nap.SessionId);
                 cmd.Parameters.AddWithValue("@start_time", nap.StartTime);
-                cmd.Parameters.AddWithValue("@end_time", nap.EndTime);
                 cmd.Parameters.AddWithValue("@notes", nap.Notes);
 
                 nap.NapId = Convert.ToInt32(cmd.ExecuteScalar());

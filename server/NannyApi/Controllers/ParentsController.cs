@@ -94,6 +94,13 @@ namespace NannyApi.Controllers
             return Created($"api/parents/{newParent.ParentId}", newParent);
         }
 
+        /// <summary>
+        /// POST /api/parents/{id}/child/{childId}
+        /// Adds an already existing parent to a child
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="childId"></param>
+        /// <returns></returns>
         [HttpPost("{id}/child/{childId}")]
         public ActionResult AddExsitingParent(int id, int childId)
         {
@@ -107,6 +114,13 @@ namespace NannyApi.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// PUT /api/parents/{id}
+        /// Updates a parents information
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public ActionResult<Parent> UpdateParent(Parent parent, int id)
         {

@@ -31,7 +31,7 @@ namespace NannyApi.Controllers
                 return 0;
             }
         }
-        // TODO: Comment all the endpoints and edit README
+        
         private ISessionDAO sessionDao;
         private IChildDAO childDao;
         private IDiaperDAO diaperDao;
@@ -206,6 +206,13 @@ namespace NannyApi.Controllers
             return Ok(nap);
         }
         
+
+        /// <summary>
+        /// GET /api/sessions/{sessionId}/meals
+        /// Gets a list of all the meals
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
         [HttpGet("{sessionId}/meals")]
         public ActionResult<List<Meal>> GetAllMeals(int sessionId)
         {
@@ -220,6 +227,13 @@ namespace NannyApi.Controllers
             return Ok(meals);
         }
 
+        /// <summary>
+        /// GET /api/sessions/{sessionId}/meals/{mealId}
+        /// Gets a meal by its id
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="mealId"></param>
+        /// <returns></returns>
         [HttpGet("{sessionId}/meals/{mealId}")]
         public ActionResult<Nap> GetMealsById(int sessionId, int mealId)
         {
@@ -240,6 +254,12 @@ namespace NannyApi.Controllers
             return Ok(meal);
         }
 
+        /// <summary>
+        /// GET /api/sessions/{sessionId}/diapers
+        /// Gets a list of all the diapers
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
         [HttpGet("{sessionId}/diapers")]
         public ActionResult<List<Diaper>> GetAllDiapers(int sessionId)
         {
@@ -254,6 +274,13 @@ namespace NannyApi.Controllers
             return Ok(diapers);
         }
 
+        /// <summary>
+        /// GET /api/sessions/{sessionId}/diapers/{diaperId}
+        /// Gets a diaper by its id
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="diaperId"></param>
+        /// <returns></returns>
         [HttpGet("{sessionId}/diapers/{diaperId}")]
         public ActionResult<Nap> GetDiapersById(int sessionId, int diaperId)
         {
@@ -275,7 +302,7 @@ namespace NannyApi.Controllers
         }
 
         /// <summary>
-        /// POST /api/sessions/child/{childId] 
+        /// POST /api/sessions/child/{childId} 
         /// Creates a new session
         /// </summary>
         /// <param name="session"></param>
@@ -311,6 +338,13 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{sessionId}/naps/{newNap.NapId}", newNap);
         }
 
+        /// <summary>
+        /// POST /api/sessions/{sessionId}/meals
+        /// Creates a new meal given a session
+        /// </summary>
+        /// <param name="meal"></param>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
         [HttpPost("{sessionId}/meals")]
         public ActionResult<Nap> CreateMeal(Meal meal, int sessionId)
         {
@@ -326,6 +360,13 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{sessionId}/naps/{newMeal.MealId}", newMeal);
         }
 
+        /// <summary>
+        /// POST /api/sessions/{sessionId/diapers
+        /// Creates a new diaper change
+        /// </summary>
+        /// <param name="diaper"></param>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
         [HttpPost("{sessionId}/diapers")]
         public ActionResult<Nap> CreateDiaper(Diaper diaper, int sessionId)
         {
@@ -382,6 +423,13 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{updatedSession.SessionId}", updatedSession);
         }
 
+        /// <summary>
+        /// PUT /api/sessions/closed/{sessionId}
+        /// Updates a closed session
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
         [HttpPut("closed/{sessionId}")]
         public ActionResult<Session> UpdateClosedSession(Session session, int sessionId)
         {
@@ -396,6 +444,14 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{updatedSession.SessionId}", updatedSession);
         }
 
+        /// <summary>
+        /// PUT /api/sessions/{sessionId}/naps/{napId}
+        /// Updates a nap
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="napId"></param>
+        /// <param name="nap"></param>
+        /// <returns></returns>
         [HttpPut("{sessionId}/naps/{napId}")]
         public ActionResult<Nap> UpdateNap(int sessionId, int napId, Nap nap)
         {
@@ -411,6 +467,14 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{sessionId}/naps/{updatedNap.NapId}", updatedNap);
         }
 
+        /// <summary>
+        /// PUT /api/sessions/{sessionId}/meals/{mealId}
+        /// Updates a meal
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="mealId"></param>
+        /// <param name="meal"></param>
+        /// <returns></returns>
         [HttpPut("{sessionId}/meals/{mealId}")]
         public ActionResult<Nap> UpdateMeal(int sessionId, int mealId, Meal meal)
         {
@@ -426,6 +490,14 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{sessionId}/naps/{updatedMeal.MealId}", updatedMeal);
         }
 
+        /// <summary>
+        /// PUT /api/sessions/{sessionId}/diaper/{diaperId}
+        /// Updates a diaper
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="diaperId"></param>
+        /// <param name="diaper"></param>
+        /// <returns></returns>
         [HttpPut("{sessionId}/diapers/{diaperId}")]
         public ActionResult<Nap> UpdateDiaper(int sessionId, int diaperId, Diaper diaper)
         {
@@ -441,6 +513,12 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{sessionId}/naps/{updatedDiaper.DiaperId}", updatedDiaper);
         }
 
+        /// <summary>
+        /// DELETE /api/sessions/{sessionId}
+        /// Deletes a session
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
         [HttpDelete("{sessionId}")]
         public ActionResult DeleteSession(int sessionId)
         {
@@ -455,6 +533,13 @@ namespace NannyApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// DELETE /api/sessions/{sessionId}/naps/{napId}
+        /// Deletes a nap
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="napId"></param>
+        /// <returns></returns>
         [HttpDelete("{sessionId}/naps/{napId}")]
         public ActionResult DeleteNap(int sessionId, int napId)
         {
@@ -469,6 +554,13 @@ namespace NannyApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// DELETE /api/sessions/{sessionId}/meals/{mealId}
+        /// Deletes a meal
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="mealId"></param>
+        /// <returns></returns>
         [HttpDelete("{sessionId}/meals/{mealId}")]
         public ActionResult DeleteMeal(int sessionId, int mealId)
         {
@@ -483,6 +575,13 @@ namespace NannyApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// DELETE /api/sessions/{sessionId}/diapers/{diaperId}
+        /// Deletes a diaper
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="diaperId"></param>
+        /// <returns></returns>
         [HttpDelete("{sessionId}/diapers/{diaperId}")]
         public ActionResult DeleteDiaper(int sessionId, int diaperId)
         {

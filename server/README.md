@@ -171,7 +171,7 @@ GET - `/api/parents` - Returns a list of all parents related to the current care
 
 **Get all Parents by Child**
 
-GET - `/api/parents/child/{child-id}` - Returns a list of any parent connected to a child and current caretaker.
+GET - `/api/parents/child/{childId}` - Returns a list of any parent connected to a child and current caretaker.
 
 **Get parent by id**
 
@@ -179,7 +179,11 @@ GET - `/api/parents/{id}` - Returns a single parent by id that is also connected
 
 **Add new Parent**
 
-POST - `/api/parents/child/{child-id}` - Creates a new parent and assigns it to a child in the database and returns it back.
+POST - `/api/parents/child/{childId}` - Creates a new parent and assigns it to a child in the database and returns it back.
+
+**Add Existing Parent**
+
+POST - `/api/parents/{id}/child/{childId}` - Adds an already existing parent to a child
 
 **Update a Parent**
 
@@ -189,7 +193,7 @@ PUT - `/api/parents/{id}` - Updates a parent given a parent object. If parent do
 
 **Get all children for caretaker**
 
-Get - `/api/children` - Gets a list of all the children attributed to the current caretaker logged in. Along with the child's parents.
+GET - `/api/children` - Gets a list of all the children attributed to the current caretaker logged in. Along with the child's parents.
 
 ```json
 [
@@ -270,7 +274,11 @@ Get - `/api/children` - Gets a list of all the children attributed to the curren
 
 **Get a child by id for caretaker**
 
-Get - `/api/children/{child-id}` - Gets a single child by their id attributed to the current caretaker logged in. Along with the child's parents.
+GET - `/api/children/{childId}` - Gets a single child by their id attributed to the current caretaker logged in. Along with the child's parents.
+
+**Get Deactivated Children**
+
+GET `/api/children/{childId}` - Gets all the children who have been deactivated
 
 **Create a new child**
 
@@ -278,8 +286,175 @@ POST - `/api/children` -  Creates a new child given a child object, and returns 
 
 **Update Existing Child**
 
-PUT - `/api/children/{child-id}` - Updates an existing child given an id and child object. If child isn't in the database, will return `404`.
+PUT - `/api/children/{childId}` - Updates an existing child given an id and child object. If child isn't in the database, will return `404`.
+
+
+**Reinstate Child**
+
+PUT - `/api/reinstate/{childId}` - Will change the child back to active
 
 **Delete Existing child**
 
-DELETE - `/api/children/{child-id}` - Will delete a child from the database and delete sessions and connections to parent and caretaker. IF successful returns `204`, if not returns `404`.
+DELETE - `/api/children/{childId}` - Will delete a child. Doesn't actually delete from the database but will turn the child to inactive. If successful returns `204`, if not returns `404`.
+
+### Sessions
+
+**Get Current Sessions**
+
+GET - `/api/sessions` - Will get a full list of the current session in progress now
+
+```json
+[
+    {
+        "sessionId": 2,
+        "childId": 2,
+        "dropOff": "2020-10-02T08:10:22",
+        "pickUp": null,
+        "notes": "Was Very cranky today.",
+        "child": {
+            "childId": 2,
+            "firstName": "Molly",
+            "lastName": "Silly",
+            "gender": "M",
+            "dateOfBirth": "2016-06-25T00:00:00",
+            "ratePerHour": 6.2300,
+            "needsDiapers": true,
+            "active": true,
+            "imageUrl": "",
+            "parents": [
+                {
+                    "parentId": 1,
+                    "addressId": 2,
+                    "firstName": "Martha",
+                    "lastName": "Silly",
+                    "emailAddress": "place@palce.com",
+                    "phoneNumber": "330-222-2222",
+                    "address": {
+                        "street": "2202 Rpad Rd",
+                        "city": "Someplace",
+                        "state": "Ohio",
+                        "zip": 44124,
+                        "county": "Cuyahoga",
+                        "country": "United States of America"
+                    }
+                }
+            ]
+        },
+        "diapers": [],
+        "meals": [],
+        "naps": [
+            {
+                "napId": 3,
+                "sessionId": 2,
+                "startTime": "2020-10-02T10:23:00",
+                "endTime": null,
+                "notes": ""
+            }
+        ]
+    }
+]
+```
+
+**Get Session By Id**
+
+GET - `/api/sessions/{sessionId}` - Gets all the sessions by id. If it doesn't exist, returns a `404`
+
+***Get All Sessions By Child**
+
+GET - `/api/sessions/child/{childId}` - Gets a list of the sessions by child.
+
+**Get All Sessions**
+
+GET `/api/sessions/all` - Returns a list of all the sessions in by caretaker
+
+**Get All Naps**
+
+GET `/api/sessions/{sessionId}/naps` - Gets a list of all the naps per session
+
+```json
+[
+    {
+        "napId": 3,
+        "sessionId": 2,
+        "startTime": "2020-10-02T10:23:00",
+        "endTime": null,
+        "notes": ""
+    }
+]
+```
+
+**Get Nap By Id**
+
+GET - `/api/sessions/naps/{napId}` - Gets a Nap by the Id
+
+**Get All Meals**
+
+GET - `/api/sessions/{sessionId}/meals` - Gets a list of all the meals
+
+**Get Meal By Id**
+
+GET - `/api/sessions/{sessionId}/meals/{mealId}` - Gets a meal by its id
+
+**Get All Diapers**
+
+GET - `/api/sessions/{sessionId}/diapers` - Gets a list of all the diapers
+
+**Get Diapers By Id**
+
+GET - `/api/sessions/{sessionId}/diapers/{diaperId}` - Gets a diaper by its id
+
+**Create Session**
+
+POST - `/api/sessions/child/{childId}` - Creates a new session
+
+**Create Nap**
+
+POST - `/api/sessions/{sessionId}/naps` - Post a new nap given a session
+
+**Create Meal**
+
+POST - `/api/sessions/{sessionId}/meals` - Creates a new meal given a session
+
+**Create Diaper**
+
+POST - `/api/sessions/{sessionId/diapers` - Creates a new diaper change
+
+**End Session**
+
+PUT - `/api/sessions/end/{sessionId}` - Ends a session given an id and session
+
+**Update Current Session**
+
+PUT - `/api/sessions/{sessionId}` - Updates a session in progress
+
+**Update Closed Session**
+
+PUT - `/api/sessions/closed/{sessionId}` - Updates a closed session
+
+**Update Nap**
+
+PUT - `/api/sessions/{sessionId}/naps/{napId}` - Updates a nap
+
+**Update Nap**
+
+PUT - `/api/sessions/{sessionId}/meals/{mealId}` - Updates a meal
+
+**Update Nap**
+
+PUT - `/api/sessions/{sessionId}/diaper/{diaperId}` - Updates a diaper
+
+**Delete Session**
+
+DELETE - `/api/sessions/{sessionId}` - Deletes a session
+
+**Delete Nap**
+
+DELETE - `/api/sessions/{sessionId}/naps/{napId}` - Deletes a nap
+
+**Delete Meal**
+
+DELETE - `/api/sessions/{sessionId}/meals/{mealId}` - Deletes a meal
+
+**Delete Diaper**
+
+DELETE - `/api/sessions/{sessionId}/diapers/{diaperId}` - Deletes a diaper

@@ -35,14 +35,18 @@ namespace NannyApi.Controllers
             this.careTakerDao = careTakerDao;
         }
 
-        // Get for api/caretakers
+        // Get for /api/caretakers
         //[HttpGet]
         //public ActionResult<IList<CareTaker>> GetCareTakers()
         //{
         //    return Ok(careTakerDao.GetAllCareTakers());
         //}
 
-        // Get for api/caretakers/current
+        /// <summary>
+        /// Get api/caretakers/current
+        /// Returns a single caretaker that is loged in
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("current")]
         public ActionResult<CareTaker> GetCareTaker()
         {
@@ -56,7 +60,12 @@ namespace NannyApi.Controllers
             return NotFound();
         }
 
-        // PUT for api/caretakers
+        /// <summary>
+        /// PUT /api/caretakers
+        /// Will update the current caretaker
+        /// </summary>
+        /// <param name="careTaker"></param>
+        /// <returns></returns>
         [HttpPut]
         public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker)
         {
@@ -71,6 +80,11 @@ namespace NannyApi.Controllers
             return Created($"api/caretakers/{careTaker.CareTakerId}", careTakerDao.UpdateCareTaker(careTaker));
         }
 
+        /// <summary>
+        /// DELETE /api/caretakers
+        /// Deletes the current caretaker
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete]
         public ActionResult DeleteCareTaker()
         {

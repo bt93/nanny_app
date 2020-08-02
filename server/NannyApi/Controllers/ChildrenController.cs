@@ -38,6 +38,11 @@ namespace NannyApi.Controllers
             this.parentDao = parentDao;
         }
 
+        /// <summary>
+        /// GET /api/children
+        /// Gets a list of all the children attributed to the current user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<List<Child>> GetAllChildren()
         {
@@ -58,6 +63,12 @@ namespace NannyApi.Controllers
             return Ok(children);
         }
 
+        /// <summary>
+        /// GET /api/children/{childId}
+        /// Gets a single child with their id
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <returns></returns>
         [HttpGet("{childId}")]
         public ActionResult<Child> GetChildById(int childId)
         {
@@ -74,6 +85,11 @@ namespace NannyApi.Controllers
             return Ok(child);
         }
 
+        /// <summary>
+        /// GET /api/children/{childId}
+        /// Gets all the children who have been deactivated
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("deactivated")]
         public ActionResult<List<Child>> GetDeactivatedChildren()
         {
@@ -94,6 +110,12 @@ namespace NannyApi.Controllers
             return Ok(children);
         }
 
+        /// <summary>
+        /// POST /api/children
+        /// Creates a new child given a child object, and returns that object back.
+        /// </summary>
+        /// <param name="child"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<Child> AddChild(Child child)
         {
@@ -101,6 +123,13 @@ namespace NannyApi.Controllers
             return Created($"/api/children/{newChild.ChildId}", newChild);
         }
 
+        /// <summary>
+        /// PUT /api/children/{childId}
+        /// Updates an existing child given an id and child object.
+        /// </summary>
+        /// <param name="child"></param>
+        /// <param name="childId"></param>
+        /// <returns></returns>
         [HttpPut("{childId}")]
         public ActionResult<Child> UpdateChild(Child child, int childId)
         {
@@ -115,6 +144,12 @@ namespace NannyApi.Controllers
             return Created($"api/children/{childId}", childDao.UpdateChild(child, childId, userId));
         }
 
+        /// <summary>
+        /// PUT /api/reinstate/{childId}
+        /// Will change the child back to active
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <returns></returns>
         [HttpPut("reinstate/{childId}")]
         public ActionResult<Child> ReinstateChild(int childId)
         {
@@ -129,6 +164,13 @@ namespace NannyApi.Controllers
             return Created($"api/children/reinstate/{childId}", childDao.ReinstateChild(childId, userId));
         }
 
+        /// <summary>
+        /// DELETE /api/children/{childId}
+        /// Will delete a child. 
+        /// Doesn't actually delete from the database but will turn the child to inactive.
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <returns></returns>
         [HttpDelete("{childId}")]
         public ActionResult DeleteChild(int childId)
         {

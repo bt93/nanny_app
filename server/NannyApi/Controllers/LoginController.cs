@@ -20,6 +20,12 @@ namespace NannyApi.Controllers
             careTakerDAO = _careTakerDAO;
         }
 
+        /// <summary>
+        /// POST /api/login
+        /// Logs in the user
+        /// </summary>
+        /// <param name="userParam"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Authenticate(LoginCareTaker userParam)
         {
@@ -45,6 +51,12 @@ namespace NannyApi.Controllers
             return result;
         }
 
+        /// <summary>
+        /// POST /api/login/register
+        /// Registers new user
+        /// </summary>
+        /// <param name="userParam"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public IActionResult Register(CareTaker userParam)
         {

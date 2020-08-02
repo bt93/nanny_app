@@ -1,5 +1,5 @@
 ﻿-- Start a transactio
- --BEGIN TRANSACTION
+--BEGIN TRANSACTION
 
 -- REMOVE data from the database
 DELETE FROM nap;
@@ -184,6 +184,23 @@ INSERT INTO meal (session_id, time, type, notes)
 
 INSERT INTO diaper (session_id, time, notes)
 	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
+DECLARE @diaper1 int
+SELECT @diaper1 = @@IDENTITY
+
+INSERT INTO diaper (session_id, time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
+
+
+INSERT INTO diaper (session_id, time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
+
+
+INSERT INTO diaper (session_id, time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
+
+INSERT INTO diaper (session_id, time, notes)
+	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
+
 
 -- Test if they work
 --SELECT * FROM address
@@ -197,7 +214,7 @@ INSERT INTO diaper (session_id, time, notes)
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,
 @ruth AS ruth, @megan AS megan, @matt AS matt, @jane AS jane, @john as john,
 @ellie AS ellie, @bobby AS bobby,@joey AS joey, @johnny AS johnny, @jinny AS jinny,
-@session1 as session1, @meal1 AS meal1, @nap1 AS nap1;
+@session1 as session1, @meal1 AS meal1, @nap1 AS nap1, @diaper1 AS diaper1;
 
 -- Rollback Transaction
 --ROLLBACK TRANSACTION

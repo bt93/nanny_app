@@ -43,7 +43,7 @@ namespace NannyApiTests
                     session1 = Convert.ToInt32(rdr["session1"]);
                     meal1 = Convert.ToInt32(rdr["meal1"]);
                     nap1 = Convert.ToInt32(rdr["nap1"]);
-                    //diaper1 = Convert.ToInt32(rdr["diaper1"]);
+                    diaper1 = Convert.ToInt32(rdr["diaper1"]);
                 }
             }
         }
@@ -352,6 +352,84 @@ namespace NannyApiTests
 
             // Act
             int rowsAffected = dao.DeleteNap(nap1);
+
+            // Assert
+            Assert.AreEqual(1, rowsAffected);
+        }
+
+        [TestMethod]
+        public void TestGetAllDiaperBySession()
+        {
+            // Arrange
+            DiaperSqlDAO dao = new DiaperSqlDAO(this.connectionString);
+
+            // Act
+            List<Diaper> diapers = dao.GetAllDiapersBySession(session1, ruth);
+
+            // Assert
+            Assert.AreEqual(5, diapers.Count);
+        }
+
+        [TestMethod]
+        public void TestGetADiaperBySession()
+        {
+            // Arrange
+            DiaperSqlDAO dao = new DiaperSqlDAO(this.connectionString);
+
+            // Act
+            Diaper diaper = dao.GetADiaperBySession(session1, ruth, diaper1);
+
+            // Assert
+            Assert.AreEqual("Nothing Unusal", diaper.Notes);
+        }
+
+        [TestMethod]
+        public void TestAddDiaper()
+        {
+            // Arrange
+            DiaperSqlDAO dao = new DiaperSqlDAO(this.connectionString);
+            Diaper newDiaper = new Diaper()
+            {
+                SessionId = session1,
+                Time = DateTime.Now,
+                Notes = "Was Fussy"
+            };
+
+            // Act
+            Diaper diaper = dao.AddDiaper(newDiaper);
+
+            // Assert
+            Assert.AreEqual(newDiaper.Notes, diaper.Notes);
+        }
+
+        [TestMethod]
+        public void TestUpdateDiaper()
+        {
+            // Arrange
+            DiaperSqlDAO dao = new DiaperSqlDAO(this.connectionString);
+            Diaper newDiaper = new Diaper()
+            {
+                DiaperId = diaper1,
+                SessionId = session1,
+                Time = DateTime.Now,
+                Notes = "Was not Fussy"
+            };
+
+            // Act
+            Diaper diaper = dao.AddDiaper(newDiaper);
+
+            // Assert
+            Assert.AreEqual(newDiaper.Notes, diaper.Notes);
+        }
+
+        [TestMethod]
+        public void TestDeleteDiaper()
+        {
+            // Arrange
+            DiaperSqlDAO dao = new DiaperSqlDAO(this.connectionString);
+
+            // Act
+            int rowsAffected = dao.DeleteDiaper(diaper1);
 
             // Assert
             Assert.AreEqual(1, rowsAffected);

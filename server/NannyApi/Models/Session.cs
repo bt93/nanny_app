@@ -12,7 +12,7 @@ namespace NannyApi.Models
         public int ChildId { get; set; }
         [Required(ErrorMessage = "Must have a dropoff time.")]
         public DateTime DropOff { get; set; }
-        public DateTime PickUp { get; set; }
+        public DateTime? PickUp { get; set; }
         public string Notes { get; set; }
         public Child Child { get; set; }
         public List<Diaper> Diapers { get; set; }

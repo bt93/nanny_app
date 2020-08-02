@@ -205,6 +205,74 @@ namespace NannyApi.Controllers
 
             return Ok(nap);
         }
+        
+        [HttpGet("{sessionId}/meals")]
+        public ActionResult<List<Meal>> GetAllMeals(int sessionId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            List<Meal> meals = mealDao.GetAllMealsBySession(sessionId, userId);
+            return Ok(meals);
+        }
+
+        [HttpGet("{sessionId}/meals/{mealId}")]
+        public ActionResult<Nap> GetMealsById(int sessionId, int mealId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            Meal meal = mealDao.GetAMealBySession(sessionId, userId, mealId);
+
+            if (meal.MealId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(meal);
+        }
+
+        [HttpGet("{sessionId}/diapers")]
+        public ActionResult<List<Diaper>> GetAllDiapers(int sessionId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            List<Diaper> diapers = diaperDao.GetAllDiapersBySession(sessionId, userId);
+            return Ok(diapers);
+        }
+
+        [HttpGet("{sessionId}/diapers/{diaperId}")]
+        public ActionResult<Nap> GetDiapersById(int sessionId, int diaperId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            Diaper diaper = diaperDao.GetADiaperBySession(sessionId, userId, diaperId);
+
+            if (diaper.DiaperId == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(diaper);
+        }
 
         /// <summary>
         /// POST /api/sessions/child/{childId] 
@@ -241,6 +309,36 @@ namespace NannyApi.Controllers
             nap.SessionId = sessionId;
             Nap newNap = napDao.AddNap(nap);
             return Created($"/api/sessions/{sessionId}/naps/{newNap.NapId}", newNap);
+        }
+
+        [HttpPost("{sessionId}/meals")]
+        public ActionResult<Nap> CreateMeal(Meal meal, int sessionId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            meal.SessionId = sessionId;
+            Meal newMeal = mealDao.AddMeal(meal);
+            return Created($"/api/sessions/{sessionId}/naps/{newMeal.MealId}", newMeal);
+        }
+
+        [HttpPost("{sessionId}/diapers")]
+        public ActionResult<Nap> CreateDiaper(Diaper diaper, int sessionId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            diaper.SessionId = sessionId;
+            Diaper newMeal = diaperDao.AddDiaper(diaper);
+            return Created($"/api/sessions/{sessionId}/naps/{newMeal.DiaperId}", newMeal);
         }
 
         /// <summary>
@@ -313,6 +411,36 @@ namespace NannyApi.Controllers
             return Created($"/api/sessions/{sessionId}/naps/{updatedNap.NapId}", updatedNap);
         }
 
+        [HttpPut("{sessionId}/meals/{mealId}")]
+        public ActionResult<Nap> UpdateMeal(int sessionId, int mealId, Meal meal)
+        {
+            Session checkSession = sessionDao.GetSessionById(sessionId, userId);
+
+            if (checkSession.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            meal.MealId = mealId;
+            Meal updatedMeal = mealDao.UpdateMeal(meal, userId);
+            return Created($"/api/sessions/{sessionId}/naps/{updatedMeal.MealId}", updatedMeal);
+        }
+
+        [HttpPut("{sessionId}/diapers/{diaperId}")]
+        public ActionResult<Nap> UpdateDiaper(int sessionId, int diaperId, Diaper diaper)
+        {
+            Session checkSession = sessionDao.GetSessionById(sessionId, userId);
+
+            if (checkSession.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            diaper.DiaperId = diaperId;
+            Diaper updatedDiaper = diaperDao.UpdateDiaper(diaper, userId);
+            return Created($"/api/sessions/{sessionId}/naps/{updatedDiaper.DiaperId}", updatedDiaper);
+        }
+
         [HttpDelete("{sessionId}")]
         public ActionResult DeleteSession(int sessionId)
         {
@@ -338,6 +466,34 @@ namespace NannyApi.Controllers
             }
 
             napDao.DeleteNap(napId);
+            return NoContent();
+        }
+
+        [HttpDelete("{sessionId}/meals/{mealId}")]
+        public ActionResult DeleteMeal(int sessionId, int mealId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            mealDao.DeleteMeal(mealId);
+            return NoContent();
+        }
+
+        [HttpDelete("{sessionId}/diapers/{diaperId}")]
+        public ActionResult DeleteDiaper(int sessionId, int diaperId)
+        {
+            Session session = sessionDao.GetSessionById(sessionId, userId);
+
+            if (session.SessionId == 0)
+            {
+                return NotFound();
+            }
+
+            diaperDao.DeleteDiaper(diaperId);
             return NoContent();
         }
     }

@@ -115,13 +115,13 @@ namespace NannyApi.DAL
                                         FROM diaper
                                         JOIN session ON diaper.session_id = session.session_id
                                         JOIN session_caretaker ON session.session_id = session_caretaker.session_id
-                                        WHERE diaper.nap_id = @nap_id
+                                        WHERE diaper.diaper_id = @diaper_id
                                         AND session_caretaker.caretaker_id = @caretaker_id";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@time", diaper.Time);
                 cmd.Parameters.AddWithValue("@notes", diaper.Notes);
-                cmd.Parameters.AddWithValue("@nap_id", diaper.DiaperId);
+                cmd.Parameters.AddWithValue("@diaper_id", diaper.DiaperId);
                 cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
 
                 diaper.DiaperId = Convert.ToInt32(cmd.ExecuteScalar());

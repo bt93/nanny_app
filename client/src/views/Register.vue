@@ -25,7 +25,7 @@
         type="text"
         id="lastName"
         class="form-control"
-        placeholder="Email"
+        placeholder="Last Name"
         v-model="user.lastName"
         autofocus
       />
@@ -69,7 +69,7 @@
         type="tel"
         id="phoneNumber"
         class="form-control"
-        placeholder="Email"
+        placeholder="Phone Number"
         v-model="user.phoneNumber"
         
         autofocus
@@ -134,7 +134,6 @@
         class="form-control"
         placeholder="County"
         v-model="user.address.county"
-        inputmode="numeric" pattern="[0-9]*"
         autofocus
       />
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
@@ -196,10 +195,7 @@ export default {
           .register(this.user)
           .then((response) => {
             if (response.status == 201) {
-              this.$router.push({
-                path: '/login',
-                query: { registration: 'success' },
-              });
+              this.login()
             }
           })
           .catch((error) => {
@@ -211,6 +207,24 @@ export default {
             }
           });
       }
+    },
+    login() {
+      authService
+        .login(this.user)
+        .then(response => {
+          if (response.status == 200) {
+            this.$store.commit("SET_AUTH_TOKEN", response.data.token);
+            this.$store.commit("SET_USER", response.data.emailAddress);
+            this.$router.push("/dashboard");
+          }
+        })
+        .catch(error => {
+          const response = error.response;
+
+          if (response.status === 401) {
+            this.invalidCredentials = true;
+          }
+        });
     },
     clearErrors() {
       this.registrationErrors = false;

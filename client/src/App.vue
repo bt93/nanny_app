@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <h2 id="title">Nanny Tracker</h2>
+      <div>
+        <h2 id="title">Nanny Tracker</h2>
+      </div>
+      <div>
+        <h1 v-if="$route.path === '/dashboard'">Dashboard</h1>
+      </div>
       <div id="links">
         <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
         <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
@@ -36,19 +41,11 @@
     border-bottom: 2px rgb(37, 57, 73) solid;
     background-color: rgb(58, 81, 102);
     padding: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
   }
-
-  div > #links {
-    display: inline;
-    padding-left: 20%;
-  }
-
-  div > #title {
-    padding-right: 50%;
-    display: inline;
-    font-size: 3vh;
-  }
-  
 
   div > #nav > #links > a {
     color: rgb(72, 223, 185);

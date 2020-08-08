@@ -8,7 +8,7 @@
         <h1 v-if="$route.path === '/dashboard'">Dashboard</h1>
       </div>
       <div id="links">
-        <span><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
+        <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
         <span v-if="$store.state.token != ''">&nbsp;|&nbsp;<router-link v-bind:to="{ name: 'settings' }">Settings</router-link>&nbsp;|&nbsp;</span>
         <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'logout' }">Logout</router-link></span>
       </div>
@@ -48,7 +48,7 @@
     align-items: center;
   }
 
-  div > #nav > #links > span > a {
+  a {
     color: rgb(72, 223, 185);
     text-decoration: none;
   }

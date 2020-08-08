@@ -27,6 +27,7 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      redirect: { name: 'dashboard' },
       meta: {
         requiresAuth: false
       }

@@ -8,8 +8,9 @@
         <h1 v-if="$route.path === '/dashboard'">Dashboard</h1>
       </div>
       <div id="links">
-        <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-        <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+        <span><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
+        <span v-if="$store.state.token != ''">&nbsp;|&nbsp;<router-link v-bind:to="{ name: 'settings' }">Settings</router-link>&nbsp;|&nbsp;</span>
+        <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'logout' }">Logout</router-link></span>
       </div>
     </div>
     <main>
@@ -47,7 +48,7 @@
     align-items: center;
   }
 
-  div > #nav > #links > a {
+  div > #nav > #links > span > a {
     color: rgb(72, 223, 185);
     text-decoration: none;
   }
@@ -60,5 +61,13 @@
     display: flex;
     flex-direction: column;
     margin: 0 20% 0 20%;
+  }
+
+  .text-center > form > input,
+  .text-center > form > select,
+  .text-center > form > button {
+    height: 30px;
+    max-width: 580px;
+    margin: auto;
   }
 </style>

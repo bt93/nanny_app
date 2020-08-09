@@ -5,7 +5,7 @@
         <h2 id="title">Nanny Tracker</h2>
       </div>
       <div>
-        <h1 v-if="$route.path === '/dashboard'">Dashboard</h1>
+        <h1 v-if="$route.name === 'dashboard'">Dashboard</h1>
       </div>
       <div id="links">
         <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
@@ -48,7 +48,7 @@
     align-items: center;
   }
 
-  a {
+  div > #nav > #links > span > a {
     color: rgb(72, 223, 185);
     text-decoration: none;
   }

@@ -6,7 +6,8 @@
     <div class="sessions">
       <router-link :to="{name: ''}">New Session</router-link>
       <h2>Todays Sessions</h2>
-      <session-container v-for="session in sessions" :key="session.sessionId" :session="session"/>
+      <img src="../images/loading.gif" alt="Loading" v-if="isLoading">
+      <session-container v-else v-for="session in sessions" :key="session.sessionId" :session="session"/>
     </div>
   </div>
 </template>
@@ -21,13 +22,15 @@ export default {
   },
   data() {
     return {
-      sessions: []
+      sessions: [],
+      isLoading: true
     }
   },
   created() {
     sessionService.getCurrentSessions()
       .then(res => {
         if (res.status === 200) {
+          this.isLoading = false;
           res.data.forEach(s => this.sessions.push(s));
         }
       });
@@ -41,6 +44,12 @@ export default {
     margin: 0 -5vh;
     display: grid;
     grid-template-columns: 20vh 1fr;
+  }
+
+  .dashboard a {
+    color: rgb(58, 81, 102);
+    text-decoration: none;
+    font-size: 20px;
   }
 
   .sessions {

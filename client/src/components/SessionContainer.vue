@@ -1,10 +1,10 @@
 <template>
   <div class="sessionContainer">
     <h3>{{ session.child.firstName }} {{ session.child.lastName }}</h3>
-    <p>Rate: {{ session.child.ratePerHour }}</p>
+    <p>Rate: ${{ session.child.ratePerHour }}</p>
     <p>Drop off: {{ formatDropOff }}</p>
     <p>Pick up: {{ formatPickUp }}</p>
-    <router-link :to="{name: 'login'}">More Details</router-link>
+    <router-link :to="{name: 'session', params: {id: this.session.sessionId}}">More Details</router-link>
   </div>
 </template>
 
@@ -45,6 +45,8 @@ export default {
 
 <style>
 .sessionContainer {
-  border: black 10px solid;
+  border: rgb(58, 81, 102) 2px solid;
+  border-radius: 20px;
+  margin-bottom: 20px;
 }
 </style>

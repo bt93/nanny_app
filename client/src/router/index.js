@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard'
 import Settings from '../views/Settings'
 import SessionDetails from '../views/SessionDetails'
+import NewSession from '../views/NewSession'
 import store from '../store/index'
 
 Vue.use(Router)
@@ -38,7 +39,8 @@ const router = new Router({
       name: "login",
       component: Login,
       meta: {
-        requiresAuth: false
+        requiresAuth: false,
+        title: 'Login'
       }
     },
     {
@@ -46,7 +48,8 @@ const router = new Router({
       name: "logout",
       component: Logout,
       meta: {
-        requiresAuth: false
+        requiresAuth: false,
+        title: 'Logout'
       }
     },
     {
@@ -54,7 +57,8 @@ const router = new Router({
       name: "register",
       component: Register,
       meta: {
-        requiresAuth: false
+        requiresAuth: false,
+        title: 'Register'
       }
     },
     {
@@ -62,7 +66,8 @@ const router = new Router({
       name: "dashboard",
       component: Dashboard,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Dashboard'
       }
     },
     {
@@ -70,7 +75,17 @@ const router = new Router({
       name: 'settings',
       component: Settings,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'User Settings'
+      }
+    },
+    {
+      path: '/session',
+      name: 'newSession',
+      component: NewSession,
+      meta: {
+        requiresAuth: true,
+        title: 'New Session'
       }
     },
     {
@@ -78,7 +93,8 @@ const router = new Router({
       name: 'session',
       component: SessionDetails,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        title: 'Session'
       }
     }
   ]
@@ -87,6 +103,12 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   // Determine if the route requires Authentication
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+
+  if (to.meta && to.meta.title) {
+    document.title = to.meta.title + ' | Nanny Tracker';
+  } else {
+    document.title = 'Nanny Tracker'
+  }
 
   // If it does and they are not logged in, send the user to "/login"
   if (requiresAuth && store.state.token === '') {

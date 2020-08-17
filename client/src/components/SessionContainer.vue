@@ -1,10 +1,9 @@
 <template>
   <div class="sessionContainer">
-    <h3>{{ session.child.firstName }} {{ session.child.lastName }}</h3>
+    <router-link :to="{name: 'session', params: {id: this.session.sessionId}}"><h3>{{ session.child.firstName }} {{ session.child.lastName }}</h3></router-link>
     <p>Rate: ${{ session.child.ratePerHour }}</p>
     <p>Drop off: {{ formatDropOff }}</p>
     <p>Pick up: {{ formatPickUp }}</p>
-    <router-link :to="{name: 'session', params: {id: this.session.sessionId}}">More Details</router-link>
   </div>
 </template>
 

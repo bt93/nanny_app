@@ -258,3 +258,43 @@ UPDATE parent
 COMMIT TRANSACTION
 
 GO
+
+-- Procedure for adding new session
+CREATE PROCEDURE createNewSession
+@child_id INT,
+@drop_off DATETIME,
+@notes TEXT,
+@caretaker_id INT
+AS
+BEGIN TRANSACTION
+INSERT INTO session (child_id, drop_off, notes)
+	VALUES (@child_id, @drop_off, @notes)
+	DECLARE @session_id INT
+    SELECT @@Identity
+INSERT INTO session_caretaker (session_id, caretaker_id)
+	VALUES (@@IDENTITY, @caretaker_id)
+	SELECT @session_id
+COMMIT TRANSACTION
+
+GO
+
+-- Procedure for deleting a session
+CREATE PROCEDURE deleteSession
+@session_id INT,
+@caretaker_id INT
+AS
+BEGIN TRANSACTION
+DELETE FROM session_caretaker
+	WHERE session_id = @session_id
+    AND caretaker_id = @caretaker_id
+DELETE FROM meal
+    WHERE session_id = @session_id
+DELETE FROM diaper
+    WHERE session_id = @session_id
+DELETE FROM nap
+    WHERE session_id = @session_id
+DELETE FROM session
+    WHERE session_id = @session_id
+COMMIT TRANSACTION
+
+GO

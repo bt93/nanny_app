@@ -196,3 +196,65 @@ DELETE FROM address
 COMMIT TRANSACTION
 
 GO
+
+-- Procedure for adding a new parent
+CREATE PROCEDURE addParent
+@street NVARCHAR(25),
+@city NVARCHAR(25),
+@state NVARCHAR(25),
+@zip INT,
+@county NVARCHAR(25),
+@country NVARCHAR(25),
+@first_name NVARCHAR(80),
+@last_name NVARCHAR(80),
+@email_address NVARCHAR(120),
+@phone_number NVARCHAR(20),
+@child_id INT
+AS
+BEGIN TRANSACTION
+INSERT INTO address(street, city, state, zip, county, country)
+	VALUES(@street, @city, @state, @zip, @county, @country)
+	SELECT @@Identity
+INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
+	VALUES (@@Identity, @first_name, @last_name, @email_address, @phone_number);
+	DECLARE @parent_id INT
+    SELECT @parent_id = @@Identity
+INSERT INTO child_parent (child_id, parent_id)
+    VALUES (@child_id, @parent_id)
+COMMIT TRANSACTION
+
+GO
+
+-- Procedure for Updating parent info
+CREATE PROCEDURE updateParent
+@parent_id INT,
+@street NVARCHAR(25),
+@city NVARCHAR(25),
+@state NVARCHAR(25),
+@zip INT,
+@county NVARCHAR(25),
+@country NVARCHAR(25),
+@first_name NVARCHAR(80),
+@last_name NVARCHAR(80),
+@email_address NVARCHAR(120),
+@phone_number NVARCHAR(20)
+AS
+BEGIN TRANSACTION
+UPDATE address
+	SET street = @street,
+	city = @city,
+	state = @state,
+	zip = @zip,
+	county = @county,
+    country = @country
+	WHERE address_id = (SELECT address_id FROM parent WHERE parent_id = @parent_id)
+UPDATE parent
+	SET first_name = @first_name,
+	last_name = @last_name,
+	email_address = @email_address,
+	phone_number = @phone_number
+    OUTPUT INSERTED.parent_id
+	WHERE parent_id = @parent_id
+COMMIT TRANSACTION
+
+GO

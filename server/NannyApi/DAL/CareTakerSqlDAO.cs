@@ -119,8 +119,8 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                //cmd.Parameters.AddWithValue("@password", hash.Password);
-                //cmd.Parameters.AddWithValue("@salt", hash.Salt);
+                cmd.Parameters.AddWithValue("@password", hash.Password);
+                cmd.Parameters.AddWithValue("@salt", hash.Salt);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
                 
                 // Finally, executes the caretaker insert
@@ -164,7 +164,6 @@ namespace NannyApi.DAL
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                int rowsAffected = 0;
 
                 SqlCommand cmd = new SqlCommand("dbo.deleteCareTaker", conn);
                 cmd.CommandType = CommandType.StoredProcedure;

@@ -1,6 +1,7 @@
 ﻿using NannyApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -113,39 +114,20 @@ namespace NannyApi.DAL
            using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
-                const string addressSql = @"INSERT INTO address(street, city, state, zip, county, country)
-                                           VALUES(@street, @city, @state, @zip, @county, @country)
-                                            SELECT @@Identity";
                 // Insert address
-                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                SqlCommand cmd = new SqlCommand("dbo.addParent", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@street", parent.Address.Street);
                 cmd.Parameters.AddWithValue("@city", parent.Address.City);
                 cmd.Parameters.AddWithValue("@state", parent.Address.State);
                 cmd.Parameters.AddWithValue("@zip", parent.Address.Zip);
                 cmd.Parameters.AddWithValue("@county", parent.Address.County);
                 cmd.Parameters.AddWithValue("@country", parent.Address.Country);
-
-                parent.AddressId = Convert.ToInt32(cmd.ExecuteScalar());
-
-                const string careTakerSql = @"INSERT INTO parent (address_id, first_name, last_name, email_address, phone_number)
-	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @phone_number);
-                                            SELECT @@Identity";
-
-                // Starts parent insert with address id added from above
-                cmd = new SqlCommand(careTakerSql, conn);
                 cmd.Parameters.AddWithValue("@first_name", parent.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", parent.LastName);
                 cmd.Parameters.AddWithValue("@email_address", parent.EmailAddress);
                 cmd.Parameters.AddWithValue("@phone_number", parent.PhoneNumber);
-
-                // Finally, executes the parent insert
-                parent.ParentId = Convert.ToInt32(cmd.ExecuteScalar());
-
-                const string parentChildSql = @"INSERT INTO child_parent (child_id, parent_id)
-                                                VALUES (@child_id, @parent_id)";
-                cmd = new SqlCommand(parentChildSql, conn);
                 cmd.Parameters.AddWithValue("@child_id", childId);
-                cmd.Parameters.AddWithValue("@parent_id", parent.ParentId);
 
                 cmd.ExecuteNonQuery();
 
@@ -178,26 +160,9 @@ namespace NannyApi.DAL
             {
                 conn.Open();
 
-                const string addressSql = @"UPDATE address
-	                                            SET street = @street,
-	                                            city = @city,
-	                                            state = @state,
-	                                            zip = @zip,
-	                                            county = @county,
-                                                country = @country
-                                                OUTPUT INSERTED.address_id
-	                                            WHERE address_id = (SELECT address_id FROM parent WHERE parent_id = @parent_id)";
-
-                const string parentSql = @"UPDATE parent
-	                                            SET first_name = @first_name,
-	                                            last_name = @last_name,
-	                                            email_address = @email_address,
-                                                phone_number = @phone_number
-                                                OUTPUT INSERTED.parent_id
-	                                            WHERE parent_id = @parent_id;";
-
                 // Address insert done first 
-                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                SqlCommand cmd = new SqlCommand("dbo.updateParent", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@parent_id", parent.ParentId);
                 cmd.Parameters.AddWithValue("@street", parent.Address.Street);
                 cmd.Parameters.AddWithValue("@city", parent.Address.City);
@@ -205,11 +170,6 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@zip", parent.Address.Zip);
                 cmd.Parameters.AddWithValue("@county", parent.Address.County);
                 cmd.Parameters.AddWithValue("@country", parent.Address.Country);
-                parent.AddressId = Convert.ToInt32(cmd.ExecuteScalar());
-
-                // Starts caretaker insert with address id added from above
-                cmd = new SqlCommand(parentSql, conn);
-                cmd.Parameters.AddWithValue("@parent_id", parent.ParentId);
                 cmd.Parameters.AddWithValue("@first_name", parent.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", parent.LastName);
                 cmd.Parameters.AddWithValue("@email_address", parent.EmailAddress);

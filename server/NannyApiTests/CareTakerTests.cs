@@ -189,10 +189,11 @@ namespace NannyApiTests
             testCareTaker.Address.Country = "ertwseg";
 
             // Act
-            bool isDeleted = dao.DeleteCareTaker(testCareTaker);            
+            dao.DeleteCareTaker(testCareTaker);
+            CareTaker expected = dao.GetCareTakerById(ruth);
 
             // Assert
-            Assert.AreEqual(true, isDeleted);
+            Assert.AreEqual(null, expected);
         }
     }
 }

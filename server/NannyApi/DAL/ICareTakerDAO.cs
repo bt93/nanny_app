@@ -34,7 +34,7 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="careTaker"></param>
         /// <returns>Bool</returns>
-        public bool DeleteCareTaker(CareTaker careTaker);
+        public void DeleteCareTaker(CareTaker careTaker);
         /// <summary>
         /// Gets a caretaker by their email address
         /// </summary>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using NannyApi.Security.Models;
 using NannyApi.Security;
+using System.Data;
 
 namespace NannyApi.DAL
 {
@@ -106,31 +107,20 @@ namespace NannyApi.DAL
             {
                 conn.Open();
 
-                // Two inserts, first is done on Address then selects that id
-                const string addressSql = @"INSERT INTO address (street, city, state, zip, county, country)
-	                                        VALUES (@street, @city, @state, @zip, @county, @country)
-                                            SELECT @@Identity";
-                const string careTakerSql = @"INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
-	                                        VALUES (@@Identity, @first_name, @last_name, @email_address, @password, @phone_number, @salt);
-                                            SELECT @@Identity";
-                // Address insert done first 
-                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                // Stored Procedure created in db/init_scrip.sql
+                SqlCommand cmd = new SqlCommand("dbo.addCareTaker", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@street", careTaker.Address.Street);
                 cmd.Parameters.AddWithValue("@city", careTaker.Address.City);
                 cmd.Parameters.AddWithValue("@state", careTaker.Address.State);
                 cmd.Parameters.AddWithValue("@zip", careTaker.Address.Zip);
                 cmd.Parameters.AddWithValue("@county", careTaker.Address.County);
                 cmd.Parameters.AddWithValue("@country", careTaker.Address.Country);
-
-                careTaker.AddressId = Convert.ToInt32(cmd.ExecuteScalar());
-
-                // Starts caretaker insert with address id added from above
-                cmd = new SqlCommand(careTakerSql, conn);
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                cmd.Parameters.AddWithValue("@password", hash.Password);
-                cmd.Parameters.AddWithValue("@salt", hash.Salt);
+                //cmd.Parameters.AddWithValue("@password", hash.Password);
+                //cmd.Parameters.AddWithValue("@salt", hash.Salt);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
                 
                 // Finally, executes the caretaker insert
@@ -142,36 +132,14 @@ namespace NannyApi.DAL
 
         public CareTaker UpdateCareTaker(CareTaker careTaker)
         {
-            IPasswordHasher passwordHasher = new PasswordHasher();
-            PasswordHash hash = passwordHasher.ComputeHash(careTaker);
-
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
 
-                // Two updates, first is done on Address then selects that id
-                const string addressSql = @"UPDATE address
-	                                            SET street = @street,
-	                                            city = @city,
-	                                            state = @state,
-	                                            zip = @zip,
-	                                            county = @county,
-                                                country = @country
-                                                OUTPUT INSERTED.address_id
-	                                            WHERE address_id = (SELECT address_id FROM caretaker WHERE caretaker_id = @caretaker_id)";
-
-                const string careTakerSql = @"UPDATE caretaker
-	                                            SET first_name = @first_name,
-	                                            last_name = @last_name,
-	                                            email_address = @email_address,
-	                                            password = @password,
-                                                phone_number = @phone_number,
-                                                salt = @salt
-                                                OUTPUT INSERTED.caretaker_id
-	                                            WHERE caretaker_id = @caretaker_id;";
                 
                 // Address insert done first 
-                SqlCommand cmd = new SqlCommand(addressSql, conn);
+                SqlCommand cmd = new SqlCommand("dbo.updateCareTaker", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
                 cmd.Parameters.AddWithValue("@street", careTaker.Address.Street);
                 cmd.Parameters.AddWithValue("@city", careTaker.Address.City);
@@ -179,59 +147,30 @@ namespace NannyApi.DAL
                 cmd.Parameters.AddWithValue("@zip", careTaker.Address.Zip);
                 cmd.Parameters.AddWithValue("@county", careTaker.Address.County);
                 cmd.Parameters.AddWithValue("@country", careTaker.Address.Country);
-                careTaker.AddressId = Convert.ToInt32(cmd.ExecuteScalar());
-
-                // Starts caretaker insert with address id added from above
-                cmd = new SqlCommand(careTakerSql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
                 cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
                 cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
                 cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                cmd.Parameters.AddWithValue("@password", hash.Password);
-                cmd.Parameters.AddWithValue("@salt", hash.Salt);
                 cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
 
                 // Finally, executes the caretaker insert
                 careTaker.CareTakerId = Convert.ToInt32(cmd.ExecuteScalar());
-                careTaker.Password = hash.Password;
-                careTaker.Salt = hash.Salt;
 
                 return careTaker;
             }
         }
 
-        public bool DeleteCareTaker(CareTaker careTaker)
+        public void DeleteCareTaker(CareTaker careTaker)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-
-                const string childSql = @"DELETE FROM child_caretaker
-                                                WHERE caretaker_id = @caretaker_id";
-                SqlCommand cmd = new SqlCommand(childSql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
-                cmd.ExecuteNonQuery();
-
-                const string sessionSql = @"DELETE FROM session_caretaker
-                                                WHERE caretaker_id = @caretaker_id";
-                cmd = new SqlCommand(sessionSql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
-                cmd.ExecuteNonQuery();
-
                 int rowsAffected = 0;
-                const string caretakerSql = @"DELETE FROM caretaker
-                                                WHERE caretaker_id = @caretaker_id";
-                cmd = new SqlCommand(caretakerSql, conn);
+
+                SqlCommand cmd = new SqlCommand("dbo.deleteCareTaker", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
-                rowsAffected += cmd.ExecuteNonQuery();
-
-                const string addressSql = @"DELETE FROM address
-                                                WHERE address_id = @address_id";
-                cmd = new SqlCommand(addressSql, conn);
                 cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
-                rowsAffected += cmd.ExecuteNonQuery();
-
-                return (rowsAffected == 2);
+                cmd.ExecuteNonQuery();
             }
         }
 

@@ -114,3 +114,85 @@ CREATE TABLE nap (
 	notes TEXT
 	CONSTRAINT fk_nap_session FOREIGN KEY (session_id) REFERENCES session(session_id)
 )
+
+-- Stored Procedures
+GO
+
+-- Procedure for adding caretaker
+CREATE PROCEDURE addCareTaker
+@street NVARCHAR(25),
+@city NVARCHAR(25),
+@state NVARCHAR(25),
+@zip INT,
+@county NVARCHAR(25),
+@country NVARCHAR(25),
+@first_name NVARCHAR(80),
+@last_name NVARCHAR(80),
+@email_address NVARCHAR(120),
+@password NVARCHAR(6),
+@salt NVARCHAR(20),
+@phone_number NVARCHAR(20)
+AS
+BEGIN TRANSACTION
+INSERT INTO address (street, city, state, zip, county, country)
+	VALUES (@street, @city, @state, @zip, @county, @country)
+	SELECT @@Identity
+INSERT INTO caretaker (address_id, first_name, last_name, email_address, password, phone_number, salt)
+	VALUES (@@Identity, @first_name, @last_name, @email_address, @password, @phone_number, @salt)
+	SELECT @@Identity
+COMMIT TRANSACTION
+
+GO
+
+-- Stored Procedure for Update caretaker
+CREATE PROCEDURE updateCareTaker
+@caretaker_id INT,
+@street NVARCHAR(25),
+@city NVARCHAR(25),
+@state NVARCHAR(25),
+@zip INT,
+@county NVARCHAR(25),
+@country NVARCHAR(25),
+@first_name NVARCHAR(80),
+@last_name NVARCHAR(80),
+@email_address NVARCHAR(120),
+@phone_number NVARCHAR(20)
+AS
+BEGIN TRANSACTION
+UPDATE address
+	SET street = @street,
+	city = @city,
+	state = @state,
+	zip = @zip,
+	county = @county,
+    country = @country
+    OUTPUT INSERTED.address_id
+	WHERE address_id = (SELECT address_id FROM caretaker WHERE caretaker_id = @caretaker_id)
+UPDATE caretaker
+	SET first_name = @first_name,
+	last_name = @last_name,
+	email_address = @email_address,
+    phone_number = @phone_number
+    OUTPUT INSERTED.caretaker_id
+	WHERE caretaker_id = @caretaker_id
+COMMIT TRANSACTION
+
+GO
+
+-- Procedure for deleting a caretaker
+CREATE PROCEDURE deleteCareTaker
+@caretaker_id INT,
+@address_id INT
+AS
+BEGIN TRANSACTION
+DELETE FROM child_caretaker
+	WHERE caretaker_id = @caretaker_id
+DELETE FROM session_caretaker
+    WHERE caretaker_id = @caretaker_id
+DELETE FROM caretaker
+    WHERE caretaker_id = @caretaker_id
+DELETE FROM address
+	WHERE address_id = @address_id
+COMMIT TRANSACTION
+
+GO

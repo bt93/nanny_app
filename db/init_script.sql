@@ -19,7 +19,7 @@ CREATE TABLE address (
 	state NVARCHAR(25) NOT NULL,
 	zip INT,
 	county NVARCHAR(25),
-	country NVARCHAR(25),
+	country NVARCHAR(25) NOT NULL,
 )
 
 CREATE TABLE caretaker (
@@ -129,7 +129,7 @@ CREATE PROCEDURE addCareTaker
 @first_name NVARCHAR(80),
 @last_name NVARCHAR(80),
 @email_address NVARCHAR(120),
-@password NVARCHAR(6),
+@password NVARCHAR(60),
 @salt NVARCHAR(20),
 @phone_number NVARCHAR(20)
 AS

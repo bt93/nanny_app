@@ -159,6 +159,31 @@ namespace NannyApi.DAL
             }
         }
 
+        public bool UpdatePassword(string password, int careTakerId)
+        {
+            CareTaker caretaker = new CareTaker();
+            caretaker.Password = password;
+            IPasswordHasher passwordHasher = new PasswordHasher();
+            PasswordHash hash = passwordHasher.ComputeHash(caretaker);
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+
+                const string sql = @"UPDATE caretaker
+                                        SET password = @password,
+                                        SALT = @salt
+                                        WHERE caretaker_id = @caretaker_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@password", hash.Password);
+                cmd.Parameters.AddWithValue("@salt", hash.Salt);
+                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                
+                return cmd.ExecuteNonQuery() == 1;
+            }
+        }
+
         public void DeleteCareTaker(CareTaker careTaker)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))

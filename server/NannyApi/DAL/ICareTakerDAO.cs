@@ -41,5 +41,12 @@ namespace NannyApi.DAL
         /// <param name="email"></param>
         /// <returns>Caretaker</returns>
         public CareTaker GetCareTakerByEmail(string email);
+        /// <summary>
+        /// Allows the user to update their password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="careTakerId"></param>
+        /// <returns>Bool</returns>
+        bool UpdatePassword(string password, int careTakerId);
     }
 }

@@ -80,6 +80,27 @@ namespace NannyApi.Controllers
             return Created($"api/caretakers/{careTaker.CareTakerId}", careTakerDao.UpdateCareTaker(careTaker));
         }
 
+        [HttpPut("password")]
+        public ActionResult UpdatePassword(CareTaker careTaker)
+        {
+            CareTaker careTakerCheck = careTakerDao.GetCareTakerById(userId);
+
+            if (careTakerCheck == null)
+            {
+                return NotFound();
+            }
+
+            bool isChanged = careTakerDao.UpdatePassword(careTaker.Password, userId);
+
+            if (isChanged)
+            {
+                return NoContent();
+            } else
+            {
+                return BadRequest();
+            }
+        }
+
         /// <summary>
         /// DELETE /api/caretakers
         /// Deletes the current caretaker

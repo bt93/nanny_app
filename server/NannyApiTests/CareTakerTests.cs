@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NannyApi.DAL;
 using NannyApi.Models;
+using NannyApi.Security;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -164,6 +165,23 @@ namespace NannyApiTests
 
             // Assert
             Assert.AreEqual("Ru", careTaker.FirstName);
+        }
+
+        [TestMethod]
+        public void TestUpdatePassword()
+        {
+            // Arrange 
+            CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
+            PasswordHasher hasher = new PasswordHasher();
+            string password = "Mypassword!";
+
+            // Act
+            dao.UpdatePassword(password, ruth);
+            CareTaker updated = dao.GetCareTakerById(ruth);
+            bool verify = hasher.VerifyHashMatch(updated.Password, "Mypassword!", updated.Salt);
+
+            // Assert
+            Assert.AreEqual(true, verify);
         }
 
         [TestMethod]

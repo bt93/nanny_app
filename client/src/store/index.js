@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -9,11 +11,20 @@ Vue.use(Vuex)
  * the page is refreshed. When that happens you need to check for the token in local storage and if it
  * exists you should set the header so that it will be attached to each request
  */
-const currentToken = localStorage.getItem('token')
-const currentUser = JSON.parse(localStorage.getItem('user'));
+let currentToken = localStorage.getItem('token')
+let currentUser = JSON.parse(localStorage.getItem('user'));
 
 if(currentToken != null) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`;
+
+  let exp = jwtDecode(currentToken).exp;
+  if (moment.unix(exp) < moment()) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      currentToken = '';
+      currentUser = {};
+      axios.defaults.headers.common = {};
+  }
 }
 
 export default new Vuex.Store({

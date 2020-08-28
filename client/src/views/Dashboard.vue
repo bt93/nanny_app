@@ -1,15 +1,27 @@
 <template>
-  <div class="dashboard">
-    <div class="children">
-      <h2>Children</h2>
-      <img src="../images/loading.gif" alt="Loading" v-if="childrenLoading">
-      <child-container v-else v-for="child in children" :key="child.childId" :child="child" />
+  <div>
+    <div class="dashboard" v-if="!error">
+      <div class="children">
+        <h2>Children</h2>
+        <img src="../images/loading.gif" alt="Loading" v-if="childrenLoading">
+        <p v-else-if="children.length === 0">You do not have any children in your care.</p>
+        <child-container v-else v-for="child in children" :key="child.childId" :child="child" />
+      </div>
+      <div class="sessions">
+        <h2>Todays Sessions</h2>
+        <img src="../images/loading.gif" alt="Loading" v-if="sessionsLoading">
+        <div v-else-if="sessions.length === 0">
+          <p>Currently no sessions.</p>
+          <router-link class="main-btn" :to="{name: 'newSession'}">New Session</router-link>
+        </div>
+        <div v-else>
+          <router-link class="main-btn" :to="{name: 'newSession'}">New Session</router-link>
+          <session-container v-for="session in sessions" :key="session.sessionId" :session="session" />
+        </div>
+      </div>
     </div>
-    <div class="sessions">
-      <router-link :to="{name: 'newSession'}">New Session</router-link>
-      <h2>Todays Sessions</h2>
-      <img src="../images/loading.gif" alt="Loading" v-if="sessionsLoading">
-      <session-container v-else v-for="session in sessions" :key="session.sessionId" :session="session" />
+    <div v-else>
+      <error />
     </div>
   </div>
 </template>
@@ -19,18 +31,21 @@ import SessionContainer from '../components/SessionContainer'
 import ChildContainer from '../components/ChildContainer'
 import sessionService from '../services/SessionService'
 import childrenService from '../services/ChildrenService'
+import Error from '../components/Error'
 
 export default {
   components: {
     SessionContainer,
-    ChildContainer
+    ChildContainer,
+    Error
   },
   data() {
     return {
       sessions: [],
       children: [],
       sessionsLoading: true,
-      childrenLoading: true
+      childrenLoading: true,
+      error: false
     }
   },
   created() {
@@ -39,6 +54,10 @@ export default {
         if (res.status === 200) {
           this.sessionsLoading = false;
           res.data.forEach(s => this.sessions.push(s));
+        }
+      }).catch(err => {
+        if (err) {
+          this.error = true;
         }
       });
 

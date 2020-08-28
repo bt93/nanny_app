@@ -48,11 +48,6 @@ namespace NannyApi.Controllers
         {
             List<Child> children = childDao.GetChildren(userId);
 
-            if (children.Count == 0)
-            {
-                return NotFound();
-            }
-
             foreach (Child child in children)
             {
                 List<Parent> parents = parentDao.GetParentsByChild(child.ChildId, userId);

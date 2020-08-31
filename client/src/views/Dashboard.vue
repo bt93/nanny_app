@@ -4,8 +4,14 @@
       <div class="children">
         <h2>Children</h2>
         <img src="../images/loading.gif" alt="Loading" v-if="childrenLoading">
-        <p v-else-if="children.length === 0">You do not have any children in your care.</p>
-        <child-container v-else v-for="child in children" :key="child.childId" :child="child" />
+        <div v-else-if="children.length === 0">
+          <p>You do not have any children in your care.</p>
+          <router-link :to="{name: 'newChild'}">Add Child</router-link>
+        </div>
+        <div v-else>
+          <router-link :to="{name: 'newChild'}">Add Child</router-link>
+          <child-container v-for="child in children" :key="child.childId" :child="child" />
+        </div>
       </div>
       <div class="sessions">
         <h2>Todays Sessions</h2>

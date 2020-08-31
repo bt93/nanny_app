@@ -8,6 +8,8 @@ import Dashboard from '../views/Dashboard'
 import Settings from '../views/Settings'
 import SessionDetails from '../views/SessionDetails'
 import NewSession from '../views/NewSession'
+import NewChild from '../views/NewChild'
+import EditChild from '../views/EditChild'
 import store from '../store/index'
 
 Vue.use(Router)
@@ -95,6 +97,24 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Session'
+      }
+    },
+    {
+      path: '/child',
+      name: 'newChild',
+      component: NewChild,
+      meta: {
+        requiresAuth: true,
+        title: 'Add Child'
+      }
+    },
+    {
+      path: '/child/:id',
+      name: 'editChild',
+      component: EditChild,
+      meta: {
+        requiresAuth: true,
+        title: 'Edit Child'
       }
     }
   ]

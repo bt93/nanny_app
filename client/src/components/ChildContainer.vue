@@ -8,6 +8,7 @@
           <li>Rate: ${{ child.ratePerHour }}</li>
           <li>Needs diapers: {{ getNeedsDiapers }}</li>
       </ul>
+      <router-link :to="{name: 'editChild', params: {id: child.childId}}">Edit</router-link>
   </div>
 </template>
 

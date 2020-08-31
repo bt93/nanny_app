@@ -1,0 +1,77 @@
+<template>
+  <div class="viewChild">
+      <img src="../images/loading.gif" alt="Loading..." v-if="isLoading">
+      <error v-else-if="error" />
+      <div v-else>
+          <h1>{{ child.firstName }} {{ child.lastName }}</h1>
+          <img :src="child.imageUrl" :alt="child.firstName" v-if="child.imageUrl">
+          <ul>
+              <li>Date of Birth: {{ child.dateOfBirth }}</li>
+              <li>Gender: {{ getGender }}</li>
+              <li>Needs Diapers? {{ getNeedsDiapers }}</li>
+              <li>Rate Per Hour: ${{ child.ratePerHour }}</li>
+          </ul>
+          <router-link :to="{name: 'editChild'}"><h2>Edit</h2></router-link>
+      </div>
+  </div>
+</template>
+
+<script>
+import childrenService from '../services/ChildrenService'
+import moment from 'moment'
+import Error from '../components/Error'
+
+export default {
+    components: {
+        Error
+    },
+    data() {
+        return {
+            child: {},
+            isLoading: true,
+            error: false
+        }
+    },
+    created() {
+        childrenService.getChildById(this.$route.params.id)
+            .then(res => {
+                if (res.status === 200) {
+                    this.isLoading = false;
+                    this.child = res.data;
+                    let day = new Date(this.child.dateOfBirth);
+                    this.child.dateOfBirth = moment(day).format("MM/DD/YYYY");
+                }
+            })
+            .catch(err => {
+                if (err) {
+                    this.isLoading = false;
+                    this.error = true;
+                } 
+            });
+    },
+    computed: {
+        getGender() {
+            if (this.child.gender === 'F') {
+                return 'Female';
+            } else if (this.child.gender === 'M') {
+                return 'Male'
+            } else if (this.child.gender === 'N') {
+                return 'Non-Binary'
+            }
+            
+            return 'Other'
+        },
+        getNeedsDiapers() {
+            if (this.child.needsDiapers) {
+                return 'Yes'
+            } else {
+                return 'No'
+            }
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>

@@ -11,5 +11,9 @@ export default {
 
     addChild(child) {
         return axios.post('/children', child);
+    },
+
+    updateChild(child) {
+        return axios.put(`/children/${child.childId}`, child);
     }
 }

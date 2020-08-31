@@ -70,4 +70,9 @@
     max-width: 580px;
     margin: auto;
   }
+
+  a {
+    color: rgb(58, 81, 102);
+    text-decoration: none;
+  }
 </style>

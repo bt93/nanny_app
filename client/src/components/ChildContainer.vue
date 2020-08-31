@@ -1,6 +1,6 @@
 <template>
   <div class="childContainer">
-      <h3>{{ child.firstName }} {{ child.lastName }}</h3>
+      <router-link :to="{name: 'viewChild', params: {id: child.childId}}"><h3>{{ child.firstName }} {{ child.lastName }}</h3></router-link>
       <img v-if="child.imageUrl" :src="child.imageUrl" :alt="child.firstName">
       <ul>
           <li>Date of Birth: {{ formatDOB }}</li>
@@ -8,11 +8,12 @@
           <li>Rate: ${{ child.ratePerHour }}</li>
           <li>Needs diapers: {{ getNeedsDiapers }}</li>
       </ul>
-      <router-link :to="{name: 'editChild', params: {id: child.childId}}">Edit</router-link>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
     name: 'child-container',
     props: {
@@ -20,9 +21,9 @@ export default {
     },
     computed: {
         formatDOB() {
-            const date = new Date(this.child.dateOfBirth);
+            const day = new Date(this.child.dateOfBirth);
             
-            return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+            return moment(day).format("MM/DD/YYYY")
         },
         getGender() {
             if (this.child.gender === 'F') {

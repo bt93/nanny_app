@@ -87,8 +87,6 @@ export default {
   }
 
   .dashboard a {
-    color: rgb(58, 81, 102);
-    text-decoration: none;
     font-size: 20px;
   }
 

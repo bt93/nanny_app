@@ -9,6 +9,7 @@ import Settings from '../views/Settings'
 import SessionDetails from '../views/SessionDetails'
 import NewSession from '../views/NewSession'
 import NewChild from '../views/NewChild'
+import ViewChild from '../views/ViewChild'
 import EditChild from '../views/EditChild'
 import store from '../store/index'
 
@@ -110,6 +111,15 @@ const router = new Router({
     },
     {
       path: '/child/:id',
+      name: 'viewChild',
+      component: ViewChild,
+      meta: {
+        requiresAuth: true,
+        title: 'Child'
+      }
+    },
+    {
+      path: '/child/:id/edit',
       name: 'editChild',
       component: EditChild,
       meta: {

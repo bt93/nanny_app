@@ -5,6 +5,10 @@
       <div class="childInfo text-center" v-else>
           <h1>Edit Child</h1>
           <img v-if="child.imageUrl !== ''" :src="child.imageUrl" :alt="child.firstName">
+          <div class="editLinks">
+              <router-link :to="{name: 'addParent'}">Add Parent </router-link> |
+              <router-link :to="{name: 'deactivateChild'}">Deactivate Child </router-link>
+          </div>
           <form @submit.prevent="updateChild">
                 <label for="firstName">First Name: </label>
                 <input type="text" name="firstName" id="firstName" v-model="child.firstName">

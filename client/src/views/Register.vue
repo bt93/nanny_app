@@ -119,7 +119,7 @@
         type="number"
         id="zip"
         min="0"
-        max="9999999"
+        max="99999"
         class="form-control"
         placeholder="Zip Code"
         v-model="user.address.zip"

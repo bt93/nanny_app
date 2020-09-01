@@ -11,6 +11,7 @@ import NewSession from '../views/NewSession'
 import NewChild from '../views/NewChild'
 import ViewChild from '../views/ViewChild'
 import EditChild from '../views/EditChild'
+import AddParent from '../views/AddParent'
 import store from '../store/index'
 
 Vue.use(Router)
@@ -125,6 +126,15 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Edit Child'
+      }
+    },
+    {
+      path: '/child/:id/parent',
+      name: 'addParent',
+      component: AddParent,
+      meta: {
+        requiresAuth: true,
+        title: 'Add Parent'
       }
     }
   ]

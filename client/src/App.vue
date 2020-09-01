@@ -60,7 +60,7 @@
   .text-center > form {
     display: flex;
     flex-direction: column;
-    margin: 0 20% 0 20%;
+    margin: 2% 20%;
   }
 
   .text-center > form > input,
@@ -68,7 +68,7 @@
   .text-center > form > button {
     height: 30px;
     max-width: 580px;
-    margin: auto;
+    margin: 2% auto;
   }
 
   a {

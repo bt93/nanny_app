@@ -1,5 +1,7 @@
 <template>
   <div class="addParent">
+      <div class="exsitingParents">
+      </div>
       <new-parent />
   </div>
 </template>
@@ -35,5 +37,7 @@ export default {
 </script>
 
 <style>
-
+.addParent {
+    display: grid;
+}
 </style>

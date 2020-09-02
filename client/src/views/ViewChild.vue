@@ -3,6 +3,7 @@
       <img src="../images/loading.gif" alt="Loading..." v-if="isLoading">
       <error v-else-if="error" />
       <div v-else>
+          <router-link :to="{name: 'editChild'}"><h2>Edit</h2></router-link>
           <h1>{{ child.firstName }} {{ child.lastName }}</h1>
           <img :src="child.imageUrl" :alt="child.firstName" v-if="child.imageUrl">
           <ul>
@@ -10,8 +11,11 @@
               <li>Gender: {{ getGender }}</li>
               <li>Needs Diapers? {{ getNeedsDiapers }}</li>
               <li>Rate Per Hour: ${{ child.ratePerHour }}</li>
+              <li><h3>Parents / Guardian: </h3></li>
+              <ul>
+                  <parent-container v-for="p in child.parents" :key="p.parentId" :parent="p" />
+              </ul>
           </ul>
-          <router-link :to="{name: 'editChild'}"><h2>Edit</h2></router-link>
       </div>
   </div>
 </template>
@@ -20,10 +24,12 @@
 import childrenService from '../services/ChildrenService'
 import moment from 'moment'
 import Error from '../components/Error'
+import ParentContainer from '../components/ParentContainer'
 
 export default {
     components: {
-        Error
+        Error,
+        ParentContainer
     },
     data() {
         return {

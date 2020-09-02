@@ -40,7 +40,18 @@ export default {
     data() {
         return {
             parent: {
-                address: {}
+                firstName: '',
+                lastName: '',
+                emailAddress: '',
+                phoneNumber: '',
+                address: {
+                    street: '',
+                    city: '',
+                    state: '',
+                    zip: '',
+                    county: '',
+                    country: ''
+                }
             },
             countries: countryList.getNames(),
             error: false
@@ -48,6 +59,8 @@ export default {
     },
     methods: {
         createParent() {
+            this.parent.address.zip = parseInt(this.parent.address.zip);
+
             parentService.addParent(this.parent, this.$route.params.id)
                 .then(res => {
                     if (res.status === 201) {

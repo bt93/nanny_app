@@ -80,12 +80,11 @@
       </div>
       <label for="street" class="sr-only">Street</label>
       <input
-        type="text"
+        type="street"
         id="street"
         class="form-control"
         placeholder="Street"
         v-model="user.address.street"
-
         autofocus
       />
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
@@ -93,12 +92,11 @@
       </div>
       <label for="city" class="sr-only">City</label>
       <input
-        type="text"
+        type="city"
         id="city"
         class="form-control"
         placeholder="City"
         v-model="user.address.city"
-
         autofocus
       />
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">

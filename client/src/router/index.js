@@ -6,6 +6,7 @@ import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard'
 import Settings from '../views/Settings'
+import ChangePassword from '../views/ChangePassword'
 import SessionDetails from '../views/SessionDetails'
 import NewSession from '../views/NewSession'
 import NewChild from '../views/NewChild'
@@ -81,6 +82,15 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'User Settings'
+      }
+    },
+    {
+      path: '/password',
+      name: 'changePassword',
+      component: ChangePassword,
+      meta: {
+        requiresAuth: true,
+        title: 'Change Password'
       }
     },
     {

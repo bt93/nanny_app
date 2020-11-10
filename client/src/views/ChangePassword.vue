@@ -1,16 +1,18 @@
 <template>
   <div class="change-password">
       <h1>Change Password</h1>
+      <h2 v-if="errorMessage">{{ errorMessage }}</h2>
       <form @submit.prevent="submit">
           <div>
             <label for="password">Password: </label>
-            <input type="password" name="password" id="password" v-model="newPassword">
+            <input type="password" name="password" id="password" v-model="newPassword" required>
           </div>
           <div>
               <label for="confrimPassword">Confrim Password: </label>
-              <input type="password" name="confirmPassword" id="confirmPassword" v-model="confirmPassword">
+              <input type="password" name="confirmPassword" id="confirmPassword" v-model="confirmPassword" required>
           </div>
           <input type="submit">
+          <button @click.prevent="cancel">Cancel</button>
       </form>
   </div>
 </template>
@@ -38,8 +40,11 @@ export default {
                         }
                     })
             } else {
-                console.log('False');
+                this.errorMessage = 'Passwords do not match. Please try again.';
             }
+        },
+        cancel() {
+            this.$router.push('/settings');
         }
     },
     created() {

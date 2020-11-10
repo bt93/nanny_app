@@ -16,6 +16,9 @@
       <div class="sessions">
         <h2>Todays Sessions</h2>
         <img src="../images/loading.gif" alt="Loading" v-if="sessionsLoading">
+        <div v-else-if="children.length === 0">
+          
+        </div>
         <div v-else-if="sessions.length === 0">
           <p>Currently no sessions.</p>
           <router-link class="main-btn" :to="{name: 'newSession'}">New Session</router-link>

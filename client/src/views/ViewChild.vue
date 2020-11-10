@@ -12,9 +12,16 @@
               <li>Needs Diapers? {{ getNeedsDiapers }}</li>
               <li>Rate Per Hour: ${{ child.ratePerHour }}</li>
               <li><h3>Parents / Guardian: </h3></li>
-              <ul>
+              <ul v-if="child.parents.length > 0">
                   <parent-container v-for="p in child.parents" :key="p.parentId" :parent="p" />
               </ul>
+              <div v-else>
+                  <h3>No Parents listed</h3>
+              </div>
+              <div id="newParent">
+                  <router-link :to="{ name: 'addParent' }">Add new Parent</router-link>
+                  <h3>OR</h3>
+              </div>
           </ul>
       </div>
   </div>
@@ -79,5 +86,7 @@ export default {
 </script>
 
 <style>
-
+#newParent {
+    margin: 30px;
+}
 </style>

@@ -38,7 +38,7 @@ namespace NannyApi.Security
             {
                 Subject = new ClaimsIdentity(claims),
                 IssuedAt = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtSecret)), SecurityAlgorithms.HmacSha256Signature),
             };
 

@@ -84,7 +84,7 @@ export default {
 <style>
 @media screen and (min-width: 500px) {
   .dashboard {
-    margin: 0 -8vh;
+    margin: 0 5vh;
     display: grid;
     grid-template-columns: 20vh 1fr;
   }

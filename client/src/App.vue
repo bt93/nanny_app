@@ -2,10 +2,10 @@
   <div id="app">
     <div id="nav">
       <div>
-        <h2 id="title">Nanny Tracker</h2>
+        <h2 id="title"><router-link :to="{ name: 'dashboard' }">Nanny Tracker</router-link></h2>
       </div>
       <div>
-        <h1 v-if="$route.name === 'dashboard'">Dashboard</h1>
+        <h1>{{ $route.meta.title }}</h1>
       </div>
       <div id="links">
         <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
@@ -36,6 +36,10 @@
   main {
     margin: 0 10% 0 10%;
     text-align: center;
+  }
+
+  #title a {
+    color: black;
   }
 
   div > #nav {

@@ -142,6 +142,7 @@ const router = new Router({
       path: '/child/:id/parent',
       name: 'addParent',
       component: AddParent,
+      props: true,
       meta: {
         requiresAuth: true,
         title: 'Add Parent'

@@ -1,10 +1,9 @@
 <template>
   <div class="details">
-      <h2>Session</h2>
       <img src="../images/loading.gif" alt="Loading" v-if="isLoading">
       <error v-else-if="error"/>
       <div v-else>
-          <h3>{{ this.session.child.firstName }} {{ this.session.child.lastName }}</h3>
+          <h2>{{ this.session.child.firstName }} {{ this.session.child.lastName }}</h2>
           <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
           <h3>Session Details</h3>
           <ul class="options">

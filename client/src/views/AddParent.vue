@@ -1,8 +1,18 @@
 <template>
-  <div class="addParent">
-      <div class="exsitingParents">
+  <div>
+      <h1>New Parent/Guardian for {{ child.firstName }} {{ child.lastName }}</h1>
+      <div class="addParent">
+            <new-parent />
+            <div class="exsitingParents">
+                <h1>Exisisting Parent</h1>
+                <ul>
+                    <li v-for="parent in parents" :key="parent.parentId">
+                        <h2>{{ parent.firstName }} {{ parent.lastName }}</h2>
+                        <button>Add {{ parent.firstName }} as {{ child.firstName }}'s Parent/Guardian</button>
+                    </li>
+                </ul>
+            </div>
       </div>
-      <new-parent />
   </div>
 </template>
 
@@ -19,6 +29,9 @@ export default {
             parents: [],
             error: false
         }
+    },
+    props: {
+        child: Object
     },
     created() {
         parentService.getParents()
@@ -38,6 +51,7 @@ export default {
 
 <style>
 .addParent {
-    display: grid;
+    display: flex;
+    justify-content: space-around;
 }
 </style>

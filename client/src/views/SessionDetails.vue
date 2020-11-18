@@ -35,6 +35,7 @@
 <script>
 import sessionService from '../services/SessionService'
 import Error from '../components/Error'
+import moment from 'moment'
 
 export default {
     name: 'session-details',
@@ -52,7 +53,7 @@ export default {
         formatDOB() {
             const date = new Date(this.session.child.dateOfBirth);
             
-            return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
+            return moment(date).format('LL');
         },
         getGender() {
             if (this.session.child.gender === 'F') {

@@ -42,6 +42,17 @@
     color: black;
   }
 
+  label {
+    font-size: 24px;
+  }
+
+  input,
+  option,
+  select {
+    min-width: 30%;
+    height: 45%;
+  }
+
   div > #nav {
     border-bottom: 2px rgb(37, 57, 73) solid;
     background-color: rgb(58, 81, 102);

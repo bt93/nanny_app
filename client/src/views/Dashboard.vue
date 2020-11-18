@@ -62,7 +62,7 @@ export default {
       .then(res => {
         if (res.status === 200) {
           this.sessionsLoading = false;
-          res.data.forEach(s => this.sessions.push(s));
+          this.sessions = res.data;
         }
       }).catch(err => {
         if (err) {
@@ -74,7 +74,7 @@ export default {
       .then(res => {
         if (res.status === 200) {
           this.childrenLoading = false;
-          res.data.forEach(c => this.children.push(c));
+          this.children = res.data;
         }
       })
   }

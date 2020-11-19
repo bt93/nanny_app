@@ -9,6 +9,7 @@ import Settings from '../views/Settings'
 import ChangePassword from '../views/ChangePassword'
 import SessionDetails from '../views/SessionDetails'
 import NewSession from '../views/NewSession'
+import DeleteSession from '../views/DeleteSession'
 import NewChild from '../views/NewChild'
 import ViewChild from '../views/ViewChild'
 import EditChild from '../views/EditChild'
@@ -109,6 +110,15 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Session'
+      }
+    },
+    {
+      path: '/session/delete',
+      name: 'deleteSession',
+      component: DeleteSession,
+      meta: {
+        requiresAuth: true,
+        title: 'Delete Session'
       }
     },
     {

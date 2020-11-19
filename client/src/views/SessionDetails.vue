@@ -11,6 +11,7 @@
               <li><router-link :to="{name: 'addNap'}">Add Nap</router-link></li>
               <li><router-link :to="{name: 'addMeal'}">Add Meal</router-link></li>
               <li><router-link :to="{name: 'addDiaper'}">Add Diaper</router-link></li>
+              <li><router-link id="delete" :to="{name: 'deleteSession', params: {id: session.sessionId} }">Delete Session</router-link></li>
           </ul>
           <form @submit.prevent="updateSession">
               <div>
@@ -124,5 +125,9 @@ export default {
 .options > li > a:hover {
     background-color: rgb(58, 81, 102);
     color: white;
+}
+
+#delete {
+    background-color: red;
 }
 </style>

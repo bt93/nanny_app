@@ -26,5 +26,9 @@ export default {
             meals: session.meals,
             naps: session.naps    
         });
+    },
+
+    deleteSession(sessionId) {
+        return axios.delete(`/sessions/${sessionId}`);
     }
 }

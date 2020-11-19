@@ -28,6 +28,15 @@ export default {
         });
     },
 
+    endSession(session) {
+        return axios.put(`/sessions/end/${session.sessionId}`, {
+            sessionId: session.sessionId,
+            dropOff: session.dropOff,
+            pickUp: session.pickUp,
+            notes: session.notes
+        })
+    },
+
     deleteSession(sessionId) {
         return axios.delete(`/sessions/${sessionId}`);
     }

@@ -9,6 +9,7 @@ import Settings from '../views/Settings'
 import ChangePassword from '../views/ChangePassword'
 import SessionDetails from '../views/SessionDetails'
 import NewSession from '../views/NewSession'
+import EndSession from '../views/EndSession'
 import DeleteSession from '../views/DeleteSession'
 import NewChild from '../views/NewChild'
 import ViewChild from '../views/ViewChild'
@@ -110,6 +111,15 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Session'
+      }
+    },
+    {
+      path: '/session/:id/end',
+      name: 'endSession',
+      component: EndSession,
+      meta: {
+        requiresAuth: true,
+        title: 'End Session'
       }
     },
     {

@@ -43,7 +43,7 @@ export default {
     submit() {
       sessionService.createSession(this.session)
         .then(res => {
-          if (res === 201) {
+          if (res.status === 201) {
             this.$router.push('/dashboard');
           }
         })

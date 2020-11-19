@@ -11,12 +11,9 @@ export default {
 
     createSession(session) {
         return axios.post(`/sessions/child/${session.childId}`, {
-            session: {
-                childId: session.childId,
-                dropOff: session.dropOff,
-                notes: session.notes
-            },
-            childId: session.childId
+            childId: session.childId,
+            dropOff: session.dropOff,
+            notes: session.notes
         });
     },
 

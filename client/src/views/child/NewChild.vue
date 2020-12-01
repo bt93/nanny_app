@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import childrenService from '../services/ChildrenService'
-import Error from '../components/Error'
+import childrenService from '@/services/ChildrenService'
+import Error from '@/components/Error'
 
 export default {
     components: {

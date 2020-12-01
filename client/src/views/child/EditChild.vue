@@ -1,6 +1,6 @@
 <template>
   <div class="editChild">
-      <img src="../images/loading.gif" alt="loading..." v-if="isLoading">
+      <img src="@/images/loading.gif" alt="loading..." v-if="isLoading">
       <error v-else-if="error"/>
       <div class="childInfo text-center" v-else>
           <img v-if="child.imageUrl !== ''" :src="child.imageUrl" :alt="child.firstName">
@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import childrenService from '../services/ChildrenService'
-import Error from '../components/Error'
+import childrenService from '@/services/ChildrenService'
+import Error from '@/components/Error'
 import moment from 'moment'
 
 export default {

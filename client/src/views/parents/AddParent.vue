@@ -5,20 +5,21 @@
             <new-parent />
             <div class="exsitingParents">
                 <h1>Exisisting Parent</h1>
-                <ul>
+                <ul v-if="parents.length > 0">
                     <li v-for="parent in parents" :key="parent.parentId">
                         <h2>{{ parent.firstName }} {{ parent.lastName }}</h2>
                         <button>Add {{ parent.firstName }} as {{ child.firstName }}'s Parent/Guardian</button>
                     </li>
                 </ul>
+                <h2 v-else>You have no parents in our database.</h2>
             </div>
       </div>
   </div>
 </template>
 
 <script>
-import parentService from '../services/ParentService'
-import NewParent from '../components/NewParent'
+import parentService from '@/services/ParentService'
+import NewParent from '@/components/NewParent'
 
 export default {
     components: {

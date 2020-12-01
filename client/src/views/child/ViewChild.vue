@@ -1,6 +1,6 @@
 <template>
   <div class="viewChild">
-      <img src="../images/loading.gif" alt="Loading..." v-if="isLoading">
+      <img src="@/images/loading.gif" alt="Loading..." v-if="isLoading">
       <error v-else-if="error" />
       <div v-else>
           <router-link :to="{name: 'editChild'}"><h2>Edit</h2></router-link>
@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import childrenService from '../services/ChildrenService'
+import childrenService from '@/services/ChildrenService'
 import moment from 'moment'
-import Error from '../components/Error'
-import ParentContainer from '../components/ParentContainer'
+import Error from '@/components/Error'
+import ParentContainer from '@/components/ParentContainer'
 
 export default {
     components: {

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import sessionService from '../services/SessionService'
+import sessionService from '@/services/SessionService'
 
 export default {
     methods: {

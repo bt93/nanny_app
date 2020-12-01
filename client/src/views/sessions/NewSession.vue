@@ -28,13 +28,15 @@
 </template>
 
 <script>
-import childrenService from '../services/ChildrenService'
-import sessionService from '../services/SessionService'
+import childrenService from '@/services/ChildrenService'
+import sessionService from '@/services/SessionService'
 
 export default {
   data() {
     return {
-      session: {},
+      session: {
+        notes: ''
+      },
       children: [],
       error: false
     }

@@ -34,6 +34,7 @@
       <router-link :to="{ name: 'register' }">Need an account?</router-link>
       <button type="submit">Sign in</button>
     </form>
+    <img src="../images/loading.gif" alt="Loading" v-if="isLoading">
   </div>
 </template>
 
@@ -49,11 +50,13 @@ export default {
         emailAddress: "",
         password: ""
       },
+      isLoading: false,
       invalidCredentials: false
     };
   },
   methods: {
     login() {
+      this.isLoading = true;
       authService
         .login(this.user)
         .then(response => {
@@ -67,6 +70,7 @@ export default {
           const response = error.response;
 
           if (response.status === 401) {
+            this.isLoading = false;
             this.invalidCredentials = true;
           }
         });

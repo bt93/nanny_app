@@ -1,6 +1,6 @@
 <template>
   <div class="endSession">
-      <img src="../images/loading.gif" alt="Loding" v-if="isLoading">
+      <img src="@/images/loading.gif" alt="Loding" v-if="isLoading">
       <error v-else-if="error" />
       <div v-else>
             <h2>{{ this.session.child.firstName }} {{ this.session.child.lastName }}</h2>
@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import sessionService from '../services/SessionService'
-import Error from '../components/Error'
+import sessionService from '@/services/SessionService'
+import Error from '@/components/Error'
 import moment from 'moment'
 
 export default {

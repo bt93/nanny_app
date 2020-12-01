@@ -10,8 +10,10 @@ namespace NannyApi.Models
     {
         public int MealId { get; set; }
         public int SessionId { get; set; }
+        [Required(ErrorMessage = "Must submit a time")]
         public DateTime Time { get; set; }
-        [StringLength(20, ErrorMessage = "Must be length of 20 characters.")]
+        [Required(ErrorMessage = "Must have a meal type.")]
+        [StringLength(maximumLength: 20,ErrorMessage = "Must be no longer than 20 characters.")]
         public string Type { get; set; }
         public string Notes { get; set; }
     }

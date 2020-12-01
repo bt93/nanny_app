@@ -39,5 +39,31 @@ export default {
 
     deleteSession(sessionId) {
         return axios.delete(`/sessions/${sessionId}`);
+    },
+
+    // Services for naps
+    addNap(nap, sessionId) {
+        return axios.post(`/sessions/${sessionId}/naps`, {
+            startTime: nap.startTime,
+            endTime: nap.endTime,
+            notes: nap.notes
+        });
+    },
+
+    // Service from meals
+    addMeal(meal, sessionId) {
+        return axios.post(`/sessions/${sessionId}/meals`, {
+            time: meal.time,
+            type: meal.type,
+            notes: meal.notes
+        });
+    },
+
+    //Services from diapers
+    addDiaper(diaper, sessionId) {
+        return axios.post(`/sessions/${sessionId}/diapers`, {
+            time: diaper.time,
+            notes: diaper.notes
+        });
     }
 }

@@ -11,6 +11,9 @@ import SessionDetails from '@/views/sessions/SessionDetails'
 import NewSession from '@/views/sessions/NewSession'
 import EndSession from '@/views/sessions/EndSession'
 import DeleteSession from '@/views/sessions/DeleteSession'
+import AddNap from '@/views/sessions/AddNap'
+import AddMeal from '@/views/sessions/AddMeal'
+import AddDiaper from '@/views/sessions/AddDiaper'
 import NewChild from '@/views/child/NewChild'
 import ViewChild from '@/views/child/ViewChild'
 import EditChild from '@/views/child/EditChild'
@@ -129,6 +132,33 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Delete Session'
+      }
+    },
+    {
+      path: '/session/:id/nap',
+      name: 'addNap',
+      component: AddNap,
+      meta: {
+        requiresAuth: true,
+        title: 'Add Nap'
+      }
+    },
+    {
+      path: '/session/:id/meal',
+      name: 'addMeal',
+      component: AddMeal,
+      meta: {
+        requiresAuth: true,
+        title: 'Add Meal'
+      }
+    },
+    {
+      path: '/session/:id/diaper',
+      name: 'addDiaper',
+      component: AddDiaper,
+      meta: {
+        requiresAuth: true,
+        title: 'Add Diaper'
       }
     },
     {

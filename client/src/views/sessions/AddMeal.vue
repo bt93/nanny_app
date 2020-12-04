@@ -1,6 +1,6 @@
 <template>
   <div>
-      <router-link :to="{name: 'session', params: {id: $route.params.id}}">Back to Session</router-link>
+      <session-return :prevRoute="prevRoute" />
       <form @submit.prevent="addMeal">
           <label for="time">Time: </label>
           <div>
@@ -28,14 +28,22 @@
 
 <script>
 import sessionService from '@/services/SessionService'
+import SessionReturn from '../../components/SessionReturn.vue'
 
 export default {
+  components: { SessionReturn },
     data() {
         return {
             meal: {
                 notes: ''
-            }
+            },
+            prevRoute: ''
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.prevRoute = from.name;
+        })
     },
     methods: {
         addMeal() {

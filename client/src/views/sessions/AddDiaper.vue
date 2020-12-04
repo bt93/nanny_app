@@ -1,5 +1,6 @@
 <template>
   <div>
+      <session-return :prevRoute="prevRoute"/>
       <form @submit.prevent="addDiaper">
           <label for="time">Time: </label>
           <div>
@@ -16,14 +17,22 @@
 
 <script>
 import sessionService from '@/services/SessionService'
+import SessionReturn from '../../components/SessionReturn.vue'
 
 export default {
+  components: { SessionReturn },
     data() {
         return {
             diaper: {
                 notes: ''
-            }
+            },
+            prevRoute: ''
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.prevRoute = from.name;
+        })
     },
     methods: {
         addDiaper() {

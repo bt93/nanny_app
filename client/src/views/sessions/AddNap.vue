@@ -1,6 +1,6 @@
 <template>
   <div>
-      <router-link :to="{name: 'session', params: {id: $route.params.id}}">Back to Session</router-link>
+      <session-return :prevRoute="prevRoute" />
       <form @submit.prevent="submitNap">
           <label for="startTime">Start Time: </label>
           <div>
@@ -21,14 +21,23 @@
 
 <script>
 import sessionService from '@/services/SessionService'
+import SessionReturn from '../../components/SessionReturn.vue'
 
 export default {
+  components: { SessionReturn },
     data() {
         return {
             nap: {
                 notes: ''
-            }
+            },
+            prevRoute: ''
         }
+    },
+    // checks to see which route is coming from and changes SessionReturn link acordingly
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.prevRoute = from.name;
+        })
     },
     methods: {
         submitNap() {

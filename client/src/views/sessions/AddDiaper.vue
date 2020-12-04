@@ -29,6 +29,7 @@ export default {
             prevRoute: ''
         }
     },
+    // checks to see which route is coming from and changes SessionReturn link acordingly
     beforeRouteEnter(to, from, next) {
         next(vm => {
             vm.prevRoute = from.name;

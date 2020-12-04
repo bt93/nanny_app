@@ -29,6 +29,7 @@
               </div>
               <input type="submit" value="Update">
           </form>
+          <session-info :session="session" />
       </div>
   </div>
 </template>
@@ -37,11 +38,13 @@
 import sessionService from '@/services/SessionService'
 import Error from '@/components/Error'
 import moment from 'moment'
+import SessionInfo from '../../components/SessionInfo.vue'
 
 export default {
     name: 'session-details',
     components: {
-        Error
+        Error,
+        SessionInfo
     },
     data() {
         return {

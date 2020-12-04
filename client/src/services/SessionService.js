@@ -42,12 +42,24 @@ export default {
     },
 
     // Services for naps
+    getNapById(sessionId, napId) {
+        return axios.get(`/sessions/${sessionId}/naps/${napId}`);
+    },
+
     addNap(nap, sessionId) {
         return axios.post(`/sessions/${sessionId}/naps`, {
             startTime: nap.startTime,
             endTime: nap.endTime,
             notes: nap.notes
         });
+    },
+
+    updateNap(nap) {
+        return axios.put(`/sessions/${nap.sessionId}/naps/${nap.napId}`, {
+            starTime: nap.starTime,
+            endTime: nap.endTime,
+            notes: nap.notes
+        })
     },
 
     // Service from meals

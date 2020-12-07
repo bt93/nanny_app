@@ -107,8 +107,30 @@ namespace NannyApi.DAL
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
+                string sql;
+                if (nap.EndTime == null)
+                {
+                    sql = @"UPDATE nap
+                                        SET nap.start_time = @start_time,
+                                        nap.notes = @notes
+                                        OUTPUT INSERTED.nap_id
+                                        FROM nap
+                                        JOIN session ON nap.session_id = session.session_id
+                                        JOIN session_caretaker ON session.session_id = session_caretaker.session_id
+                                        WHERE nap.nap_id = @nap_id
+                                        AND session_caretaker.caretaker_id = @caretaker_id";
+                    
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@start_time", nap.StartTime);
+                    cmd.Parameters.AddWithValue("@notes", nap.Notes);
+                    cmd.Parameters.AddWithValue("@nap_id", nap.NapId);
+                    cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
 
-                const string sql = @"UPDATE nap
+                    nap.NapId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                else
+                {
+                    sql = @"UPDATE nap
                                         SET nap.start_time = @start_time,
                                         nap.end_time = @end_time,
                                         nap.notes = @notes
@@ -119,14 +141,15 @@ namespace NannyApi.DAL
                                         WHERE nap.nap_id = @nap_id
                                         AND session_caretaker.caretaker_id = @caretaker_id";
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@start_time", nap.StartTime);
-                cmd.Parameters.AddWithValue("@end_time", nap.EndTime);
-                cmd.Parameters.AddWithValue("@notes", nap.Notes);
-                cmd.Parameters.AddWithValue("@nap_id", nap.NapId);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@start_time", nap.StartTime);
+                    cmd.Parameters.AddWithValue("@end_time", nap.EndTime);
+                    cmd.Parameters.AddWithValue("@notes", nap.Notes);
+                    cmd.Parameters.AddWithValue("@nap_id", nap.NapId);
+                    cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
 
-                nap.NapId = Convert.ToInt32(cmd.ExecuteScalar());
+                    nap.NapId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
 
                 return nap;
             }

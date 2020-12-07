@@ -13,6 +13,14 @@
       </div>
       <div class="meals">
           <h3>Meals</h3>
+          <ul>
+              <li v-for="meal in session.meals" :key="meal.mealId">
+                  <p>Time: {{ formatTime(meal.time) }}</p>
+                  <p>Type: {{ meal.type }}</p>
+                  <p v-if="meal.notes">Notes: {{ meal.notes }}</p>
+                  <router-link :to="{name: 'updateMeal', params: {sessionId: session.sessionId, mealId: meal.mealId}}">Update Meal</router-link>
+              </li>
+          </ul>
       </div>
       <div class="diapers">
           <h3>Diapers</h3>

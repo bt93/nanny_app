@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{name: 'viewChild', params: {id: child.childId}}">
+    <router-link :to="{name: 'viewChild', params: {id: child.childId, firstName: child.firstName.toLowerCase(), lastName: child.lastName.toLowerCase()}}">
         <div class="childContainer">
             <h3>{{ child.firstName }} {{ child.lastName }}</h3>
             <img v-if="child.imageUrl" :src="child.imageUrl" :alt="child.firstName">

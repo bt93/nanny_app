@@ -24,6 +24,7 @@ import sessionService from '@/services/SessionService'
 export default {
     data() {
         return {
+            endTime: '',
             nap: {}
         }
     },
@@ -43,7 +44,7 @@ export default {
             sessionService.updateNap(this.nap)
             .then(res => {
                 if (res.status == 201) {
-                    this.$router.push({name: 'session', params: {session: this.nap.sessionId}})
+                    this.$router.push({name: 'session', params: { id: this.nap.sessionId }})
                 }
             })
         }

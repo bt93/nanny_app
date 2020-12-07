@@ -77,7 +77,6 @@ export default {
                 sessionService.updateCurrentSession(this.session, this.session.sessionId)
                     .then(res => {
                         if (res.status === 201) {
-                            console.log(res)
                             this.$forceUpdate();
                         } 
                     })

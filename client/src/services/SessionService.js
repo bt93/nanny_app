@@ -56,19 +56,31 @@ export default {
 
     updateNap(nap) {
         return axios.put(`/sessions/${nap.sessionId}/naps/${nap.napId}`, {
-            starTime: nap.starTime,
+            startTime: nap.startTime,
             endTime: nap.endTime,
             notes: nap.notes
-        })
+        });
     },
 
     // Service from meals
+    getMealById(sessionId, mealId) {
+        return axios.get(`/sessions/${sessionId}/meals/${mealId}`);
+    },
+
     addMeal(meal, sessionId) {
         return axios.post(`/sessions/${sessionId}/meals`, {
             time: meal.time,
             type: meal.type,
             notes: meal.notes
         });
+    },
+
+    updateMeal(meal) {
+        return axios.put(`/sessions/${meal.sessionId}/meals/${meal.mealId}`, {
+            time: meal.time,
+            type: meal.type,
+            notes: meal.notes
+        })
     },
 
     //Services from diapers

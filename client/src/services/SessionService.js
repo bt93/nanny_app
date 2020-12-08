@@ -84,10 +84,18 @@ export default {
     },
 
     //Services from diapers
+    getDiaperById(sessionId, diaperId) {
+        return axios.get(`/sessions/${sessionId}/diapers/${diaperId}`);
+    },
+
     addDiaper(diaper, sessionId) {
         return axios.post(`/sessions/${sessionId}/diapers`, {
             time: diaper.time,
             notes: diaper.notes
         });
-    }
+    },
+
+    // updateDiaper(diaper) {
+
+    // }
 }

@@ -24,6 +24,13 @@
       </div>
       <div class="diapers">
           <h3>Diapers</h3>
+          <ul>
+              <li v-for="diaper in session.diapers" :key="diaper.diaperId">
+                  <p>Time: {{ formatTime(diaper.time) }}</p>
+                  <p v-if="diaper.notes">Notes: {{ diaper.notes }}</p>
+                  <router-link :to="{name: 'updateDiaper', params: {sessionId: session.sessionId, diaperId: diaper.diaperId}}">Update Diaper</router-link>
+              </li> 
+          </ul>
       </div>
   </div>
 </template>

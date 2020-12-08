@@ -235,7 +235,7 @@ namespace NannyApi.Controllers
         /// <param name="mealId"></param>
         /// <returns></returns>
         [HttpGet("{sessionId}/meals/{mealId}")]
-        public ActionResult<Nap> GetMealsById(int sessionId, int mealId)
+        public ActionResult<Meal> GetMealsById(int sessionId, int mealId)
         {
             Session session = sessionDao.GetSessionById(sessionId, userId);
 
@@ -282,7 +282,7 @@ namespace NannyApi.Controllers
         /// <param name="diaperId"></param>
         /// <returns></returns>
         [HttpGet("{sessionId}/diapers/{diaperId}")]
-        public ActionResult<Nap> GetDiapersById(int sessionId, int diaperId)
+        public ActionResult<Diaper> GetDiaperById(int sessionId, int diaperId)
         {
             Session session = sessionDao.GetSessionById(sessionId, userId);
 

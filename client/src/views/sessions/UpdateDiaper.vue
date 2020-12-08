@@ -1,6 +1,6 @@
 <template>
   <div class="updateDiaper">
-        <form @submit.prevent="addDiaper">
+        <form @submit.prevent="updateDiaper">
           <label for="time">Time: </label>
           <div>
               <input type="datetime-local" name="time" id="time" v-model="diaper.time" required>
@@ -35,6 +35,21 @@ export default {
                     console.log(err);
                 }
             })
+    },
+    methods: {
+        updateDiaper() {
+            sessionService.updateDiaper(this.diaper)
+                .then(res => {
+                    if (res.status == 201) {
+                        this.$router.push({name: 'session', params: {id: this.diaper.sessionId}});
+                    }
+                })
+                .catch(err => {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+        }
     }
 }
 </script>

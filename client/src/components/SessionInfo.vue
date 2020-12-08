@@ -3,7 +3,7 @@
       <div class="naps">
           <h3>Naps</h3>
           <ul>
-              <li v-for="nap in session.naps" :key="nap.napId">
+              <li v-for="nap in session.naps" :key="nap.napId" class="info">
                  <p>Start Time: {{ formatTime(nap.startTime) }}</p>
                  <p v-if="nap.endTime">End Time: {{ formatTime(nap.endTime) }}</p>
                  <p v-if="nap.notes">Notes: {{ nap.notes }}</p>
@@ -14,7 +14,7 @@
       <div class="meals">
           <h3>Meals</h3>
           <ul>
-              <li v-for="meal in session.meals" :key="meal.mealId">
+              <li v-for="meal in session.meals" :key="meal.mealId" class="info">
                   <p>Time: {{ formatTime(meal.time) }}</p>
                   <p>Type: {{ meal.type }}</p>
                   <p v-if="meal.notes">Notes: {{ meal.notes }}</p>
@@ -25,7 +25,7 @@
       <div class="diapers">
           <h3>Diapers</h3>
           <ul>
-              <li v-for="diaper in session.diapers" :key="diaper.diaperId">
+              <li v-for="diaper in session.diapers" :key="diaper.diaperId" class="info">
                   <p>Time: {{ formatTime(diaper.time) }}</p>
                   <p v-if="diaper.notes">Notes: {{ diaper.notes }}</p>
                   <router-link :to="{name: 'updateDiaper', params: {sessionId: session.sessionId, diaperId: diaper.diaperId}}">Update Diaper</router-link>
@@ -56,5 +56,10 @@ export default {
 .sessionInfo {
     display: flex;
     justify-content: space-between;
+}
+
+.info {
+    padding-bottom: 20px;
+    border-top: 2px solid black;
 }
 </style>

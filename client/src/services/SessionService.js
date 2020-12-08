@@ -95,7 +95,7 @@ export default {
         });
     },
 
-    // updateDiaper(diaper) {
-
-    // }
+    updateDiaper(diaper) {
+        return axios.put(`/sessions/${diaper.sessionId}/diapers/${diaper.diaperId}`, diaper)
+    }
 }

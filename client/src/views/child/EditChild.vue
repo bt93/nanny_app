@@ -3,7 +3,6 @@
       <img src="@/images/loading.gif" alt="loading..." v-if="isLoading">
       <error v-else-if="error"/>
       <div class="childInfo text-center" v-else>
-          <img v-if="child.imageUrl !== ''" :src="child.imageUrl" :alt="child.firstName">
           <div class="editLinks">
               <router-link :to="{ name: 'addParent', params: { child: child } }">Add Parent</router-link> | 
               <router-link :to="{name: 'deactivateChild'}">Deactivate Child </router-link>
@@ -30,6 +29,7 @@
                     <option :value="true">Yes</option>
                     <option :value="false">No</option>
                 </select>
+                <upload-photo @image-upload="imageUpload" />
                 <input type="submit" value="Update">
           </form>
       </div>
@@ -40,10 +40,12 @@
 import childrenService from '@/services/ChildrenService'
 import Error from '@/components/Error'
 import moment from 'moment'
+import UploadPhoto from '../../components/UploadPhoto.vue'
 
 export default {
     components: {
-        Error
+        Error,
+        UploadPhoto
     },
     data() {
         return {
@@ -67,6 +69,10 @@ export default {
                         this.error = true;
                     }
                 });
+        },
+
+        imageUpload(value) {
+            this.child.imageUrl = value;
         }
     },
     created() {

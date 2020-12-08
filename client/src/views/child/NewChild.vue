@@ -1,6 +1,5 @@
 <template>
   <div class="newChild text-center">
-      <h1>New Child</h1>
       <error v-if="error" />
       <form @submit.prevent="addChild">
             <label for="firstName">First Name: </label>
@@ -25,6 +24,8 @@
                 <option :value="true">Yes</option>
                 <option :value="false">No</option>
             </select>
+            <label for="dropzone">Picture:</label>
+            <upload-photo @image-upload="imageUpload"/>
             <input type="submit" value="Submit">
       </form>
   </div>
@@ -33,10 +34,12 @@
 <script>
 import childrenService from '@/services/ChildrenService'
 import Error from '@/components/Error'
+import UploadPhoto from '@/components/UploadPhoto.vue'
 
 export default {
     components: {
-        Error
+        Error,
+        UploadPhoto
     },
     data() {
         return {
@@ -68,6 +71,9 @@ export default {
                         this.error = true;
                     }
                 });
+        },
+        imageUpload(value) {
+            this.child.imageUrl = value;
         }
     }
 }

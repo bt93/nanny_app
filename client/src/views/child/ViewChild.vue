@@ -5,7 +5,7 @@
       <div v-else>
           <router-link :to="{name: 'editChild'}"><h2>Edit</h2></router-link>
           <h1>{{ child.firstName }} {{ child.lastName }}</h1>
-          <img :src="child.imageUrl" :alt="child.firstName" v-if="child.imageUrl">
+          <img :src="child.imageUrl" :alt="child.firstName" v-if="child.imageUrl" id="childImage">
           <ul>
               <li>Date of Birth: {{ child.dateOfBirth }}</li>
               <li>Gender: {{ getGender }}</li>
@@ -84,5 +84,10 @@ export default {
 <style>
 #newParent {
     margin: 30px;
+}
+
+#childImage {
+    max-width: 800px;
+    border-radius: 20px;
 }
 </style>

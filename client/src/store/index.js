@@ -30,7 +30,10 @@ if(currentToken != null) {
 export default new Vuex.Store({
   state: {
     token: currentToken || '',
-    user: currentUser || {}
+    user: currentUser || {},
+    cloudinaryUploadUrl: process.env.VUE_APP_CLOUDINARY_UPLOAD_URL,
+    cloudinaryAPIKey: process.env.VUE_APP_CLOUDINARY_API_KEY,
+    cloudinaryUploadPreset: process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {

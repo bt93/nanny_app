@@ -1,7 +1,7 @@
 <template>
   <div class="sessionInfo">
       <div class="naps">
-          <h3>Naps</h3>
+          <h3 v-if="session.naps.length > 0">Naps</h3>
           <ul>
               <li v-for="nap in session.naps" :key="nap.napId" class="info">
                  <p>Start Time: {{ formatTime(nap.startTime) }}</p>
@@ -12,7 +12,7 @@
           </ul>
       </div>
       <div class="meals">
-          <h3>Meals</h3>
+          <h3 v-if="session.meals.length > 0">Meals</h3>
           <ul>
               <li v-for="meal in session.meals" :key="meal.mealId" class="info">
                   <p>Time: {{ formatTime(meal.time) }}</p>
@@ -23,7 +23,7 @@
           </ul>
       </div>
       <div class="diapers">
-          <h3>Diapers</h3>
+          <h3 v-if="session.diapers.length > 0">Diapers</h3>
           <ul>
               <li v-for="diaper in session.diapers" :key="diaper.diaperId" class="info">
                   <p>Time: {{ formatTime(diaper.time) }}</p>

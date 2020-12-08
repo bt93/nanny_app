@@ -9,6 +9,7 @@ import Settings from '@/views/Settings'
 import ChangePassword from '@/views/ChangePassword'
 import SessionDetails from '@/views/sessions/SessionDetails'
 import NewSession from '@/views/sessions/NewSession'
+import UpdateSession from '@/views/sessions/UpdateSession'
 import EndSession from '@/views/sessions/EndSession'
 import DeleteSession from '@/views/sessions/DeleteSession'
 import AddNap from '@/views/sessions/AddNap'
@@ -117,6 +118,15 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Session'
+      }
+    },
+    {
+      path: '/session/:id/update',
+      name: 'updateSession',
+      component: UpdateSession,
+      meta: {
+        requiresAuth: true,
+        title: 'Update Session'
       }
     },
     {

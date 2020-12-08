@@ -1,6 +1,7 @@
 <template>
   <div class="updateDiaper">
-        <form @submit.prevent="updateDiaper">
+        <error v-if="error"/>
+        <form @submit.prevent="updateDiaper" v-else>
           <label for="time">Time: </label>
           <div>
               <input type="datetime-local" name="time" id="time" v-model="diaper.time" required>
@@ -16,11 +17,16 @@
 
 <script>
 import sessionService from '@/services/SessionService'
+import Error from '../../components/Error.vue'
 
 export default {
+    components: {
+        Error
+    },
     data() {
         return {
-            diaper: {}
+            diaper: {},
+            error: false
         }
     },
     created() {
@@ -32,7 +38,8 @@ export default {
             })
             .catch(err => {
                 if (err) {
-                    console.log(err);
+                    console.error(err);
+                    this.error = true;
                 }
             })
     },
@@ -46,7 +53,8 @@ export default {
                 })
                 .catch(err => {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
+                        this.error = true;
                     }
                 })
         }

@@ -1,7 +1,9 @@
 <template>
   <div>
-      <session-return :prevRoute="prevRoute" />
-      <form @submit.prevent="submitNap">
+      <error  v-if="error"/>
+      <div v-else>
+        <session-return :prevRoute="prevRoute" />
+        <form @submit.prevent="submitNap">
           <label for="startTime">Start Time: </label>
           <div>
               <input type="datetime-local" name="startTime" id="startTime" v-model="nap.startTime" required>
@@ -15,22 +17,28 @@
               <textarea name="notes" id="notes" cols="30" rows="10" v-model="nap.notes"></textarea>
           </div>
           <input type="submit">
-      </form>
+        </form>
+      </div>
   </div>
 </template>
 
 <script>
 import sessionService from '@/services/SessionService'
 import SessionReturn from '../../components/SessionReturn.vue'
+import Error from '@/components/Error'
 
 export default {
-  components: { SessionReturn },
+  components: { 
+      SessionReturn,
+      Error
+   },
     data() {
         return {
             nap: {
                 notes: ''
             },
-            prevRoute: ''
+            prevRoute: '',
+            error: false
         }
     },
     // checks to see which route is coming from and changes SessionReturn link acordingly
@@ -49,7 +57,8 @@ export default {
                 })
                 .catch(err => {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
+                        this.error = true;
                     }
                 })
         }

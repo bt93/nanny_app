@@ -1,14 +1,26 @@
 <template>
   <div>
-      <h2 @click.prevent="deleteSession" class="options delete">Delete</h2>
-      <h2><router-link class="options cancel" :to="{name: 'session', prams: {id: $route.params.id}}">Cancel</router-link></h2>
+      <error v-if="error"/>
+      <div v-else>
+        <h2 @click.prevent="deleteSession" class="options delete">Delete</h2>
+        <h2><router-link class="options cancel" :to="{name: 'updateSession', prams: {id: $route.params.id}}">Cancel</router-link></h2>
+      </div>
   </div>
 </template>
 
 <script>
 import sessionService from '@/services/SessionService'
+import Error from '../../components/Error.vue';
 
 export default {
+    components: {
+        Error
+    },
+    data() {
+        return {
+            error: false
+        }
+    },
     methods: {
         deleteSession() {
             if (confirm("Are you sure you want to delete this session? You will lose this forever.")) {
@@ -19,7 +31,8 @@ export default {
                         }
                     })
                     .catch(err => {
-                        console.log(err);
+                        console.error(err);
+
                     })
             }
         }

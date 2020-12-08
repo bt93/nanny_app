@@ -1,32 +1,40 @@
 <template>
   <div>
-      <session-return :prevRoute="prevRoute"/>
-      <form @submit.prevent="addDiaper">
-          <label for="time">Time: </label>
-          <div>
-              <input type="datetime-local" name="time" id="time" v-model="diaper.time" required>
-          </div>
-          <label for="notes">Notes: </label>
-          <div>
-              <textarea name="notes" id="notes" cols="30" rows="10" v-model="diaper.notes"></textarea>
-          </div>
-          <input type="submit">
-      </form>
+      <error v-if="error"/>
+      <div v-else>
+        <session-return :prevRoute="prevRoute"/>
+        <form @submit.prevent="addDiaper">
+            <label for="time">Time: </label>
+            <div>
+                <input type="datetime-local" name="time" id="time" v-model="diaper.time" required>
+            </div>
+            <label for="notes">Notes: </label>
+            <div>
+                <textarea name="notes" id="notes" cols="30" rows="10" v-model="diaper.notes"></textarea>
+            </div>
+            <input type="submit">
+        </form>
+      </div>
   </div>
 </template>
 
 <script>
 import sessionService from '@/services/SessionService'
 import SessionReturn from '../../components/SessionReturn.vue'
+import Error from '../../components/Error.vue'
 
 export default {
-  components: { SessionReturn },
+  components: { 
+      SessionReturn,
+      Error
+    },
     data() {
         return {
             diaper: {
                 notes: ''
             },
-            prevRoute: ''
+            prevRoute: '',
+            error: false
         }
     },
     // checks to see which route is coming from and changes SessionReturn link acordingly
@@ -45,7 +53,8 @@ export default {
                 })
                 .catch(err => {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
+                        this.error = true;
                     }
                 })
         }

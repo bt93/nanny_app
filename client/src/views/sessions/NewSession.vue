@@ -1,6 +1,7 @@
 <template>
   <div class="newSession">
-      <form @submit.prevent="submit">
+      <error v-if="error"/>
+      <form @submit.prevent="submit" v-else>
         <label for="child">Child: </label>
         <div>
           <select name="child" id="child" v-model="session.childId" required>
@@ -30,8 +31,12 @@
 <script>
 import childrenService from '@/services/ChildrenService'
 import sessionService from '@/services/SessionService'
+import Error from '../../components/Error.vue'
 
 export default {
+  components :{ 
+    Error
+  },
   data() {
     return {
       session: {
@@ -50,7 +55,8 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          console.error(err);
+          this.error = true;
         })
     }
   },

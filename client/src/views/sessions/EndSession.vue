@@ -1,6 +1,6 @@
 <template>
   <div class="endSession">
-      <router-link :to="{name: 'session', params: {id: $route.params.id}}">Go Back</router-link>
+      <router-link :to="{name: 'updateSession', params: {id: $route.params.id}}">Go Back</router-link>
       <img src="@/images/loading.gif" alt="Loding" v-if="isLoading">
       <error v-else-if="error" />
       <div v-else>

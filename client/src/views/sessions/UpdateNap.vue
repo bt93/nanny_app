@@ -1,6 +1,7 @@
 <template>
   <div class="updateNape">
-      <form @submit.prevent="updateNap">
+      <error v-if="error"/>
+      <form @submit.prevent="updateNap" v-else>
           <label for="startTime">Start Time: </label>
           <div>
               <input type="datetime-local" name="startTime" id="startTime" v-model="nap.startTime">
@@ -20,12 +21,17 @@
 
 <script>
 import sessionService from '@/services/SessionService'
+import Error from '../../components/Error.vue'
 
 export default {
+    components: {
+        Error
+    },
     data() {
         return {
             endTime: '',
-            nap: {}
+            nap: {},
+            error: false
         }
     },
     created() {
@@ -36,7 +42,8 @@ export default {
                 }
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
+                this.error = true;
             })
     },
     methods: {
@@ -45,6 +52,12 @@ export default {
             .then(res => {
                 if (res.status == 201) {
                     this.$router.push({name: 'session', params: { id: this.nap.sessionId }})
+                }
+            })
+            .catch(err => {
+                if (err) {
+                    console.error(err);
+                    this.error = true;
                 }
             })
         }

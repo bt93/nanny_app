@@ -1,43 +1,52 @@
 <template>
   <div>
-      <session-return :prevRoute="prevRoute" />
-      <form @submit.prevent="addMeal">
-          <label for="time">Time: </label>
-          <div>
-              <input type="datetime-local" name="time" id="time" v-model="meal.time" required>
-          </div>
-          <label for="type">Type: </label>
-          <div>
-              <select name="type" id="type" v-model="meal.type" required>
-                  <option disabled selected="selected" value="">Choose One</option>
-                  <option value="breakfast">Breakfast</option>
-                  <option value="lunch">Lunch</option>
-                  <option value="dinner">Dinner</option>
-                  <option value="snack">Snack</option>
-                  <option value="other">Other</option>
-              </select>
-          </div>
-          <label for="notes">Notes: </label>
-          <div>
-              <textarea name="notes" id="notes" cols="30" rows="10" v-model="meal.notes"></textarea>
-          </div>
-          <input type="submit">
-      </form>
+      <error v-if="error"/>
+      <div v-else>
+        <session-return :prevRoute="prevRoute" />
+        <form @submit.prevent="addMeal">
+            <label for="time">Time: </label>
+            <div>
+                <input type="datetime-local" name="time" id="time" v-model="meal.time" required>
+            </div>
+            <label for="type">Type: </label>
+            <div>
+                <select name="type" id="type" v-model="meal.type" required>
+                    <option disabled selected="selected" value="">Choose One</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snack">Snack</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <label for="notes">Notes: </label>
+            <div>
+                <textarea name="notes" id="notes" cols="30" rows="10" v-model="meal.notes"></textarea>
+            </div>
+            <input type="submit">
+        </form>
+      </div>
+
   </div>
 </template>
 
 <script>
 import sessionService from '@/services/SessionService'
 import SessionReturn from '../../components/SessionReturn.vue'
+import Error from '../../components/Error.vue'
 
 export default {
-  components: { SessionReturn },
+  components: { 
+      SessionReturn,
+      Error
+    },
     data() {
         return {
             meal: {
                 notes: ''
             },
-            prevRoute: ''
+            prevRoute: '',
+            error: false
         }
     },
     // checks to see which route is coming from and changes SessionReturn link acordingly
@@ -57,6 +66,7 @@ export default {
                 .catch(err => {
                     if (err) {
                         console.log(err);
+                        this.error = true;
                     }
                 })
         }

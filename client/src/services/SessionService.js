@@ -5,6 +5,10 @@ export default {
         return axios.get('/sessions');
     },
 
+    getAllSessions() {
+        return axios.get('/sessions/all');
+    },
+
     getSessionById(sessionId) {
         return axios.get(`/sessions/${sessionId}`);
     },

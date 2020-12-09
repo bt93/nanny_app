@@ -7,6 +7,7 @@ import Register from '@/views/Register.vue'
 import Dashboard from '@/views/Dashboard'
 import Settings from '@/views/Settings'
 import ChangePassword from '@/views/ChangePassword'
+import AllSessions from '@/views/sessions/AllSessions'
 import SessionDetails from '@/views/sessions/SessionDetails'
 import NewSession from '@/views/sessions/NewSession'
 import UpdateSession from '@/views/sessions/UpdateSession'
@@ -104,6 +105,15 @@ const router = new Router({
     },
     {
       path: '/session',
+      name: 'allSessions',
+      component: AllSessions,
+      meta: {
+        requiresAuth: true,
+        title: 'All Sessions'
+      }
+    },
+    {
+      path: '/session/new',
       name: 'newSession',
       component: NewSession,
       meta: {

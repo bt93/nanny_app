@@ -9,6 +9,7 @@
       </div>
       <div id="links">
         <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
+        <span v-if="$store.state.token != ''">&nbsp;|&nbsp;<router-link v-bind:to="{ name: 'allSessions' }">Sessions</router-link></span>
         <span v-if="$store.state.token != ''">&nbsp;|&nbsp;<router-link v-bind:to="{ name: 'settings' }">Settings</router-link>&nbsp;|&nbsp;</span>
         <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'logout' }">Logout</router-link></span>
       </div>

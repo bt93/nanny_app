@@ -22,7 +22,7 @@
               </li>
           </ul>
       </div>
-      <div class="diapers">
+      <div class="diapers" v-if="session.child.needsDiapers">
           <h3 v-if="session.diapers.length > 0">Diapers</h3>
           <ul>
               <li v-for="diaper in session.diapers" :key="diaper.diaperId" class="info">

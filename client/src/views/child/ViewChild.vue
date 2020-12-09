@@ -12,7 +12,7 @@
               <li>Needs Diapers? {{ getNeedsDiapers }}</li>
               <li>Rate Per Hour: ${{ child.ratePerHour }}</li>
               <li><h3>Parents / Guardian: </h3></li>
-              <ul v-if="child.parents.length > 0">
+              <ul v-if="child.parents.length > 0" class="parents">
                   <parent-container v-for="p in child.parents" :key="p.parentId" :parent="p" />
               </ul>
               <div v-else>
@@ -86,8 +86,13 @@ export default {
     margin: 30px;
 }
 
+.parents {
+    display: flex;
+    justify-content: space-around;
+}
+
 #childImage {
-    max-width: 800px;
+    max-width: 300px;
     border-radius: 20px;
 }
 </style>

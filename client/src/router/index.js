@@ -221,7 +221,7 @@ const router = new Router({
       }
     },
     {
-      path: '/child/:firstName:lastName',
+      path: '/child/:id',
       name: 'viewChild',
       component: ViewChild,
       meta: {

@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li class="parent">
     <h5>{{ parent.firstName }} {{ parent.lastName }}</h5>
     <ul>
       <li>Phone: {{ parent.phoneNumber }}</li>

@@ -4,8 +4,8 @@
       <error v-else-if="error"/>
       <div class="childInfo text-center" v-else>
           <div class="editLinks">
-              <router-link :to="{ name: 'addParent', params: { child: child } }">Add Parent</router-link> | 
-              <router-link :to="{name: 'deactivateChild'}">Deactivate Child </router-link>
+              <router-link :to="{ name: 'addParent', params: { child: child } }">Add Parent</router-link>  
+              <!-- <router-link :to="{name: 'deactivateChild'}">Deactivate Child </router-link> -->
           </div>
           <form @submit.prevent="updateChild">
                 <label for="firstName">First Name: </label>

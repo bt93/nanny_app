@@ -26,7 +26,7 @@ namespace NannyApi
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("foo",
+                options.AddDefaultPolicy(
                 builder =>
                 {
                     // Not a permanent solution, but just trying to isolate the problem
@@ -90,7 +90,7 @@ namespace NannyApi
 
             app.UseRouting();
 
-            app.UseCors("foo");
+            app.UseCors();
 
             app.UseAuthentication();
 

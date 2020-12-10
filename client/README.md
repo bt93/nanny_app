@@ -1,5 +1,7 @@
 # Final Vue Capstone Project Seed
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e9259340-f2d9-4dcd-b636-8b8bc8a4b48b/deploy-status)](https://app.netlify.com/sites/nannytracker/deploys)
+
 This is the Vue starter project for the final capstone. This document walks you through how to set up and run the project. It also explains the project's features, such as Vue Router, Vuex, and authentication.
 
 ## Project setup

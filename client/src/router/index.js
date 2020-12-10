@@ -24,6 +24,7 @@ import ViewChild from '@/views/child/ViewChild'
 import EditChild from '@/views/child/EditChild'
 import AddParent from '@/views/parents/AddParent'
 import store from '@/store/index'
+import VueAnalytics from 'vue-analytics'
 
 Vue.use(Router)
 
@@ -267,6 +268,14 @@ router.beforeEach((to, from, next) => {
   } else {
     // Else let them go to their next destination
     next();
+  }
+});
+
+Vue.use(VueAnalytics, {
+  id: process.env.VUE_APP_GOOGLE_ANALYTICS_ID.toString(),
+  router,
+  debug: {
+    sendHitTask: process.env.NODE_ENV === 'production'
   }
 });
 

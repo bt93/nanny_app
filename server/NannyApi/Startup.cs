@@ -36,13 +36,8 @@ namespace NannyApi
             services.AddAuthorization();
             services.AddControllers();
 
-            // The following code sets up appsettings.json as the configuration file for this program.
-            IConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-
             // Now read the connection string from the configuration
-            string connectionString = configuration.GetConnectionString("NannyDB");
+            string connectionString = Configuration.GetConnectionString("NannyDB");
 
             // configure jwt authentication
             var key = Encoding.ASCII.GetBytes(Configuration["JwtSecret"]);

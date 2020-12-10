@@ -1,16 +1,16 @@
 -- Make sure not using other db's
-USE master
-GO
+--USE master
+--GO
 
 -- Drop the existing db if it already exists
-DROP DATABASE IF EXISTS NannyDB
+--DROP DATABASE IF EXISTS NannyDB
 
 -- Create new database
-CREATE DATABASE NannyDB
-GO
+--CREATE DATABASE NannyDB
+--GO
 
-USE NannyDB
-GO
+--USE NannyDB
+--GO
 
 CREATE TABLE address (
 	address_id INT IDENTITY PRIMARY KEY,

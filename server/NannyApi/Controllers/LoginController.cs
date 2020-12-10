@@ -39,10 +39,10 @@ namespace NannyApi.Controllers
             if (user != null && passwordHasher.VerifyHashMatch(user.Password, userParam.Password, user.Salt))
             {
                 // Create an authentication token
-                string token = tokenGenerator.GenerateToken(user.CareTakerId, user.EmailAddress, user.Password /*, user.Role*/);
+                string token = tokenGenerator.GenerateToken(user.CareTakerId, user.EmailAddress /*, user.Role*/);
 
                 // Create a ReturnUser object to return to the client
-                ReturnCareTaker retUser = new ReturnCareTaker() { CareTakerId = user.CareTakerId, EmailAddress = user.EmailAddress, Password = user.Password /*Role = user.Role,*/, Token = token  };
+                ReturnCareTaker retUser = new ReturnCareTaker() { CareTakerId = user.CareTakerId, EmailAddress = user.EmailAddress /*Role = user.Role,*/, Token = token  };
 
                 // Switch to 200 OK
                 return Ok(retUser);

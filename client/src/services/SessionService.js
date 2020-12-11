@@ -14,31 +14,15 @@ export default {
     },
 
     createSession(session) {
-        return axios.post(`/sessions/child/${session.childId}`, {
-            childId: session.childId,
-            dropOff: session.dropOff,
-            notes: session.notes
-        });
+        return axios.post(`/sessions/child/${session.childId}`, session)
     },
 
     updateCurrentSession(session, sessionId) {
-        return axios.put(`/sessions/${sessionId}`, {
-            sessionId: sessionId,
-            dropOff: session.dropOff,
-            notes: session.notes,
-            diapers: session.diapers,
-            meals: session.meals,
-            naps: session.naps    
-        });
+        return axios.put(`/sessions/${sessionId}`, session);
     },
 
     endSession(session) {
-        return axios.put(`/sessions/end/${session.sessionId}`, {
-            sessionId: session.sessionId,
-            dropOff: session.dropOff,
-            pickUp: session.pickUp,
-            notes: session.notes
-        })
+        return axios.put(`/sessions/end/${session.sessionId}`, session)
     },
 
     deleteSession(sessionId) {
@@ -51,19 +35,11 @@ export default {
     },
 
     addNap(nap, sessionId) {
-        return axios.post(`/sessions/${sessionId}/naps`, {
-            startTime: nap.startTime,
-            endTime: nap.endTime,
-            notes: nap.notes
-        });
+        return axios.post(`/sessions/${sessionId}/naps`, nap);
     },
 
     updateNap(nap) {
-        return axios.put(`/sessions/${nap.sessionId}/naps/${nap.napId}`, {
-            startTime: nap.startTime,
-            endTime: nap.endTime,
-            notes: nap.notes
-        });
+        return axios.put(`/sessions/${nap.sessionId}/naps/${nap.napId}`, nap);
     },
 
     // Service from meals
@@ -72,19 +48,11 @@ export default {
     },
 
     addMeal(meal, sessionId) {
-        return axios.post(`/sessions/${sessionId}/meals`, {
-            time: meal.time,
-            type: meal.type,
-            notes: meal.notes
-        });
+        return axios.post(`/sessions/${sessionId}/meals`, meal);
     },
 
     updateMeal(meal) {
-        return axios.put(`/sessions/${meal.sessionId}/meals/${meal.mealId}`, {
-            time: meal.time,
-            type: meal.type,
-            notes: meal.notes
-        })
+        return axios.put(`/sessions/${meal.sessionId}/meals/${meal.mealId}`, meal)
     },
 
     //Services from diapers
@@ -93,10 +61,7 @@ export default {
     },
 
     addDiaper(diaper, sessionId) {
-        return axios.post(`/sessions/${sessionId}/diapers`, {
-            time: diaper.time,
-            notes: diaper.notes
-        });
+        return axios.post(`/sessions/${sessionId}/diapers`, diaper);
     },
 
     updateDiaper(diaper) {

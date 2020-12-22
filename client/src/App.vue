@@ -1,94 +1,18 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <div>
-        <h2 id="title"><router-link :to="{ name: 'dashboard' }">Nanny Tracker</router-link></h2>
-      </div>
-      <div>
-        <h1>{{ $route.meta.title }}</h1>
-      </div>
-      <div id="links">
-        <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'dashboard' }">Home</router-link></span>
-        <span v-if="$store.state.token != ''">&nbsp;|&nbsp;<router-link v-bind:to="{ name: 'allSessions' }">Sessions</router-link></span>
-        <span v-if="$store.state.token != ''">&nbsp;|&nbsp;<router-link v-bind:to="{ name: 'settings' }">Settings</router-link>&nbsp;|&nbsp;</span>
-        <span v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'logout' }">Logout</router-link></span>
-      </div>
-    </div>
-    <main>
-      <router-view />
-    </main>
-  </div>
+  <v-app>
+    <nav-bar />
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,700;1,400&display=swap');
+<script>
+import NavBar from './components/NavBar.vue';
 
-  * {
-    box-sizing: border-box;
-  }
 
-  body {
-    font-family: 'Ubuntu', sans-serif;
-    min-height: 100vh;
-    position: relative;
-    margin: 0;
-  }
-
-  main {
-    margin: 0 10% 0 10%;
-    text-align: center;
-  }
-
-  #title a {
-    color: black;
-  }
-
-  label {
-    font-size: 24px;
-  }
-
-  input,
-  option,
-  select {
-    min-width: 30%;
-    height: 45%;
-  }
-
-  div > #nav {
-    border-bottom: 2px rgb(37, 57, 73) solid;
-    background-color: rgb(58, 81, 102);
-    padding: 20px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  div > #nav > #links > span > a {
-    color: rgb(72, 223, 185);
-    text-decoration: none;
-  }
-
-  .text-center {
-    text-align: center;
-  }
-
-  .text-center > form {
-    display: flex;
-    flex-direction: column;
-    margin: 2% 20%;
-  }
-
-  .text-center > form > input,
-  .text-center > form > select,
-  .text-center > form > button {
-    height: 30px;
-    max-width: 580px;
-    margin: 2% auto;
-  }
-
-  a {
-    color: rgb(58, 81, 102);
-    text-decoration: none;
-  }
-</style>
+export default {
+  components: { NavBar },
+  name: 'App',
+};
+</script>

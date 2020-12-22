@@ -2,7 +2,7 @@
   <div>
       <v-app-bar
       app
-      color="rgb(72, 223, 185)"
+      color="primary"
     >
       <v-app-bar-nav-icon class="d-xl-none d-lg-none d-md-none" @click="drawer = !drawer"/>
       <v-spacer />

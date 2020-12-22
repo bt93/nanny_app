@@ -1,160 +1,168 @@
 <template>
   <div id="register" class="text-center">
-    <form class="form-register" @submit.prevent="register">
+    <v-form class="form-register" @submit.prevent="register" ref="form">
       <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        {{ registrationErrorMsg }}
-      </div>
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p v-for="e in errorMsgs.FirstName" :key="e">{{ e }}</p>
-      </div>
-      <label for="firstName" class="sr-only">First Name</label>
-      <input
-        type="text"
-        id="firstName"
-        class="form-control"
-        placeholder="First Name"
-        v-model="user.firstName"
-        autofocus
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p v-for="e in errorMsgs.LastName" :key="e">{{ e }}</p>
-      </div>
-      <label for="lastName" class="sr-only">Last Name</label>
-      <input
-        type="text"
-        id="lastName"
-        class="form-control"
-        placeholder="Last Name"
-        v-model="user.lastName"
-        autofocus
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p v-for="e in errorMsgs.EmailAddress" :key="e">{{ e }}</p>
-      </div>
-      <label for="emailAddress" class="sr-only">Email</label>
-      <input
-        type="email"
-        id="emailAddress"
-        class="form-control"
-        placeholder="Email Address"
-        v-model="user.emailAddress"
-        autofocus
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p v-for="e in errorMsgs.Password" :key="e">{{ e }}</p>
-      </div>
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-
-      />
-      <input
-        type="password"
-        id="confirmPassword"
-        class="form-control"
-        placeholder="Confirm Password"
-        v-model="user.confirmPassword"
-
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p v-for="e in errorMsgs.PhoneNumber" :key="e">{{ e }}</p>
-      </div>
-      <label for="phoneNumber" class="sr-only">Phone Number</label>
-      <input
-        type="tel"
-        id="phoneNumber"
-        class="form-control"
-        placeholder="Phone Number"
-        v-model="user.phoneNumber"
-        
-        autofocus
-      />
-      <h2>Address</h2>
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p>{{ errorMsgs["Address.Street"][0] }}</p>
-      </div>
-      <label for="street" class="sr-only">Street</label>
-      <input
-        type="street"
-        id="street"
-        class="form-control"
-        placeholder="Street"
-        v-model="user.address.street"
-        autofocus
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p>{{ errorMsgs["Address.City"][0] }}</p>
-      </div>
-      <label for="city" class="sr-only">City</label>
-      <input
-        type="city"
-        id="city"
-        class="form-control"
-        placeholder="City"
-        v-model="user.address.city"
-        autofocus
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p>{{ errorMsgs["Address.State"][0] }}</p>
-      </div>
-      <label for="state" class="sr-only">State</label>
-      <input
-        type="text"
-        id="state"
-        class="form-control"
-        placeholder="State"
-        v-model="user.address.state"
-
-        autofocus
-      />
-      <label for="zip" class="sr-only">Zip Code</label>
-      <input
-        type="number"
-        id="zip"
-        min="0"
-        max="99999"
-        class="form-control"
-        placeholder="Zip Code"
-        v-model="user.address.zip"
-        inputmode="numeric" pattern="[0-9]*"
-
-        autofocus
-      />
-      <label for="county" class="sr-only">County</label>
-      <input
-        type="text"
-        id="county"
-        class="form-control"
-        placeholder="County"
-        v-model="user.address.county"
-        autofocus
-      />
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
-        <p>{{ errorMsgs["Address.Country"][0] }}</p>
-      </div>
-      <label for="country" class="sr-only">Country</label>
-      <select name="country" id="country" v-model="user.address.country">
-        <option value="" disabled selected="selected">Choose One</option>
-        <option v-for="co in countries" :key="co" :value="co">{{ co }}</option>
-      </select>
-      <router-link :to="{ name: 'login' }">Have an account?</router-link>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">
-        Create Account
-      </button>
-    </form>
+      <v-container class="d-md-flex justify-space-around">
+        <v-card elevation="2" class="px-6">
+          <h2>Basic Info</h2>
+          <v-row>
+            <v-col
+              cols="6"
+            >
+              <v-text-field
+              id="firstName"
+              label="First Name"
+              v-model="user.firstName"
+              :rules="nameRules"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+            >
+              <v-text-field
+                id="lastName"
+                label="Last Name"
+                v-model="user.lastName"
+                :rules="nameRules"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                id="emailAddress"
+                label="Email Address"
+                v-model="user.emailAddress"
+                :rules="emailRules"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="6"
+            >
+            <v-text-field
+                id="password"
+                label="Password"
+                v-model="user.password"
+                :rules="passwordRules"
+                type="password"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="6"
+            >
+              <v-text-field
+                id="confirmPassword"
+                label="Confirm Password"
+                v-model="user.confirmPassword"
+                :rules="confirmPasswordRules"
+                type="password"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                id="phoneNumber"
+                label="Phone Number"
+                v-model="user.phoneNumber"
+                :rules="phoneNumberRules"
+                type="tel"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card>
+        <v-card elevation="2" class="px-6">
+          <h2>Address</h2>
+          <v-row>
+            <v-col>
+              <v-text-field
+                id="street"
+                label="Street Name"
+                v-model="user.address.street"
+                :rules="streetRules"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                id="city"
+                label="City"
+                v-model="user.address.city"
+                :rules="cityRules"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-select
+                id="state"
+                label="State"
+                v-model="user.address.state"
+                required
+                :rules="stateRules"
+                :items="states"
+                item-text="name"
+                item-value="name"
+              >
+              </v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                id="zip"
+                label="Zip Code"
+                v-model="user.address.zip"
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                id="county"
+                label="County"
+                v-model="user.address.county"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-select
+                id="country"
+                label="Country"
+                v-model="user.address.country"
+                :items="countries"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-container>
+      <v-container class="mx-auto" justify="center">
+        <v-row>
+         <v-col>
+            <router-link :to="{ name: 'login' }">Have an account?</router-link>
+         </v-col>
+        </v-row>
+        <v-row justify="center">
+        <v-progress-circular 
+          color="primary" 
+          indeterminate 
+          v-if="isLoading"
+        ></v-progress-circular>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-btn type="submit">Create Account</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-form>
   </div>
 </template>
 
 <script>
 import authService from '../services/AuthService';
 import countryList from 'country-list';
-
-
+import statesList from '../services/States.json'
 
 export default {
   name: 'register',
@@ -176,19 +184,46 @@ export default {
           country: ''
         }
       },
-      errorMsgs: {},
+      nameRules: [
+        v => !!v || 'Field is required',
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required'
+      ],
+      confirmPasswordRules: [
+        v => !!v || 'Confirm Password is required',
+        v => v === this.user.password || 'Password must match'
+      ],
+      emailRules: [
+        v => !!v || 'Email Address is required',
+        v => /.+@.+/.test(v) || 'Email Address must be valid'
+      ],
+      phoneNumberRules: [
+        v => !!v || 'Phone Number is required',
+        v => /^[2-9]\d{2}-\d{3}-\d{4}$/.test(v) || 'Phone number must be in the following format: XXX-XXX-XXXX'
+      ],
+      streetRules: [
+        v => !!v || 'Street Name is required'
+      ],
+      cityRules: [
+        v => !!v || 'City Name is required'
+      ],
+      stateRules: [
+        v => !!v || 'State is required'
+      ],
+      countryRules: [
+        v => !!v || 'Country is required'
+      ],
       countries: countryList.getNames(),
-      registrationErrors: false,
-      registrationErrorMsg: 'There were problems registering this user.',
+      states: [],
+      isLoading: false
     };
   },
   methods: {
     register() {
-      if (this.user.password != this.user.confirmPassword) {
-        this.registrationErrors = true;
-        this.registrationErrorMsg = 'Password & Confirm Password do not match.';
-      } else {
-        this.user.address.zip = parseInt(this.user.address.zip);
+      if (this.$refs.form.validate()) {
+      this.isLoading = true
+      this.user.address.zip = parseInt(this.user.address.zip);
         authService
           .register(this.user)
           .then((response) => {
@@ -229,6 +264,9 @@ export default {
       this.registrationErrorMsg = 'There were problems registering this user.';
     },
   },
+  created() {
+    this.states = statesList;
+  }
 };
 </script>
 

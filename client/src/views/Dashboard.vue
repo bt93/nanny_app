@@ -1,37 +1,45 @@
 <template>
   <div>
-    <div class="dashboard" v-if="!error">
-      <div class="children">
+    <v-sheet
+      class="dashboard d-flex" 
+    v-if="!error">
+      <v-sheet elevation="2" class="children">
         <h2>Children</h2>
-        <img src="../images/loading.gif" alt="Loading" v-if="childrenLoading">
-        <div v-else-if="children.length === 0">
+        <v-progress-circular 
+          color="primary"
+          indeterminate
+          v-if="childrenLoading" />
+        <v-container v-else-if="children.length === 0">
           <p>You do not have any children in your care.</p>
           <router-link :to="{name: 'newChild'}">Add Child</router-link>
-        </div>
-        <div v-else>
+        </v-container>
+        <v-container v-else class="d-flex flex-column">
           <router-link :to="{name: 'newChild'}">Add Child</router-link>
           <child-container v-for="child in children" :key="child.childId" :child="child" />
-        </div>
-      </div>
-      <div class="sessions">
+        </v-container>
+      </v-sheet>
+      <v-container class="sessions">
         <h2>Todays Sessions</h2>
-        <img src="../images/loading.gif" alt="Loading" v-if="sessionsLoading">
-        <div v-else-if="children.length === 0">
+        <v-progress-circular 
+          color="primary"
+          indeterminate
+          v-if="sessionsLoading" />
+        <v-container v-else-if="children.length === 0">
           
-        </div>
-        <div v-else-if="sessions.length === 0">
+        </v-container>
+        <v-container v-else-if="sessions.length === 0">
           <p>Currently no sessions.</p>
           <router-link class="main-btn" :to="{name: 'newSession'}">New Session</router-link>
-        </div>
-        <div v-else>
+        </v-container>
+        <v-container v-else>
           <router-link class="main-btn" :to="{name: 'newSession'}">New Session</router-link>
           <session-container v-for="session in sessions" :key="session.sessionId" :session="session" />
-        </div>
-      </div>
-    </div>
-    <div v-else>
+        </v-container>
+      </v-container>
+    </v-sheet>
+    <v-container v-else>
       <error />
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -80,26 +88,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@media screen and (min-width: 500px) {
-  .dashboard {
-    margin: 0 5vh;
-    display: grid;
-    grid-template-columns: 20vh 1fr;
-  }
-
-  .dashboard a {
-    font-size: 20px;
-  }
-
-  .sessions {
-    border-left: 2px rgb(58, 81, 102) solid;
-    padding-left: 20px;
-  }
-
-  .children {
-    padding-right: 2px;
-  }
-}
-</style>

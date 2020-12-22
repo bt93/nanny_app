@@ -147,7 +147,9 @@
           color="primary" 
           indeterminate 
           v-if="isLoading"
+          class="py-4"
         ></v-progress-circular>
+        <div v-else class="py-4"></div>
         </v-row>
         <v-row>
           <v-col>

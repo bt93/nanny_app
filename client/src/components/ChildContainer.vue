@@ -1,15 +1,17 @@
 <template>
-    <router-link :to="{name: 'viewChild', params: {id: child.childId, firstName: child.firstName.toLowerCase(), lastName: child.lastName.toLowerCase()}}">
-        <div class="childContainer">
-            <h3>{{ child.firstName }} {{ child.lastName }}</h3>
-            <ul>
-                <li>Date of Birth: {{ formatDOB }}</li>
-                <li>Gender: {{ getGender }}</li>
-                <li>Rate: ${{ child.ratePerHour }}</li>
-                <li>Needs diapers: {{ getNeedsDiapers }}</li>
-            </ul>
-        </div>
-    </router-link>
+    <v-card 
+        class="childContainer"
+        elevation="5"
+    >
+        <h3>{{ child.firstName }} {{ child.lastName }}</h3>
+        <ul>
+            <li>Date of Birth: {{ formatDOB }}</li>
+            <li>Gender: {{ getGender }}</li>
+            <li>Rate: ${{ child.ratePerHour }}</li>
+            <li>Needs diapers: {{ getNeedsDiapers }}</li>
+        </ul>
+        <v-btn :to="{name: 'viewChild', params: {id: child.childId}}">View {{ child.firstName }}</v-btn>
+    </v-card>
 </template>
 
 <script>
@@ -49,20 +51,4 @@ export default {
 </script>
 
 <style>
-.childContainer {
-    border: rgb(58, 81, 102) 2px solid;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    margin-right: 20px;
-}
-
-.childContainer:hover {
-  background-color: rgb(37, 57, 73);
-  color: rgb(72, 223, 185);
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
 </style>

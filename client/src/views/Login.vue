@@ -8,11 +8,6 @@
     v-model="valid"
     ref="form">
       <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
-        <v-progress-circular 
-          color="primary" 
-          indeterminate 
-          v-if="isLoading"
-        ></v-progress-circular>
       <v-container>
         <v-row v-if="invalidCredentials">
           <h3>Invalid Email and Password</h3>
@@ -36,10 +31,19 @@
             :rules="passwordRules"
           ></v-text-field>
         </v-row>
-        <v-row>
+        <v-row justify="center">
           <router-link :to="{ name: 'register' }">Need an account?</router-link>
         </v-row>
-        <v-row>
+        <v-row justify="center" class="my-9">
+            <v-progress-circular 
+              color="primary" 
+              indeterminate 
+              v-if="isLoading"
+              class="py-4"
+            ></v-progress-circular>
+            <div v-else class="py-4"></div>
+        </v-row>
+        <v-row justify="center">
           <v-btn type="submit">Sign in</v-btn>
         </v-row>
       </v-container>

@@ -7,7 +7,7 @@
       >
         <v-sheet
           rounded="lg"
-          min-height="668"
+          min-height="600"
         >
           <v-card-title class="white--text primary darken-1">
             Children
@@ -37,12 +37,16 @@
           <v-virtual-scroll
             v-else
             :items="children"
-            :item-height="140"
-            min-height="668"
+            :item-height="460"
+            max-height="600"
+            bench="1"
           >
             <template v-slot:default="{ item }">
-              <v-list-item :key="item.childId">
-                <child-container :child="item" />
+              <v-list-item :key="item.childId" class="mb-12">
+                <v-row>
+                  <child-container :child="item" class="ma-auto" />
+                </v-row>
+                
               </v-list-item>
             </template>
           </v-virtual-scroll>
@@ -84,7 +88,7 @@
           <v-virtual-scroll 
             v-else
             :items="sessions"
-            :item-height="100"
+            :item-height="340"
             min-height="75vh"
           >
             <template v-slot:default="{item}">
@@ -102,9 +106,24 @@
       >
         <v-sheet
           rounded="lg"
-          min-height="668"
-
+          min-height="300"
         >
+          <v-card-title class="white--text primary darken-1">
+            Welcome, {{ caretaker.firstName }} {{ caretaker.lastName }}!
+            <v-spacer></v-spacer>
+            <v-btn
+              color="white"
+              class="text--primary"
+              fab
+              :to="{name: 'settings'}"
+            >
+               <v-icon
+                color="black"
+                large
+               >mdi-plus</v-icon>
+            </v-btn>
+          </v-card-title>
+          <caretaker-container :caretaker="caretaker"/>
         </v-sheet>
       </v-col>
     </v-row>
@@ -112,22 +131,26 @@
 </template>
 
 <script>
-import SessionContainer from '../components/SessionContainer'
-import ChildContainer from '../components/ChildContainer'
+import caretakerService from '@/services/CaretakerService'
 import sessionService from '../services/SessionService'
 import childrenService from '../services/ChildrenService'
+import SessionContainer from '../components/SessionContainer'
+import ChildContainer from '../components/ChildContainer'
+import CaretakerContainer from '../components/CaretakerContainer'
 //import Error from '../components/Error'
 
 export default {
   components: {
     SessionContainer,
     ChildContainer,
+    CaretakerContainer,
     //Error
   },
   data() {
     return {
       sessions: [],
       children: [],
+      caretaker: {},
       sessionsLoading: true,
       childrenLoading: true,
       error: false
@@ -151,6 +174,13 @@ export default {
         if (res.status === 200) {
           this.childrenLoading = false;
           this.children = res.data;
+        }
+      })
+    
+    caretakerService.getCaretaker()
+      .then(res => {
+        if (res.status === 200) {
+          this.caretaker = res.data;
         }
       })
   }

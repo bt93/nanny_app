@@ -208,9 +208,9 @@ namespace NannyApi.DAL
             careTaker.FirstName = Convert.ToString(rdr["first_name"]);
             careTaker.LastName = Convert.ToString(rdr["last_name"]);
             careTaker.EmailAddress = Convert.ToString(rdr["email_address"]);
-            careTaker.Password = Convert.ToString(rdr["password"]);
+            //careTaker.Password = Convert.ToString(rdr["password"]);
             careTaker.PhoneNumber = Convert.ToString(rdr["phone_number"]);
-            careTaker.Salt = Convert.ToString(rdr["salt"]);
+            //careTaker.Salt = Convert.ToString(rdr["salt"]);
 
             // Caretaker Address info
             careTaker.Address.Street = Convert.ToString(rdr["street"]);

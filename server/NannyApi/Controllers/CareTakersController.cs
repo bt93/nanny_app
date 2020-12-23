@@ -54,7 +54,7 @@ namespace NannyApi.Controllers
 
             if (careTaker != null)
             {
-                return careTaker;
+                return Ok(careTaker);
             }
 
             return NotFound();

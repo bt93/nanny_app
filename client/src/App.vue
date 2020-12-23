@@ -1,8 +1,8 @@
-<template>
-  <v-app>
+<template >
+  <v-app class="mb-0">
     <nav-bar />
-    <v-main>
-      <router-view/>
+    <v-main class="grey ligten-3 mb-0">
+      <router-view />
     </v-main>
   </v-app>
 </template>

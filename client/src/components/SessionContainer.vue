@@ -1,12 +1,13 @@
 <template>
-  <router-link :to="{name: 'session', params: {id: this.session.sessionId}}">
-    <div class="sessionContainer">
-        <h3>{{ session.child.firstName }} {{ session.child.lastName }}</h3>
-        <p>Rate: ${{ session.child.ratePerHour }}</p>
-        <p>Drop off: {{ formatTime(session.dropOff) }}</p>
-        <p>Pick up: {{ formatTime(session.pickUp) }}</p>
-    </div>
-  </router-link>
+  <v-card class="mx-auto px-12 py-3" min-width="30vw">
+    <v-card-title>{{ session.child.firstName }} {{ session.child.lastName }}</v-card-title>
+    <v-card-text>Rate: ${{ session.child.ratePerHour }}</v-card-text>
+    <v-card-text>Drop Off: {{ formatTime(session.dropOff) }}</v-card-text>
+    <v-card-text>Drop Off: {{ formatTime(session.pickUp) }}</v-card-text>
+    <v-btn
+      :to="{name: 'session', params: {id: session.sessionId}}"
+    >Session Details For {{ session.child.firstName }}</v-btn>
+  </v-card>
 </template>
 
 <script>

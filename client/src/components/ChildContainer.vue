@@ -1,16 +1,12 @@
 <template>
-    <v-card 
-        class="childContainer"
-        elevation="5"
-    >
-        <h3>{{ child.firstName }} {{ child.lastName }}</h3>
-        <ul>
-            <li>Date of Birth: {{ formatDOB }}</li>
-            <li>Gender: {{ getGender }}</li>
-            <li>Rate: ${{ child.ratePerHour }}</li>
-            <li>Needs diapers: {{ getNeedsDiapers }}</li>
-        </ul>
-        <v-btn :to="{name: 'viewChild', params: {id: child.childId}}">View {{ child.firstName }}</v-btn>
+    <v-card class="mx-auto px-12 py-3" min-width="15vw" max-width="40vw">
+        <v-card-title>
+            {{child.firstName}} {{ child.lastName }}
+            <v-spacer />
+                    <v-avatar>
+            
+            </v-avatar>
+        </v-card-title>
     </v-card>
 </template>
 

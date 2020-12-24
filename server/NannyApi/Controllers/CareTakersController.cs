@@ -52,12 +52,14 @@ namespace NannyApi.Controllers
         {
             CareTaker careTaker = careTakerDao.GetCareTakerById(userId);
 
-            if (careTaker != null)
+            if (careTaker == null)
             {
-                return Ok(careTaker);
+                return NotFound();
             }
 
-            return NotFound();
+            careTaker.Password = null;
+            careTaker.Salt = null;
+            return Ok(careTaker);
         }
 
         /// <summary>

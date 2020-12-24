@@ -129,6 +129,7 @@
               <v-select
                 id="country"
                 label="Country"
+                :rules="countryRules"
                 v-model="user.address.country"
                 :items="countries"
               ></v-select>
@@ -149,6 +150,15 @@
           v-if="isLoading"
           class="py-4"
         ></v-progress-circular>
+        <v-row
+          class="mx-auto"
+          v-else-if="registrationErrors"
+        >
+          <v-col>
+            <h2 class="text-xl red--text mx-auto">{{ registrationErrorMsg }}</h2>
+            <h2 class="text-lg red--text mx-auto">{{ errorMsgs }}</h2>
+          </v-col>
+        </v-row>
         <div v-else class="py-4"></div>
         </v-row>
         <v-row>
@@ -218,7 +228,10 @@ export default {
       ],
       countries: countryList.getNames(),
       states: [],
-      isLoading: false
+      isLoading: false,
+      registrationErrors: false,
+      registrationErrorMsg: '',
+      errorMsgs: ''
     };
   },
   methods: {
@@ -236,9 +249,15 @@ export default {
           .catch((error) => {
             const response = error.response;
             this.registrationErrors = true;
+            this.isLoading = false;
             if (response.status === 400) {
               this.registrationErrorMsg = 'Oops there were some Validation Errors';
               this.errorMsgs = response.data.errors
+            }
+
+            if (response.status === 409) {
+              this.registrationErrorMsg = 'There were problems registering this user.';
+              this.errorMsgs = response.data.message;
             }
           });
       }

@@ -123,7 +123,17 @@
                >mdi-plus</v-icon>
             </v-btn>
           </v-card-title>
-          <caretaker-container :caretaker="caretaker"/>
+          <v-row
+            justify="center"
+            v-if="caretakerLoading"
+          >
+            <v-progress-circular
+              indeterminate
+              color="primary"
+              class="mx-auto"
+            />
+          </v-row>
+          <caretaker-container :caretaker="caretaker" v-else/>
         </v-sheet>
       </v-col>
     </v-row>
@@ -153,6 +163,7 @@ export default {
       caretaker: {},
       sessionsLoading: true,
       childrenLoading: true,
+      caretakerLoading: true,
       error: false
     }
   },
@@ -180,6 +191,7 @@ export default {
     caretakerService.getCaretaker()
       .then(res => {
         if (res.status === 200) {
+          this.caretakerLoading = false;
           this.caretaker = res.data;
         }
       })

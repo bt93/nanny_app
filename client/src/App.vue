@@ -16,3 +16,9 @@ export default {
   name: 'App',
 };
 </script>
+
+<style scoped>
+div {
+  margin-bottom: 0;
+}
+</style>

@@ -1,18 +1,17 @@
 <template>
-  <li class="parent">
-    <h5>{{ parent.firstName }} {{ parent.lastName }}</h5>
-    <ul>
-      <li>Phone: {{ parent.phoneNumber }}</li>
-      <li>Email: {{ parent.emailAddress }}</li>
-      <li><h5>Address: </h5></li>
-      <li id="address">
-        <p>{{ parent.address.street }}</p>
-        <p>{{ parent.address.city }}, {{ parent.address.state }} {{ parent.address.zip }}</p>
-        <p v-if="parent.address.county">{{ parent.address.county }} County</p>
-        <p>{{ parent.address.country }}</p>
-      </li>
-    </ul>
-  </li>
+  <v-card>
+    <v-card-title>{{ parent.firstName }} {{ parent.lastName }}</v-card-title>
+    <v-card-text>Phone: {{ parent.phoneNumber }}</v-card-text>
+    <v-card-text>Email: {{ parent.emailAddress }}</v-card-text>
+    <v-card-title>Address:</v-card-title>
+    <v-container>
+      <h4>{{ parent.address.street }}</h4>
+      <h4>{{ parent.address.city }}, {{ parent.address.state }} {{ parent.address.zip }}</h4>
+      <h4 v-if="parent.address.county">{{ parent.address.county }} County</h4>
+      <h4>{{ parent.address.country }}</h4>
+    </v-container>
+
+  </v-card>
 </template>
 
 <script>
@@ -22,9 +21,3 @@ export default {
     }
 }
 </script>
-
-<style>
-#address > p {
-  margin: 0;
-}
-</style>

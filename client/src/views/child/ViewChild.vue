@@ -1,26 +1,53 @@
 <template>
-  <div class="viewChild">
-      <img src="@/images/loading.gif" alt="Loading..." v-if="isLoading">
+  <v-container class="viewChild">
+        <v-row justify="center" class="my-9" v-if="isLoading">
+            <v-progress-circular 
+              color="primary" 
+              indeterminate 
+              class="py-4"
+            ></v-progress-circular>
+        </v-row>
       <error v-else-if="error" />
-      <div v-else>
-          <router-link :to="{name: 'editChild'}"><h2>Edit</h2></router-link>
-          <h1>{{ child.firstName }} {{ child.lastName }}</h1>
-          <img :src="child.imageUrl" :alt="child.firstName" v-if="child.imageUrl" id="childImage">
-          <ul>
-              <li>Date of Birth: {{ child.dateOfBirth }}</li>
-              <li>Gender: {{ getGender }}</li>
-              <li>Needs Diapers? {{ getNeedsDiapers }}</li>
-              <li>Rate Per Hour: ${{ child.ratePerHour }}</li>
-              <li><h3>Parents / Guardian: </h3></li>
-              <ul v-if="child.parents.length > 0" class="parents">
-                  <parent-container v-for="p in child.parents" :key="p.parentId" :parent="p" />
-              </ul>
-              <div v-else>
-                  <h3>No Parents listed</h3>
-              </div>
-          </ul>
-      </div>
-  </div>
+      <v-container v-else>
+          <v-row>
+              <v-col
+                cols="12"
+              >
+                <v-card>
+                    <v-card-title class="justify-center">{{ child.firstName }} {{ child.lastName }}</v-card-title>
+                    <v-card-actions class="justify-center">
+                        <v-img
+                            :src="child.imageUrl"
+                            :alt="child.firstName"
+                            max-width="20vh"
+                        />
+                    </v-card-actions>
+                    <v-card-actions class="justify-center">
+                        <v-list>
+                            <v-list-item>Date of Birth: {{ child.dateOfBirth }}</v-list-item>
+                            <v-list-item>Gender: {{ getGender }}</v-list-item>
+                            <v-list-item>Needs Diapers? {{ getNeedsDiapers }}</v-list-item>
+                            <v-list-item>Rate Per Hour: ${{ child.ratePerHour }}</v-list-item>
+                        </v-list>
+                    </v-card-actions>
+                </v-card>
+              </v-col>
+          </v-row>
+          <v-row justify="center" v-if="child.parents.length > 0">
+              <h1>Parents/Gardians</h1>
+          </v-row>
+          <v-row v-if="child.parents.length > 0">
+              <v-col
+                cols="12"
+                md="6"
+                v-for="parent in child.parents"
+                :key="parent.parentId"
+              >
+                 <parent-container :parent="parent"/>
+              </v-col>
+          </v-row>
+      </v-container>
+  </v-container>
 </template>
 
 <script>

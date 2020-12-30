@@ -87,8 +87,14 @@
                         <upload-photo @image-upload="imageUpload" />
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col>
+                        <add-parent :child="child" />
+                    </v-col>
+                </v-row>
                 <v-row justify="center">
-                    <v-btn type="submit">Submit</v-btn>
+                    <v-btn class="mr-6" type="submit">Submit</v-btn>
+                    <v-btn :to="{name: 'viewChild', parms: {id: child.childId}}">Cancel</v-btn>
                 </v-row>
             </v-container>
         </v-form>  
@@ -101,11 +107,13 @@ import childrenService from '@/services/ChildrenService'
 import Error from '@/components/Error'
 import moment from 'moment'
 import UploadPhoto from '@/components/UploadPhoto.vue'
+import AddParent from '@/components/AddParent.vue'
 
 export default {
     components: {
         Error,
-        UploadPhoto
+        UploadPhoto,
+        AddParent
     },
     data() {
         return {

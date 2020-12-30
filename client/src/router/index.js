@@ -22,7 +22,6 @@ import UpdateDiaper from '@/views/sessions/UpdateDiaper'
 import NewChild from '@/views/child/NewChild'
 import ViewChild from '@/views/child/ViewChild'
 import EditChild from '@/views/child/EditChild'
-import AddParent from '@/views/parents/AddParent'
 import store from '@/store/index'
 import VueAnalytics from 'vue-analytics'
 
@@ -237,16 +236,6 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Edit Child'
-      }
-    },
-    {
-      path: '/child/:id/parent',
-      name: 'addParent',
-      component: AddParent,
-      props: true,
-      meta: {
-        requiresAuth: true,
-        title: 'Add Parent'
       }
     }
   ]

@@ -109,7 +109,8 @@
           min-height="300"
         >
           <v-card-title class="white--text primary darken-1">
-            Welcome, {{ caretaker.firstName }} {{ caretaker.lastName }}!
+            <span v-if="caretakerLoading">Welcome!</span>
+            <span v-else>Welcome, {{ caretaker.firstName }} {{ caretaker.lastName }}!</span>
             <v-spacer></v-spacer>
             <v-btn
               color="white"

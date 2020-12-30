@@ -30,6 +30,9 @@
                             <v-list-item>Rate Per Hour: ${{ child.ratePerHour }}</v-list-item>
                         </v-list>
                     </v-card-actions>
+                    <v-row class="pb-2" justify="center">
+                        <v-btn :to="{name: 'editChild', params: {id: child.childId}}">Edit {{ child.firstName }}</v-btn>
+                    </v-row>
                 </v-card>
               </v-col>
           </v-row>

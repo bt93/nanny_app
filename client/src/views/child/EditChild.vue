@@ -84,8 +84,19 @@
                 </v-row>
                 <v-row>
                     <v-col>
-                        <upload-photo @image-upload="imageUpload" />
+                        <v-container v-if="child.imageUrl && !newImage" class="d-flex justify-center">
+                            <v-img 
+                                
+                                :src="child.imageUrl"
+                                :alt="child.firstName"
+                                max-width="20vh"
+                            />
+                        </v-container>
+                        <upload-photo @image-upload="imageUpload" v-else-if="!child.imageUrl || newImage" />
                     </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-btn @click="changeNewImage">{{ (newImage) ? 'Cancel' : 'Update Image' }}</v-btn>
                 </v-row>
                 <v-row>
                     <v-col>
@@ -126,6 +137,7 @@ export default {
             ],
             isLoading: true,
             error: false,
+            newImage: false,
             nameRules: [
                 v => !!v || 'Name is required'
             ],
@@ -155,6 +167,10 @@ export default {
                 });
             }
             
+        },
+
+        changeNewImage() {
+            (this.newImage) ? this.newImage = false : this.newImage = true;
         },
 
         imageUpload(value) {

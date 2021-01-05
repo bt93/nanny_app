@@ -1,7 +1,7 @@
 <template>
   <v-card
     elevation="2"
-    class="mx-12 px-12"
+    class="ma-12 px-12"
   >
     <v-form class="mx-12" 
     @submit.prevent="login" 

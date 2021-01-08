@@ -130,7 +130,7 @@ namespace NannyApi.DAL
             }
         }
 
-        public CareTaker UpdateCareTaker(CareTaker careTaker)
+        public CareTakerSettings UpdateCareTaker(CareTakerSettings careTaker)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {

@@ -141,14 +141,13 @@ namespace NannyApiTests
         {
             // Arrange
             CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
-            CareTaker testCareTaker = new CareTaker()
+            CareTakerSettings testCareTaker = new CareTakerSettings()
             {
                 CareTakerId = ruth,
                 AddressId = berkshire,
                 FirstName = "Ru",
                 LastName = "Howie",
                 EmailAddress = "askdfja",
-                Password = "pass",
                 PhoneNumber = "342342432",
             };
             testCareTaker.Address.Street = "34243243";

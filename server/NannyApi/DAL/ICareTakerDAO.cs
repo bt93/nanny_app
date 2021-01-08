@@ -28,7 +28,7 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="careTaker"></param>
         /// <returns>Caretaker Object</returns>
-        public CareTaker UpdateCareTaker(CareTaker careTaker);
+        public CareTakerSettings UpdateCareTaker(CareTakerSettings careTaker);
         /// <summary>
         /// Deletes a caretaker
         /// </summary>

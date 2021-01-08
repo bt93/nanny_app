@@ -1,10 +1,15 @@
 <template>
   <v-container class="settings">
-    <img src="../images/loading.gif" alt="" v-if="isLoading">
+    <v-row v-if="isLoading" justify="center">
+          <v-progress-circular 
+            color="primary"
+            indeterminate
+          />
+      </v-row>
     <Error v-else-if="error" />
     <v-container v-else>
-      <v-form>
-        <v-container class="d-md-flex justify-space-around">
+      <v-form @submit.prevent="submit" ref="form">
+        <v-container class="d-md-flex justify-space-around mb-12">
           <v-card elevation="2" class="px-6">
             <h2>Basic Info</h2>
             <v-row>
@@ -13,6 +18,7 @@
                   label="First Name"
                   id="firstName"
                   v-model="caretaker.firstName"
+                  :rules="nameRules"
                 />
               </v-col>
               <v-col>
@@ -20,6 +26,7 @@
                   label="Last Name"
                   id="lastName"
                   v-model="caretaker.lastName"
+                  :rules="nameRules"
                 />
               </v-col>
             </v-row>
@@ -29,6 +36,7 @@
                   label="Email Address"
                   id="emailAddress"
                   v-model="caretaker.emailAddress"
+                  :rules="emailRules"
                 />
               </v-col>
             </v-row>
@@ -51,6 +59,7 @@
                   label="Street"
                   id="street"
                   v-model="caretaker.address.street"
+                  :rules="streetRules"
                 />
               </v-col>
             </v-row>
@@ -60,6 +69,7 @@
                   label="City"
                   id="city"
                   v-model="caretaker.address.city"
+                  :rules="cityRules"
                 />
               </v-col>
               <v-col>
@@ -67,6 +77,7 @@
                   label="state"
                   id="state"
                   v-model="caretaker.address.state"
+                  :rules="stateRules"
                 />
               </v-col>
             </v-row>
@@ -88,6 +99,11 @@
             </v-row>
           </v-card>
         </v-container>
+        <v-row justify="center">
+          <v-btn type="submit" class="mr-6">Submit</v-btn>
+          <v-btn :to="{ name: 'changePassword' }" class="mr-6" color="error">Change Password</v-btn>
+          <v-btn :to="{ name: 'dashboard' }">Cancel</v-btn>
+        </v-row>
       </v-form>
     </v-container>
   </v-container>
@@ -105,20 +121,45 @@ export default {
     return {
       caretaker: {},
       isLoading: true,
-      error: false
+      error: false,
+      nameRules: [
+        v => !!v || 'Field is required',
+      ],
+      emailRules: [
+        v => !!v || 'Email Address is required',
+        v => /.+@.+/.test(v) || 'Email Address must be valid'
+      ],
+      streetRules: [
+        v => !!v || 'Street Name is required'
+      ],
+      cityRules: [
+        v => !!v || 'City Name is required'
+      ],
+      stateRules: [
+        v => !!v || 'State is required'
+      ],
+      countryRules: [
+        v => !!v || 'Country is required'
+      ],
     }
   },
   methods: {
     submit() {
-      caretakerService.updateCaretaker(this.caretaker)
-        .then(res => {
-          if (res.status === 201) {
-            this.$router.push('/dashboard');
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        }); 
+      if (this.$refs.form.validate()) {
+        this.isLoading = true;
+        caretakerService.updateCaretaker(this.caretaker)
+          .then(res => {
+            if (res.status === 201) {
+              this.$router.push('/dashboard');
+            }
+          })
+          .catch(err => {
+            if (err) {
+              this.isLoading = false;
+              this.error = true;
+            }
+          });
+      }
     }    
   },
   created() {

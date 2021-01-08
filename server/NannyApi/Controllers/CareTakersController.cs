@@ -69,7 +69,7 @@ namespace NannyApi.Controllers
         /// <param name="careTaker"></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker)
+        public ActionResult<CareTakerSettings> UpdateCareTaker(CareTakerSettings careTaker)
         {
             CareTaker careTakerCheck = careTakerDao.GetCareTakerById(userId);
 

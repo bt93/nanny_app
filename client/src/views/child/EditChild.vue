@@ -54,7 +54,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col cl>
+                    <v-col>
                         <v-text-field 
                             type="number"
                             min="0" 

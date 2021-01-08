@@ -20,7 +20,17 @@
                             :src="child.imageUrl"
                             :alt="child.firstName"
                             max-width="20vh"
+                            v-if="child.imageUrl"
                         />
+                        <v-avatar
+                            size="90"
+                            color="primary"
+                            v-else
+                        >
+                        <v-icon dark large>
+                            mdi-account-circle
+                        </v-icon>
+                    </v-avatar>
                     </v-card-actions>
                     <v-card-actions class="justify-center">
                         <v-list>

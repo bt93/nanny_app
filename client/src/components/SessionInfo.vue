@@ -1,38 +1,65 @@
 <template>
-  <div class="sessionInfo">
-      <div class="naps">
-          <h3 v-if="session.naps.length > 0">Naps</h3>
-          <ul>
-              <li v-for="nap in session.naps" :key="nap.napId" class="info">
-                 <p>Start Time: {{ formatTime(nap.startTime) }}</p>
-                 <p v-if="nap.endTime">End Time: {{ formatTime(nap.endTime) }}</p>
-                 <p v-if="nap.notes">Notes: {{ nap.notes }}</p>
-                 <router-link :to="{name: 'updateNap', params: {sessionId: session.sessionId, napId: nap.napId}}">Update Nap</router-link>
-              </li>
-          </ul>
-      </div>
-      <div class="meals">
-          <h3 v-if="session.meals.length > 0">Meals</h3>
-          <ul>
-              <li v-for="meal in session.meals" :key="meal.mealId" class="info">
-                  <p>Time: {{ formatTime(meal.time) }}</p>
-                  <p>Type: {{ meal.type }}</p>
-                  <p v-if="meal.notes">Notes: {{ meal.notes }}</p>
-                  <router-link :to="{name: 'updateMeal', params: {sessionId: session.sessionId, mealId: meal.mealId}}">Update Meal</router-link>
-              </li>
-          </ul>
-      </div>
-      <div class="diapers" v-if="session.child.needsDiapers">
-          <h3 v-if="session.diapers.length > 0">Diapers</h3>
-          <ul>
-              <li v-for="diaper in session.diapers" :key="diaper.diaperId" class="info">
-                  <p>Time: {{ formatTime(diaper.time) }}</p>
-                  <p v-if="diaper.notes">Notes: {{ diaper.notes }}</p>
-                  <router-link :to="{name: 'updateDiaper', params: {sessionId: session.sessionId, diaperId: diaper.diaperId}}">Update Diaper</router-link>
-              </li> 
-          </ul>
-      </div>
-  </div>
+  <v-row>
+      <v-col v-if="session.naps.length > 0">
+          <v-card>
+            <h2>Naps</h2>
+            <v-virtual-scroll
+                :items="session.naps"
+                :item-height="160"
+                max-height="260"
+                bench="1"
+            >
+                <template v-slot:default="{ item }">
+                    <v-list-item :key="item.napId" class="flex-column">
+                        <h3>Start time: {{ formatTime(item.startTime) }}</h3>
+                        <h3 v-if="item.endTime">End Time: {{ formatTime(item.endTime) }}</h3>
+                        <h3>Notes: {{ (item.notes) ? item.notes : 'N/A' }}</h3>
+                    </v-list-item>
+                </template>
+            </v-virtual-scroll>  
+          </v-card>
+          
+      </v-col>
+      <v-col v-if="session.meals.length > 0">
+          <v-card>
+            <h2>Meals</h2>
+            <v-virtual-scroll
+                :items="session.meals"
+                :item-height="160"
+                max-height="260"
+                bench="1"
+            >
+                <template v-slot:default="{ item }">
+                    <v-list-item :key="item.mealId" class="flex-column">
+                        <h3>Time: {{ formatTime(item.time) }}</h3>
+                        <h3>Type: {{ item.type }}</h3>
+                        <h3>Notes: {{ (item.notes) ? item.notes : 'N/A' }}</h3>
+                    </v-list-item> 
+                </template>
+            </v-virtual-scroll>
+               
+          </v-card>
+      </v-col>
+      <v-col class="diapers" v-if="session.child.needsDiapers && session.diapers.length > 0">
+          <v-card>
+              <h2>Diapers</h2>
+              <v-virtual-scroll
+                :items="session.diapers"
+                :item-height="160"
+                max-height="260"
+                bench="1"
+            >
+                <template v-slot:default="{ item }">
+                    <v-list-item :key="item.diaperId" class="flex-column">
+                        <h3>Time: {{ formatTime(item.time) }}</h3>
+                        <h3>Notes: {{ (item.notes) ? item.notes : 'N/A' }}</h3>
+                    </v-list-item> 
+                </template>
+                
+            </v-virtual-scroll>
+          </v-card>
+      </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -53,13 +80,5 @@ export default {
 </script>
 
 <style>
-.sessionInfo {
-    display: flex;
-    justify-content: space-between;
-}
 
-.info {
-    padding-bottom: 20px;
-    border-top: 2px solid black;
-}
 </style>

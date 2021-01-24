@@ -1,8 +1,8 @@
 <template>
   <v-container>
       <h2>New Parent/Guardian for {{ child.firstName }} {{ child.lastName }}</h2>
-      <v-container class="addParent">
-        <div class="exsitingParents">
+      <v-container class="d-flex">
+        <v-container class="exsitingParents">
             <h3>Exisisting Parent</h3>
             <v-virtual-scroll
                 v-if="parents.length > 0"
@@ -18,23 +18,24 @@
                 </template>
             </v-virtual-scroll>
             <h3 v-else>You have no parents in our database.</h3>
-        </div>
+            <new-parent @new-parent="newParent" />
+        </v-container>
       </v-container>
   </v-container>
 </template>
 
 <script>
 import parentService from '@/services/ParentService'
-//import NewParent from '@/components/NewParent'
+import NewParent from '@/components/NewParent'
 
 export default {
     components: {
-        //NewParent
+        NewParent
     },
     data() {
         return {
             parents: [],
-            error: false
+            error: false,
         }
     },
     props: {
@@ -56,16 +57,18 @@ export default {
     computed: {
         checkParent() {
             return this.parents.map(e => {
-                return this.child.parents.filter(i => i.parentId == e.parentId);
+                return e;
             })
+        }
+    },
+    methods: {
+        newParent(parent) {
+            this.parents.push(parent);
         }
     }
 }
 </script>
 
 <style>
-.addParent {
-    display: flex;
-    justify-content: space-around;
-}
+
 </style>

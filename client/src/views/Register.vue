@@ -212,7 +212,7 @@ export default {
       ],
       phoneNumberRules: [
         v => !!v || 'Phone Number is required',
-        v => /^[2-9]\d{2}-\d{3}-\d{4}$/.test(v) || 'Phone number must be in the following format: XXX-XXX-XXXX'
+        v => /^[2-9]\d{2}\d{3}\d{4}$/.test(v) || 'Phone number must be in the following format: XXX-XXX-XXXX'
       ],
       streetRules: [
         v => !!v || 'Street Name is required'

@@ -78,6 +78,7 @@ export default {
   methods: {
     login() {
       if (this.$refs.form.validate()) {
+        this.invalidCredentials = false;
         this.isLoading = true;
         authService
         .login(this.user)

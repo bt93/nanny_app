@@ -34,6 +34,11 @@
               class="mx-auto"
             />
           </v-row>
+          <v-row v-else-if="children.length == 0">
+            <v-col>
+              <p>No children found. Add one by clicking the button above.</p>
+            </v-col>
+          </v-row>
           <v-virtual-scroll
             v-else
             :items="children"
@@ -68,6 +73,7 @@
               class="text--primary"
               fab
               :to="{name: 'newSession'}"
+              :disabled="children.length == 0"
             >
                <v-icon
                 color="black"
@@ -84,6 +90,16 @@
               color="primary"
               class="mx-auto"
             />
+          </v-row>
+          <v-row v-else-if="children.length == 0">
+            <v-col>
+              <p>A child must be added in order to create a session.</p>
+            </v-col>
+          </v-row>
+          <v-row v-else-if="sessions.length == 0">
+            <v-col>
+              <p>No sessions found. Add one by clicking the button above.</p>
+            </v-col>
           </v-row>
           <v-virtual-scroll 
             v-else

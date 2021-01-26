@@ -98,9 +98,14 @@
                 <v-row justify="center">
                     <v-btn @click="changeNewImage">{{ (newImage) ? 'Cancel' : 'Update Image' }}</v-btn>
                 </v-row>
-                <v-row>
+                <v-row justify="center">
                     <v-col>
                         <add-parent :child="child" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <new-parent />
                     </v-col>
                 </v-row>
                 <v-row justify="center">
@@ -119,12 +124,14 @@ import Error from '@/components/Error'
 import moment from 'moment'
 import UploadPhoto from '@/components/UploadPhoto.vue'
 import AddParent from '@/components/AddParent.vue'
+import NewParent from '../../components/NewParent.vue'
 
 export default {
     components: {
         Error,
         UploadPhoto,
-        AddParent
+        AddParent,
+        NewParent
     },
     data() {
         return {

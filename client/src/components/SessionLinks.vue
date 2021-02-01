@@ -1,11 +1,11 @@
 <template>
   <div>
     <ul class="options">
-        <li><router-link :to="{name: 'endSession'}">End Session</router-link></li>
-        <li><router-link :to="{name: 'addNap'}">Add Nap</router-link></li>
-        <li><router-link :to="{name: 'addMeal'}">Add Meal</router-link></li>
-        <li><router-link :to="{name: 'addDiaper'}">Add Diaper</router-link></li>
-        <li><router-link id="delete" :to="{name: 'deleteSession', params: {id: sessionId} }">Delete Session</router-link></li>
+        <li><v-btn :to="{name: 'endSession'}">End Session</v-btn></li>
+        <li><v-btn @click="addNap = true">Add Nap</v-btn></li>
+        <li><v-btn :to="{name: 'addMeal'}">Add Meal</v-btn></li>
+        <li><v-btn :to="{name: 'addDiaper'}">Add Diaper</v-btn></li>
+        <li><v-btn id="delete" :to="{name: 'deleteSession', params: {id: sessionId} }">Delete Session</v-btn></li>
     </ul>
   </div>
 </template>
@@ -14,6 +14,11 @@
 export default {
     props: {
         sessionId: Number
+    },
+    data() {
+        return {
+            addNap: false
+        }
     }
 }
 </script>
@@ -29,19 +34,6 @@ export default {
 
 .options > li {
     margin: 20px;
-}
-
-.options > li > a {
-    text-decoration: none;
-    color: rgb(58, 81, 102);
-    border: rgb(58, 81, 102) 2px solid;
-    padding: 5px;
-    border-radius: 20px;
-}
-
-.options > li > a:hover {
-    background-color: rgb(58, 81, 102);
-    color: white;
 }
 
 #delete {

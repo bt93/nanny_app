@@ -1,12 +1,20 @@
 <template>
-  <div class="details">
+  <v-container class="details">
       <img src="@/images/loading.gif" alt="Loading" v-if="isLoading">
       <error v-else-if="error"/>
-      <div v-else>
-          <router-link :to="{name: 'session', params: {id: this.$route.params.id}}">Go back</router-link>
-          <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
-          <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
-          <h3>Session Details</h3>
+      <v-card v-else>
+          <v-row justify="center" class="py-2">
+             <v-btn :to="{name: 'session', params: {id: this.$route.params.id}}">Go back</v-btn> 
+          </v-row>
+          <v-row justify="center">
+              <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
+          </v-row>
+          <v-row justify="center">
+              <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
+          </v-row>
+          <v-row justify="center">
+            <h3>Session Details</h3>  
+          </v-row>
           <session-links :sessionId="session.sessionId"/>
           <form @submit.prevent="updateSession">
               <div>
@@ -24,9 +32,9 @@
               </div>
               <input type="submit" value="Update">
           </form>
-          <session-info :session="session" />
-      </div>
-  </div>
+      </v-card>
+      <session-info :session="session" />
+  </v-container>
 </template>
 
 <script>

@@ -18,7 +18,10 @@
                     </v-list-item>
                 </template>
             </v-virtual-scroll>
-            <h3 v-else>You have no parents in our database.</h3>
+            <v-row v-else>
+                <h3>You have no parents in our database.</h3>
+            </v-row>
+            
       </v-row>
   </v-row>
 </template>

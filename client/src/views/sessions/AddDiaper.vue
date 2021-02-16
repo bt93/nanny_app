@@ -2,7 +2,6 @@
   <div>
       <error v-if="error"/>
       <div v-else>
-        <session-return :prevRoute="prevRoute"/>
         <form @submit.prevent="addDiaper">
             <label for="time">Time: </label>
             <div>
@@ -20,12 +19,10 @@
 
 <script>
 import sessionService from '@/services/SessionService'
-import SessionReturn from '@/components/SessionReturn.vue'
 import Error from '@/components/Error.vue'
 
 export default {
   components: { 
-      SessionReturn,
       Error
     },
     data() {

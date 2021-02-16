@@ -13,7 +13,6 @@ import NewSession from '@/views/sessions/NewSession'
 import UpdateSession from '@/views/sessions/UpdateSession'
 import EndSession from '@/views/sessions/EndSession'
 import DeleteSession from '@/views/sessions/DeleteSession'
-import AddNap from '@/views/sessions/AddNap'
 import UpdateNap from '@/views/sessions/UpdateNap'
 import AddMeal from '@/views/sessions/AddMeal'
 import UpdateMeal from '@/views/sessions/UpdateMeal'
@@ -155,15 +154,6 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Delete Session'
-      }
-    },
-    {
-      path: '/session/:id/nap',
-      name: 'addNap',
-      component: AddNap,
-      meta: {
-        requiresAuth: true,
-        title: 'Add Nap'
       }
     },
     {

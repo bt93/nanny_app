@@ -6,7 +6,7 @@
             color="primary"
           /> 
       </v-row> 
-      <v-row v-else>
+      <v-row v-else-if="session !== {}">
       <v-col v-if="session.naps.length > 0">
           <v-card>
             <h2>Naps</h2>

@@ -13,7 +13,7 @@
                 <v-col>
                     <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
                     <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
-                    <h3>Drop Off</h3>
+                    <h3>Drop Off: {{ formatTime(session.dropOff) }}</h3>
                     <p>Notes: {{ (session.notes) ? session.notes : 'N/A' }}</p>
                 </v-col>
                 <v-col>
@@ -37,7 +37,7 @@
 
             
             <v-spacer />
-            <v-btn :to="{name: 'updateSession'}">Update Session</v-btn>
+            <v-btn :to="{name: 'updateSession', params: {id: $route.params.id}}">Update Session</v-btn>
           </v-card>
           
           <session-info :session="session" />
@@ -79,7 +79,7 @@ export default {
             }
             
             return 'Other'
-        }
+        },
     },
     created() {
     sessionService.getSessionById(this.$route.params.id)

@@ -1,6 +1,11 @@
 <template>
   <v-container class="details">
-      <img src="@/images/loading.gif" alt="Loading" v-if="isLoading">
+      <v-row v-if="isLoading" justify="center">
+          <v-progress-circular 
+            indeterminate
+            color="primary"
+          />
+      </v-row>
       <error v-else-if="error"/>
       <v-card v-else>
           <v-row justify="center" class="py-2">
@@ -15,25 +20,32 @@
           <v-row justify="center">
             <h3>Session Details</h3>  
           </v-row>
-          <session-links :sessionId="session.sessionId"/>
-          <form @submit.prevent="updateSession">
-              <div>
-                  <label for="dropOff">Drop Off: </label>
-                    <input 
-                    type="datetime-local" 
-                    name="dropOff" 
-                    id="dropOff" 
+          <v-row justify="center" class="my-12">
+             <session-links :sessionId="session.sessionId"/> 
+          </v-row>
+          <v-row justify="center">
+             <v-form @submit.prevent="updateSession">
+                <v-row>
+                   <v-text-field 
+                    type="datetime-local"
+                    label="Drop Off Time"
                     v-model="session.dropOff"
-                    >
-              </div>
-              <div>
-                <label for="notes">Notes: </label>
-                <textarea name="notes" id="notes" cols="30" rows="10" v-model="session.notes"></textarea>
-              </div>
-              <input type="submit" value="Update">
-          </form>
+                    />  
+                </v-row>
+                <v-row>
+                   <v-textarea 
+                    label="notes"
+                    v-model="session.notes"
+                    />  
+                </v-row>
+                <v-row justify="center" class="mt-4 mb-12">
+                    <v-btn type="submit">Update</v-btn>
+                </v-row>
+            </v-form> 
+          </v-row>
+          
       </v-card>
-      <session-info :session="session" />
+      <session-info v-if="!isLoading" :session="session" />
   </v-container>
 </template>
 
@@ -45,7 +57,7 @@ import SessionInfo from '../../components/SessionInfo.vue'
 import SessionLinks from '@/components/SessionLinks'
 
 export default {
-    name: 'session-details',
+    name: 'update-session',
     components: {
         Error,
         SessionInfo,

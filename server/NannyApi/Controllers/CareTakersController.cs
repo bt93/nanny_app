@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NannyApi.DAL;
 using NannyApi.Models;
+using NannyApi.Security;
 
 namespace NannyApi.Controllers
 {
@@ -29,10 +30,12 @@ namespace NannyApi.Controllers
         }
 
         private ICareTakerDAO careTakerDao;
+        private IPasswordHasher PasswordHasher;
 
-        public CaretakersController(ICareTakerDAO careTakerDao)
+        public CaretakersController(ICareTakerDAO careTakerDao, IPasswordHasher passwordHasher)
         {
             this.careTakerDao = careTakerDao;
+            this.PasswordHasher = passwordHasher;
         }
 
         // Get for /api/caretakers
@@ -92,7 +95,7 @@ namespace NannyApi.Controllers
                 return NotFound();
             }
 
-            bool isChanged = careTakerDao.UpdatePassword(careTaker.Password, userId);
+            bool isChanged = careTakerDao.UpdatePassword(careTaker.Password, userId, PasswordHasher);
 
             if (isChanged)
             {

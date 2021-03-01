@@ -127,7 +127,16 @@ export default {
                 { item: 'Other', value: 'O' }
             ],
             error: false,
-            isLoading: false
+            isLoading: false,
+            nameRules: [
+                v => !!v || 'Name is required'
+            ],
+            rateRules: [
+                v => !!v || 'Rate Per Hour is required'
+            ],
+            diaperRules: [
+                v => !!v || 'Needs Diapers is required'
+            ]
         }
     },
     methods: {

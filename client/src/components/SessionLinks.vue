@@ -7,8 +7,18 @@
         <li><v-btn :to="{name: 'addDiaper'}">Add Diaper</v-btn></li>
         <li><v-btn id="delete" :to="{name: 'deleteSession', params: {id: sessionId} }">Delete Session</v-btn></li>
         <v-overlay :value="addNap">
-            <v-card class="pa-12" color="white">
-                <v-btn @click="addNap = !addNap">Back</v-btn>
+            <v-card class="pa-12" color="black">
+                <v-row justify="center">
+                  <v-btn @click="addNap = false">Back</v-btn>  
+                </v-row>
+                <add-nap />  
+            </v-card>     
+        </v-overlay>
+        <v-overlay :value="addMeal">
+            <v-card class="pa-12" color="black">
+                <v-row justify="center">
+                  <v-btn>Back</v-btn>  
+                </v-row>
                 <add-nap />  
             </v-card>     
         </v-overlay>
@@ -25,7 +35,8 @@ export default {
     },
     data() {
         return {
-            addNap: false
+            addNap: false,
+            addMeal: false,
         }
     }
 }

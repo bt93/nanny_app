@@ -1,6 +1,6 @@
 <template>
   <v-container>
-      <v-form @submit.prevent="submitNap" ref="form">
+      <v-form @submit.prevent="addNap" ref="form">
           <v-row>
               <v-text-field 
             type="datetime-local"
@@ -56,7 +56,7 @@ export default {
         }
     },
     methods: {
-        submitNap() {
+        addNap() {
             if (this.$refs.form.validate()) {
               sessionService.addNap(this.nap, this.$route.params.id)
                 .then(res => {

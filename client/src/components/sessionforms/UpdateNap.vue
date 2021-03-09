@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+    <v-container>
       <v-form @submit.prevent="addNap" ref="form">
           <v-row>
               <v-text-field 
@@ -18,6 +18,7 @@
             color="white"
             background-color="primary"
             v-model="nap.endTime"
+            :rules="timeRule"
           />
           </v-row>
           <v-row>
@@ -37,40 +38,52 @@
 
 <script>
 import sessionService from '@/services/SessionService'
-//import Error from '@/components/Error'
+//import Error from '../Error.vue'
 
 export default {
-  components: { 
-      //Error
-   },
+    components: {
+        //Error
+    },
     data() {
         return {
-            nap: {
-                notes: ''
-            },
+            endTime: '',
+            nap: {},
             error: false,
             timeRule: [
                 v => !!v || 'Time is required'
             ]
         }
     },
+    props: {
+        napId: Number
+    },
+    created() {
+        sessionService.getNapById(this.$route.params.id, this.napId)
+            .then(res => {
+                if (res.status == 200) {
+                    this.nap = res.data;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                this.error = true;
+            })
+    },
     methods: {
-        addNap() {
+        updateNap() {
             if (this.$refs.form.validate()) {
-              sessionService.addNap(this.nap, this.$route.params.id)
-                .then(res => {
-                    if (res.status === 201) {
-                        //this.$router.push({name: 'session', params: {id: this.$route.params.id}})
-                        //this.$emit('close-overlay', false)
-                        window.location.reload();
-                    }
-                })
-                .catch(err => {
-                    if (err) {
-                        console.error(err);
-                        this.error = true;
-                    }
-                })  
+              sessionService.updateNap(this.nap)
+            .then(res => {
+                if (res.status == 201) {
+                    this.$router.push({name: 'session', params: { id: this.nap.sessionId }})
+                }
+            })
+            .catch(err => {
+                if (err) {
+                    console.error(err);
+                    this.error = true;
+                }
+            })  
             }
             
         }

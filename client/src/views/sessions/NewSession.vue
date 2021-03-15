@@ -1,31 +1,48 @@
 <template>
-  <div class="newSession">
+  <v-container>
       <error v-if="error"/>
-      <form @submit.prevent="submit" v-else>
-        <label for="child">Child: </label>
-        <div>
-          <select name="child" id="child" v-model="session.childId" required>
-            <option disabled selected="selected" value="">Choose One</option>
-            <option v-for="child in children" :key="child.childId" :value="child.childId">{{ child.firstName }} {{ child.lastName }}</option>
-          </select>
-        </div>
-        <label for="dropOff">Drop Off: </label>
-        <div>
-          <input 
-          type="datetime-local" 
-          name="dropOff" 
-          id="dropOff" 
-          v-model="session.dropOff"
-          required
-          >
-        </div>
-        <label for="notes">Notes: </label>
-        <div>
-          <textarea name="notes" id="notes" cols="30" rows="10" v-model="session.notes"></textarea>
-        </div>
-        <input type="submit">
-      </form>
-  </div>
+      <v-container v-else>
+        <v-row>
+          <v-col cols="12">
+            <v-card class="pa-12">
+              <v-row justify="center">
+                <h2>New Session</h2>
+              </v-row>
+              <v-form @submit.prevent="submit" ref="form">
+                <v-row>
+                  <v-select 
+                    label="Child"
+                    v-model="session.childId"
+                    :rules="childRule"
+                    :items="children"
+                    item-text="firstName"
+                    item-value="childId"
+                  />
+                </v-row>
+                <v-row>
+                  <v-text-field
+                    label="Drop Off"
+                    v-model="session.dropOff"
+                    type="datetime-local"
+                    :rules="dropOffRule"
+                  />
+                </v-row>
+                <v-row>
+                  <v-textarea 
+                    label="Notes"
+                    v-model="session.notes"
+                  />
+                </v-row>
+                <v-row justify="center" class="pt-6">
+                  <v-btn type="submit">Add new Session</v-btn>
+                </v-row>
+              </v-form>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+      
+  </v-container> 
 </template>
 
 <script>
@@ -43,12 +60,19 @@ export default {
         notes: ''
       },
       children: [],
-      error: false
+      error: false,
+      childRule: [
+        v => !!v || 'Child is required'
+      ],
+      dropOffRule: [
+        v => !!v || 'Drop Off time is required'
+      ]
     }
   },
   methods: {
     submit() {
-      sessionService.createSession(this.session)
+      if (this.$refs.form.validate()) {
+        sessionService.createSession(this.session)
         .then(res => {
           if (res.status === 201) {
             this.$router.push('/dashboard');
@@ -58,6 +82,8 @@ export default {
           console.error(err);
           this.error = true;
         })
+      }
+      
     }
   },
   created() {

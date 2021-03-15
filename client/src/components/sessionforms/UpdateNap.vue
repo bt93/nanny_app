@@ -1,6 +1,6 @@
 <template>
     <v-container>
-      <v-form @submit.prevent="addNap" ref="form">
+      <v-form @submit.prevent="updateNap" ref="form">
           <v-row>
               <v-text-field 
             type="datetime-local"

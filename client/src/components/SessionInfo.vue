@@ -47,7 +47,7 @@
                                 <h3>Notes: {{ (item.notes) ? item.notes : 'N/A' }}</h3>
                                 <v-btn 
                                     v-if="$route.name === 'updateSession'" 
-                                    :to="{name: 'updateMeal', params: {sessionId: $route.params.id, mealId: item.mealId }}"
+                                    @click="getMeal(item.mealId)"
                                 >Update Meal</v-btn>
                             </v-list-item> 
                         </template>
@@ -70,7 +70,7 @@
                                 <h3>Notes: {{ (item.notes) ? item.notes : 'N/A' }}</h3>
                                 <v-btn 
                                     v-if="$route.name === 'updateSession'" 
-                                    :to="{name: 'updateDiaper', params: {sessionId: $route.params.id, diaperId: item.diaperId }}"
+                                    @click="getDiaper(item.diaperId)"
                                 >Update Diaper</v-btn>
                             </v-list-item> 
                         </template>
@@ -91,6 +91,28 @@
                     <update-nap :napId="napId"/>  
                 </v-card>     
             </v-overlay>
+            <v-overlay :value="updateMeal">
+                <v-card class="pa-12" color="black">
+                    <v-row justify="center">
+                    <v-btn @click="updateMeal = false">Back</v-btn>  
+                    </v-row>
+                    <v-row justify="center" class="mt-5">
+                        <h3>Update Meal</h3>
+                    </v-row>
+                    <update-meal :mealId="mealId"/>  
+                </v-card>     
+            </v-overlay>
+            <v-overlay :value="updateDiaper">
+                <v-card class="pa-12" color="black">
+                    <v-row justify="center">
+                    <v-btn @click="updateDiaper = false">Back</v-btn>  
+                    </v-row>
+                    <v-row justify="center" class="mt-5">
+                        <h3>Update Diaper</h3>
+                    </v-row>
+                    <update-diaper :diaperId="diaperId"/>  
+                </v-card>     
+            </v-overlay>
         </v-container> 
     </v-container>
   
@@ -99,17 +121,23 @@
 <script>
 import moment from 'moment'
 import UpdateNap from '@/components/sessionforms/UpdateNap'
+import UpdateMeal from '@/components/sessionforms/UpdateMeal'
+import UpdateDiaper from '@/components/sessionforms/UpdateDiaper'
 
 export default {
     components: {
-        UpdateNap
+        UpdateNap,
+        UpdateMeal,
+        UpdateDiaper
     },
     data() {
         return  {
             updateNap: false,
             updateMeal: false,
             updateDiaper: false,
-            napId: null
+            napId: null,
+            mealId: null,
+            diaperId: null
         }
     },
     props: {
@@ -124,6 +152,14 @@ export default {
         getNap(id) {
             this.updateNap = true;
             this.napId = id;
+        },
+        getMeal(id) {
+            this.updateMeal = true;
+            this.mealId = id;
+        },
+        getDiaper(id) {
+            this.updateDiaper = true;
+            this.diaperId = id;
         }
     }
 }

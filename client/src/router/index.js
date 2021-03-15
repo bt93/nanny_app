@@ -13,8 +13,6 @@ import NewSession from '@/views/sessions/NewSession'
 import UpdateSession from '@/views/sessions/UpdateSession'
 import EndSession from '@/views/sessions/EndSession'
 import DeleteSession from '@/views/sessions/DeleteSession'
-import UpdateMeal from '@/views/sessions/UpdateMeal'
-import UpdateDiaper from '@/views/sessions/UpdateDiaper'
 import NewChild from '@/views/child/NewChild'
 import ViewChild from '@/views/child/ViewChild'
 import EditChild from '@/views/child/EditChild'
@@ -151,24 +149,6 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Delete Session'
-      }
-    },
-    {
-      path: '/session/:sessionId/meal/:mealId',
-      name: 'updateMeal',
-      component: UpdateMeal,
-      meta: {
-        requiresAuth: true,
-        title: 'Update Meal'
-      }
-    },
-    {
-      path: '/session/:sessionId/diaper/:diaperId',
-      name: 'updateDiaper',
-      component: UpdateDiaper,
-      meta: {
-        requiresAuth: true,
-        title: 'Update Diaper'
       }
     },
     {

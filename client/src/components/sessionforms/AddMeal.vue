@@ -80,7 +80,8 @@ export default {
                 sessionService.addMeal(this.meal, this.$route.params.id)
                     .then(res => {
                         if (res.status === 201) {
-                            this.$router.push({name: 'session', params: {id: this.$route.params.id}});
+                            //this.$router.push({name: 'session', params: {id: this.$route.params.id}});
+                             window.location.reload();
                         }
                     })
                     .catch(err => {

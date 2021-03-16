@@ -22,5 +22,6 @@ namespace NannyApi.Models
         public bool Active { get; set; }
         public string ImageUrl { get; set; }
         public List<Parent> Parents { get; set; }
+        public List<Allergy> Allergies { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NannyApi.DAL;
 using NannyApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
@@ -15,7 +16,7 @@ namespace NannyApiTests
         private TransactionScope transaction;
 
         // A place to hold the id's that were added to the database
-
+        private int ellie;
         [TestInitialize]
         public void SetupDB()
         {
@@ -31,7 +32,7 @@ namespace NannyApiTests
                 SqlDataReader rdr = cmd.ExecuteReader();
                 if (rdr.Read())
                 {
- 
+                    ellie = Convert.ToInt32(rdr["ellie"]);
                 }
             }
         }
@@ -59,6 +60,39 @@ namespace NannyApiTests
             List<Allergy> allergies = dao.GetAllergiesByType(2); // Food
 
             Assert.AreEqual(20, allergies.Count);
+        }
+
+        [TestMethod]
+        public void TestGetAllergiesByChildId()
+        {
+            AllergySqlDAO dao = new AllergySqlDAO(this.connectionString);
+            List<Allergy> allergies = dao.GetAllergiesByChildId(ellie);
+
+            Assert.AreEqual(1, allergies.Count);
+            Assert.AreEqual("Banana", allergies[0].Name);
+        }
+
+        [TestMethod]
+        public void TestAddAllergyToChild()
+        {
+            AllergySqlDAO dao = new AllergySqlDAO(this.connectionString);
+            bool isRowAffected = dao.AddAllergyToChild(ellie, 33);
+            List<Allergy> allergies = dao.GetAllergiesByChildId(ellie);
+
+            Assert.IsTrue(isRowAffected);
+            Assert.AreEqual(2, allergies.Count);
+            Assert.AreEqual("Mustard Seed", allergies[1].Name);
+        }
+
+        [TestMethod]
+        public void TestRemoveAllergryFromChild()
+        {
+            AllergySqlDAO dao = new AllergySqlDAO(this.connectionString);
+            bool isRowAffected = dao.RemoveAllergyFromChild(ellie, 27);
+            List<Allergy> allergies = dao.GetAllergiesByChildId(ellie);
+
+            Assert.IsTrue(isRowAffected);
+            Assert.AreEqual(0, allergies.Count);
         }
     }
 }

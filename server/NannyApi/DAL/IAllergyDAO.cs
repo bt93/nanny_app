@@ -19,5 +19,24 @@ namespace NannyApi.DAL
         /// <param name="typeId">The id of the allergy types</param>
         /// <returns>List of Allergies</returns>
         public List<Allergy> GetAllergiesByType(int typeId);
+        /// <summary>
+        /// Returns a list of all the allergies that a specific child has.
+        /// </summary>
+        /// <returns>List of Allergies</returns>
+        public List<Allergy> GetAllergiesByChildId(int childId);
+        /// <summary>
+        /// Adds an allergy to the child
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="allergyId"></param>
+        /// <returns>True if the the row is affected</returns>
+        public bool AddAllergyToChild(int childId, int allergyId);
+        /// <summary>
+        /// Removes an allergy from a child
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="allergyId"></param>
+        /// <returns>True if the row is affected</returns>
+        public bool RemoveAllergyFromChild(int childId, int allergyId);
     }
 }

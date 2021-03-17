@@ -65,6 +65,64 @@ namespace NannyApi.DAL
             return allergies;
         }
 
+        public List<Allergy> GetAllergiesByChildId(int childId)
+        {
+            List<Allergy> allergies = new List<Allergy>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string sql = @"SELECT *
+                                        FROM allergies
+                                        JOIN child_allergies ON allergies.allergy_id = child_allergies.allergy_id
+                                        WHERE child_allergies.child_id = @child_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    allergies.Add(ParseRow(rdr));
+                }
+            }
+
+            return allergies;
+        }
+
+        public bool AddAllergyToChild(int childId, int allergyId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string sql = @"INSERT INTO child_allergies (child_id, allergy_id)
+                                        VALUES (@child_id, @allergy_id)";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@allergy_id", allergyId);
+
+                return (cmd.ExecuteNonQuery() == 1);
+            }
+        }
+
+        public bool RemoveAllergyFromChild(int childId, int allergyId)
+        {
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string sql = @"DELETE
+                                        FROM child_allergies
+                                        WHERE child_id = @child_id
+                                        AND allergy_id = @allergy_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@child_id", childId);
+                cmd.Parameters.AddWithValue("@allergy_id", allergyId);
+
+                return (cmd.ExecuteNonQuery() == 1);
+            }
+        }
+
         private Allergy ParseRow(SqlDataReader rdr)
         {
             Allergy allergy = new Allergy();

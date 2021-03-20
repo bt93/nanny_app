@@ -106,3 +106,22 @@ INSERT INTO allergies (name, allergy_type_id) VALUES ('Tumbleweed', (SELECT alle
 INSERT INTO allergies (name, allergy_type_id) VALUES ('Lamb''s Quarters', (SELECT allergy_type_id FROM allergy_type WHERE name = 'Pollen'));
 INSERT INTO allergies (name, allergy_type_id) VALUES ('English Plantain', (SELECT allergy_type_id FROM allergy_type WHERE name = 'Pollen'));
 INSERT INTO allergies (name, allergy_type_id) VALUES ('Latex', (SELECT allergy_type_id FROM allergy_type WHERE name = 'Other'));
+
+GO
+
+-- Stored Procedures for creating a new allergy & allergy type
+
+CREATE PROCEDURE AddNewAllergy
+@name NVARCHAR(80),
+@allergy_type_id INT
+AS
+INSERT INTO allergies (name, allergy_type_id)
+	VALUES (@name, @allergy_type_id);
+GO
+
+CREATE PROCEDURE AddAllergyType
+@name NVARCHAR(80)
+AS
+INSERT INTO allergy_type (name)
+	VALUES (@name)
+GO

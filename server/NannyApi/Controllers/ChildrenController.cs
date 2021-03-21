@@ -31,11 +31,13 @@ namespace NannyApi.Controllers
 
         private IChildDAO childDao;
         private IParentDAO parentDao;
+        private IAllergyDAO allergyDao;
 
-        public ChildrenController(IChildDAO childDao, IParentDAO parentDao)
+        public ChildrenController(IChildDAO childDao, IParentDAO parentDao, IAllergyDAO allergyDao)
         {
             this.childDao = childDao;
             this.parentDao = parentDao;
+            this.allergyDao = allergyDao;
         }
 
         /// <summary>
@@ -51,8 +53,10 @@ namespace NannyApi.Controllers
             foreach (Child child in children)
             {
                 List<Parent> parents = parentDao.GetParentsByChild(child.ChildId, userId);
+                List<Allergy> allergies = allergyDao.GetAllergiesByChildId(child.ChildId);
 
                 child.Parents = parents;
+                child.Allergies = allergies;
             }
 
             return Ok(children);
@@ -75,7 +79,9 @@ namespace NannyApi.Controllers
             }
 
             List<Parent> parents = parentDao.GetParentsByChild(childId, userId);
+            List<Allergy> allergies = allergyDao.GetAllergiesByChildId(child.ChildId);
             child.Parents = parents;
+            child.Allergies = allergies;
 
             return Ok(child);
         }
@@ -98,8 +104,10 @@ namespace NannyApi.Controllers
             foreach (Child child in children)
             {
                 List<Parent> parents = parentDao.GetParentsByChild(child.ChildId, userId);
+                List<Allergy> allergies = allergyDao.GetAllergiesByChildId(child.ChildId);
 
                 child.Parents = parents;
+                child.Allergies = allergies;
             }
 
             return Ok(children);
@@ -116,6 +124,26 @@ namespace NannyApi.Controllers
         {
             Child newChild = childDao.AddChild(child, userId);
             return Created($"/api/children/{newChild.ChildId}", newChild);
+        }
+
+        /// <summary>
+        /// POST /api/children/allergy
+        /// Adds an allergy to a child
+        /// </summary>
+        /// <param name="childId"></param>
+        /// <param name="allergyId"></param>
+        /// <returns></returns>
+        [HttpPost("{childId}/allergy/{allergyId}")]
+        public ActionResult AddAllergyToChild(int childId, int allergyId)
+        {
+            bool isAllergyAdded = allergyDao.AddAllergyToChild(childId, allergyId);
+            
+            if (isAllergyAdded)
+            {
+                return Created($"/api/children/{childId}", allergyId);
+            }
+
+            return BadRequest();
         }
 
         /// <summary>
@@ -176,8 +204,26 @@ namespace NannyApi.Controllers
                 return NotFound();
             }
 
+            foreach (Allergy allergy in checkChild.Allergies)
+            {
+                allergyDao.RemoveAllergyFromChild(checkChild.ChildId, allergy.AllergyId);
+            }
+
             childDao.DeleteChild(childId, userId);
             return NoContent();
+        }
+
+        [HttpDelete("{childId}/allergy/{allergyId}")]
+        public ActionResult RemoveAllergyFromChild(int childId, int allergyId)
+        {
+            bool isAllergyRemoved = allergyDao.RemoveAllergyFromChild(childId, allergyId);
+
+            if (isAllergyRemoved)
+            {
+                return NoContent();
+            }
+
+            return BadRequest();
         }
     }
 }

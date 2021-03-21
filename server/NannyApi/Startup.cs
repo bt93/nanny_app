@@ -71,6 +71,7 @@ namespace NannyApi
             services.AddTransient<IMealDAO, MealSqlDAO>(sv => new MealSqlDAO(connectionString));
             services.AddTransient<INapDAO, NapSqlDAO>(sv => new NapSqlDAO(connectionString));
             services.AddTransient<IDiaperDAO, DiaperSqlDAO>(sv => new DiaperSqlDAO(connectionString));
+            services.AddTransient<IAllergyDAO, AllergySqlDAO>(svm => new AllergySqlDAO(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

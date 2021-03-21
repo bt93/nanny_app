@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NannyApi.DAL
 {
-    interface IAllergyDAO
+    public interface IAllergyDAO
     {
         /// <summary>
         /// Gets a list of every allergy

@@ -14,6 +14,11 @@ namespace NannyApi.DAL
         /// <returns>List of Allergies</returns>
         public List<Allergy> GetAllergies();
         /// <summary>
+        /// Get's a list of all the allergy types
+        /// </summary>
+        /// <returns>List of AllergyTypes</returns>
+        public List<AllergyType> getAllergyTypes();
+        /// <summary>
         /// Lists all the allergies by their type id
         /// </summary>
         /// <param name="typeId">The id of the allergy types</param>

@@ -12,4 +12,10 @@ namespace NannyApi.Models
         public string Name { get; set; }
         public string AllergyType { get; set; }
     }
+
+    public class AllergyType
+    {
+        public int AllergyTypeId { get; set; }
+        public string Name { get; set; }
+    }
 }

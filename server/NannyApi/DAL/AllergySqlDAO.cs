@@ -37,6 +37,32 @@ namespace NannyApi.DAL
             return allergies;
         }
 
+        public List<AllergyType> getAllergyTypes()
+        {
+            List<AllergyType> allergyTypes = new List<AllergyType>();
+
+            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            {
+                conn.Open();
+                const string sql = @"SELECT * FROM allergy_type;";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                while(rdr.Read())
+                {
+                    AllergyType allergyType = new AllergyType();
+                    allergyType.AllergyTypeId = Convert.ToInt32(rdr["allergy_type_id"]);
+                    allergyType.Name = Convert.ToString(rdr["name"]);
+
+                    allergyTypes.Add(allergyType);
+                }
+            }
+
+            return allergyTypes;
+        }
+
         public List<Allergy> GetAllergiesByType(int typeId)
         {
             List<Allergy> allergies = new List<Allergy>();
@@ -44,7 +70,7 @@ namespace NannyApi.DAL
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
-                const string sql = @"SELECT *
+                const string sql = @"SELECT allergies.*, allergy_type.allergy_type_id, allergy_type.name AS type_name
                                             FROM allergies
                                             JOIN allergy_type ON allergies.allergy_type_id = allergy_type.allergy_type_id
                                             WHERE allergy_type.allergy_type_id = @type_id";
@@ -72,9 +98,10 @@ namespace NannyApi.DAL
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
                 conn.Open();
-                const string sql = @"SELECT *
+                const string sql = @"SELECT allergies.*, allergy_type.allergy_type_id, allergy_type.name AS type_name
                                         FROM allergies
                                         JOIN child_allergies ON allergies.allergy_id = child_allergies.allergy_id
+                                        JOIN allergy_type ON allergies.allergy_type_id = allergy_type.allergy_type_id
                                         WHERE child_allergies.child_id = @child_id";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@child_id", childId);
@@ -130,7 +157,7 @@ namespace NannyApi.DAL
             allergy.AllergyId = Convert.ToInt32(rdr["allergy_id"]);
             allergy.Name = Convert.ToString(rdr["name"]);
             allergy.AllergyTypeId = Convert.ToInt32(rdr["allergy_type_id"]);
-            allergy.AllergyType = Convert.ToString(rdr["name"]);
+            allergy.AllergyType = Convert.ToString(rdr["type_name"]);
 
             return allergy;
         }

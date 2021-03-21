@@ -38,6 +38,12 @@
                             <v-list-item>Gender: {{ getGender }}</v-list-item>
                             <v-list-item>Needs Diapers? {{ getNeedsDiapers }}</v-list-item>
                             <v-list-item>Rate Per Hour: ${{ child.ratePerHour }}</v-list-item>
+                            <v-list-item v-if="child.allergies.length > 0">
+                                Allergies:
+                                <v-list>
+                                    <v-list-item v-for="allergy in child.allergies" :key="allergy.allergyId">{{ allergy.name }}</v-list-item>
+                                </v-list>
+                            </v-list-item>
                         </v-list>
                     </v-card-actions>
                     <v-row class="pb-2" justify="center">

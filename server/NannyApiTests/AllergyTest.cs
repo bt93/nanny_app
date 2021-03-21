@@ -94,5 +94,15 @@ namespace NannyApiTests
             Assert.IsTrue(isRowAffected);
             Assert.AreEqual(0, allergies.Count);
         }
+
+        [TestMethod]
+        public void TestGetAllergyTypes()
+        {
+            AllergySqlDAO dao = new AllergySqlDAO(this.connectionString);
+            List<AllergyType> types = dao.getAllergyTypes();
+
+            Assert.IsNotNull(types);
+            Assert.AreEqual(8, types.Count);
+        }
     }
 }

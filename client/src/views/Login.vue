@@ -7,7 +7,7 @@
     @submit.prevent="login" 
     v-model="valid"
     ref="form">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+      <v-card-title class="text-sm-body-1 text-caption mb-3 px-1 font-weight-normal">Please Sign In</v-card-title>
       <v-container>
         <v-row v-if="invalidCredentials">
           <h3>Invalid Email and Password</h3>
@@ -102,3 +102,4 @@ export default {
   }
 };
 </script>
+

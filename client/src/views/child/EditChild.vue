@@ -108,6 +108,19 @@
                         <new-parent />
                     </v-col>
                 </v-row>
+                <v-row  class="justify-center">
+                    <v-list-item v-if="child.allergies.length > 0" class="justify-center">
+                        Allergies:
+                        <v-list>
+                            <v-list-item v-for="allergy in child.allergies" :key="allergy.allergyId">{{ allergy.name }} <span class="pl-4" @click="removeAllergyFromChild(allergy)">❌</span></v-list-item>
+                        </v-list>
+                    </v-list-item>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <add-allergy :childId="child.childId"/>
+                    </v-col>
+                </v-row>
                 <v-row justify="center">
                     <v-btn class="mr-6" type="submit">Submit</v-btn>
                     <v-btn :to="{name: 'viewChild', parms: {id: child.childId}}">Cancel</v-btn>
@@ -125,13 +138,15 @@ import moment from 'moment'
 import UploadPhoto from '@/components/UploadPhoto.vue'
 import AddParent from '@/components/AddParent.vue'
 import NewParent from '../../components/NewParent.vue'
+import AddAllergy from '@/components/AddAllergy'
 
 export default {
     components: {
         Error,
         UploadPhoto,
         AddParent,
-        NewParent
+        NewParent,
+        AddAllergy
     },
     data() {
         return {
@@ -182,6 +197,17 @@ export default {
 
         imageUpload(value) {
             this.child.imageUrl = value;
+        },
+        
+        removeAllergyFromChild(allergy) {
+            if (confirm(`Are you sure you'd like to remove ${allergy.name} from ${this.child.firstName}'s Allergy list?`)) {
+                childrenService.removeAllergyFromChild(this.child.childId, allergy.allergyId)
+                    .then(res => {
+                        if (res.status === 204) {
+                            window.location.reload();
+                        }
+                    })
+            }
         }
     },
     created() {

@@ -8,7 +8,7 @@ namespace NannyApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class AllergyController : ControllerBase
     {
         private IAllergyDAO allergyDao;
@@ -25,7 +25,7 @@ namespace NannyApi.Controllers
         }
 
         [HttpGet("{allergyTypeId}")]
-        public ActionResult<List<Allergy>> getAllergiesById(int allergyTypeId)
+        public ActionResult<List<Allergy>> getAllergiesByAllergyTypeId(int allergyTypeId)
         {
             return Ok(allergyDao.GetAllergiesByType(allergyTypeId));
         }

@@ -13,16 +13,9 @@ import NewSession from '@/views/sessions/NewSession'
 import UpdateSession from '@/views/sessions/UpdateSession'
 import EndSession from '@/views/sessions/EndSession'
 import DeleteSession from '@/views/sessions/DeleteSession'
-import AddNap from '@/views/sessions/AddNap'
-import UpdateNap from '@/views/sessions/UpdateNap'
-import AddMeal from '@/views/sessions/AddMeal'
-import UpdateMeal from '@/views/sessions/UpdateMeal'
-import AddDiaper from '@/views/sessions/AddDiaper'
-import UpdateDiaper from '@/views/sessions/UpdateDiaper'
 import NewChild from '@/views/child/NewChild'
 import ViewChild from '@/views/child/ViewChild'
 import EditChild from '@/views/child/EditChild'
-import AddParent from '@/views/parents/AddParent'
 import store from '@/store/index'
 import VueAnalytics from 'vue-analytics'
 
@@ -159,60 +152,6 @@ const router = new Router({
       }
     },
     {
-      path: '/session/:id/nap',
-      name: 'addNap',
-      component: AddNap,
-      meta: {
-        requiresAuth: true,
-        title: 'Add Nap'
-      }
-    },
-    {
-      path: '/session/:sessionId/nap/:napId',
-      name: 'updateNap',
-      component: UpdateNap,
-      meta: {
-        requiresAuth: true,
-        title: 'Update Nap'
-      }
-    },
-    {
-      path: '/session/:id/meal',
-      name: 'addMeal',
-      component: AddMeal,
-      meta: {
-        requiresAuth: true,
-        title: 'Add Meal'
-      }
-    },
-    {
-      path: '/session/:sessionId/meal/:mealId',
-      name: 'updateMeal',
-      component: UpdateMeal,
-      meta: {
-        requiresAuth: true,
-        title: 'Update Meal'
-      }
-    },
-    {
-      path: '/session/:id/diaper',
-      name: 'addDiaper',
-      component: AddDiaper,
-      meta: {
-        requiresAuth: true,
-        title: 'Add Diaper'
-      }
-    },
-    {
-      path: '/session/:sessionId/diaper/:diaperId',
-      name: 'updateDiaper',
-      component: UpdateDiaper,
-      meta: {
-        requiresAuth: true,
-        title: 'Update Diaper'
-      }
-    },
-    {
       path: '/child',
       name: 'newChild',
       component: NewChild,
@@ -237,16 +176,6 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Edit Child'
-      }
-    },
-    {
-      path: '/child/:id/parent',
-      name: 'addParent',
-      component: AddParent,
-      props: true,
-      meta: {
-        requiresAuth: true,
-        title: 'Add Parent'
       }
     }
   ]

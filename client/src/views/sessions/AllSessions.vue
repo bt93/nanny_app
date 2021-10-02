@@ -1,8 +1,13 @@
 <template>
   <div class="allSessions">
-      <img src="@/images/loading.gif" alt="Loading" v-if="isLoading">
+      <v-row v-if="isLoading" justify="center" class="mt-12">
+          <v-progress-circular 
+            indeterminate
+            color="primary" 
+          />
+      </v-row>
       <error v-else-if="error"/>
-      <session-container v-else v-for="session in sessions" :key="session.sessionId" :session="session"/>
+      <session-container class="mb-12" v-else v-for="session in sessions" :key="session.sessionId" :session="session"/>
   </div>
 </template>
 

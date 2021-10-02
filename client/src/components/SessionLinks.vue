@@ -1,19 +1,68 @@
 <template>
   <div>
     <ul class="options">
-        <li><router-link :to="{name: 'endSession'}">End Session</router-link></li>
-        <li><router-link :to="{name: 'addNap'}">Add Nap</router-link></li>
-        <li><router-link :to="{name: 'addMeal'}">Add Meal</router-link></li>
-        <li><router-link :to="{name: 'addDiaper'}">Add Diaper</router-link></li>
-        <li><router-link id="delete" :to="{name: 'deleteSession', params: {id: sessionId} }">Delete Session</router-link></li>
+        <li><v-btn :to="{name: 'endSession'}">End Session</v-btn></li>
+        <li><v-btn @click="addNap = true">Add Nap</v-btn></li>
+        <li><v-btn @click="addMeal = true">Add Meal</v-btn></li>
+        <li><v-btn @click="addDiaper = true">Add Diaper</v-btn></li>
+        <li><v-btn id="delete" :to="{name: 'deleteSession', params: {id: sessionId} }">Delete Session</v-btn></li>
+        <v-overlay :value="addNap">
+            <v-card class="pa-12" color="black">
+                <v-row justify="center">
+                  <v-btn @click="addNap = false">Back</v-btn>  
+                </v-row>
+                <v-row justify="center" class="mt-5">
+                    <h3>Add Nap</h3>
+                </v-row>
+                <add-nap />  
+            </v-card>     
+        </v-overlay>
+        <v-overlay :value="addMeal">
+            <v-card class="pa-12" color="black">
+                <v-row justify="center">
+                  <v-btn @click="addMeal = false">Back</v-btn>  
+                </v-row>
+                <v-row justify="center" class="mt-5">
+                    <h3>Add Meal</h3>
+                </v-row>
+                <add-meal />  
+            </v-card>     
+        </v-overlay>
+        <v-overlay :value="addDiaper">
+            <v-card class="pa-12" color="black">
+                <v-row justify="center">
+                  <v-btn @click="addDiaper = false">Back</v-btn>  
+                </v-row>
+                <v-row justify="center" class="mt-5">
+                    <h3>Add Diaper</h3>
+                </v-row>
+                <add-diaper />  
+            </v-card>     
+        </v-overlay>
     </ul>
   </div>
 </template>
 
 <script>
+import AddNap from '@/components/sessionforms/AddNap'
+import AddMeal from '@/components/sessionforms/AddMeal'
+import AddDiaper from '@/components/sessionforms/AddDiaper'
+
 export default {
+  components: { 
+      AddNap,
+      AddMeal,
+      AddDiaper
+    },
     props: {
         sessionId: Number
+    },
+    data() {
+        return {
+            addNap: false,
+            addMeal: false,
+            addDiaper: false
+        }
     }
 }
 </script>
@@ -29,19 +78,6 @@ export default {
 
 .options > li {
     margin: 20px;
-}
-
-.options > li > a {
-    text-decoration: none;
-    color: rgb(58, 81, 102);
-    border: rgb(58, 81, 102) 2px solid;
-    padding: 5px;
-    border-radius: 20px;
-}
-
-.options > li > a:hover {
-    background-color: rgb(58, 81, 102);
-    color: white;
 }
 
 #delete {

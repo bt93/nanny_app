@@ -68,7 +68,7 @@ namespace NannyApi.Controllers
                 return Conflict(new { message = "Email address already taken. Please choose a different email." });
             }
 
-            CareTaker user = careTakerDAO.AddCareTaker(userParam);
+            CareTaker user = careTakerDAO.AddCareTaker(userParam, passwordHasher);
             if (user != null)
             {
                 result = Created(user.EmailAddress, null); //values aren't read on client

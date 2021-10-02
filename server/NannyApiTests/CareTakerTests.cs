@@ -98,7 +98,7 @@ namespace NannyApiTests
             testCareTaker.Address.Country = "ertwseg";
 
             // Act
-            dao.AddCareTaker(testCareTaker);
+            dao.AddCareTaker(testCareTaker, new PasswordHasher());
             CareTaker careTaker = dao.GetCareTakerByEmail("jason@jason.com");
 
 
@@ -128,7 +128,7 @@ namespace NannyApiTests
             testCareTaker.Address.Country = "ertwseg";
 
             // Act
-            dao.AddCareTaker(testCareTaker);
+            dao.AddCareTaker(testCareTaker, new PasswordHasher());
             CareTaker careTaker = dao.GetCareTakerById(ruth);
 
 
@@ -141,14 +141,13 @@ namespace NannyApiTests
         {
             // Arrange
             CareTakerSqlDAO dao = new CareTakerSqlDAO(this.connectionString);
-            CareTaker testCareTaker = new CareTaker()
+            CareTakerSettings testCareTaker = new CareTakerSettings()
             {
                 CareTakerId = ruth,
                 AddressId = berkshire,
                 FirstName = "Ru",
                 LastName = "Howie",
                 EmailAddress = "askdfja",
-                Password = "pass",
                 PhoneNumber = "342342432",
             };
             testCareTaker.Address.Street = "34243243";
@@ -176,7 +175,7 @@ namespace NannyApiTests
             string password = "Mypassword!";
 
             // Act
-            dao.UpdatePassword(password, ruth);
+            dao.UpdatePassword(password, ruth, new PasswordHasher());
             CareTaker updated = dao.GetCareTakerById(ruth);
             bool verify = hasher.VerifyHashMatch(updated.Password, "Mypassword!", updated.Salt);
 

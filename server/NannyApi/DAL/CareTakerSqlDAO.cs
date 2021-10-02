@@ -98,9 +98,9 @@ namespace NannyApi.DAL
             return null;
         }
 
-        public CareTaker AddCareTaker(CareTaker careTaker)
+        public CareTaker AddCareTaker(CareTaker careTaker, IPasswordHasher hasher)
         {
-            IPasswordHasher passwordHasher = new PasswordHasher();
+            IPasswordHasher passwordHasher = hasher;
             PasswordHash hash = passwordHasher.ComputeHash(careTaker);
 
             using (SqlConnection conn = new SqlConnection(this.connectionString))
@@ -130,7 +130,7 @@ namespace NannyApi.DAL
             }
         }
 
-        public CareTaker UpdateCareTaker(CareTaker careTaker)
+        public CareTakerSettings UpdateCareTaker(CareTakerSettings careTaker)
         {
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
@@ -159,11 +159,11 @@ namespace NannyApi.DAL
             }
         }
 
-        public bool UpdatePassword(string password, int careTakerId)
+        public bool UpdatePassword(string password, int careTakerId, IPasswordHasher hasher)
         {
             CareTaker caretaker = new CareTaker();
             caretaker.Password = password;
-            IPasswordHasher passwordHasher = new PasswordHasher();
+            IPasswordHasher passwordHasher = hasher;
             PasswordHash hash = passwordHasher.ComputeHash(caretaker);
 
             using (SqlConnection conn = new SqlConnection(this.connectionString))

@@ -1,15 +1,48 @@
 <template>
-  <div>
-      <img src="@/images/loading.gif" alt="Loading" v-if="isLoading">
+  <v-container>
+      <v-row v-if="isLoading" justify="center">
+          <v-progress-circular 
+            indeterminate
+            color="primary"
+          />
+      </v-row>
       <error v-else-if="error"/>
-      <div v-else>
-          <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
-          <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
-          <p>Notes: {{ (session.notes) ? session.notes : 'N/A' }}</p>
-          <h3><router-link :to="{name: 'updateSession'}">Update Session</router-link></h3>
+      <v-container v-else>
+          <v-card class="mx-12 pa-12">
+            <v-row>
+                <v-col>
+                    <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
+                    <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
+                    <h3>Drop Off: {{ formatTime(session.dropOff) }}</h3>
+                    <p>Notes: {{ (session.notes) ? session.notes : 'N/A' }}</p>
+                </v-col>
+                <v-col>
+                <v-img
+                        :src="session.child.imageUrl"
+                        :alt="session.child.firstName"
+                        max-width="20vh"
+                        v-if="session.child.imageUrl"
+                    />
+                    <v-avatar
+                        size="90"
+                        color="primary"
+                        v-else
+                    >
+                    <v-icon dark large>
+                        mdi-account-circle
+                    </v-icon>
+                    </v-avatar> 
+                </v-col>  
+            </v-row>
+
+            
+            <v-spacer />
+            <v-btn :to="{name: 'updateSession', params: {id: $route.params.id}}">Update Session</v-btn>
+          </v-card>
+          
           <session-info :session="session" />
-      </div>
-  </div>
+      </v-container>
+  </v-container>
 </template>
 
 <script>
@@ -46,7 +79,7 @@ export default {
             }
             
             return 'Other'
-        }
+        },
     },
     created() {
     sessionService.getSessionById(this.$route.params.id)
@@ -61,6 +94,13 @@ export default {
             this.isLoading = false;
             this.error = true;
         });
+    },
+    methods: {
+        formatTime(time) {
+            let date = new Date(time);
+
+            return moment(date).format('LLL');
+        }
     }
 }
 </script>

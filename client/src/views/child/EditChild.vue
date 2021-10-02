@@ -1,64 +1,182 @@
 <template>
-  <div class="editChild">
-      <img src="@/images/loading.gif" alt="loading..." v-if="isLoading">
+  <v-container class="editChild">
+      <v-row v-if="isLoading" justify="center">
+          <v-progress-circular 
+            color="primary"
+            indeterminate
+          />
+      </v-row>
       <error v-else-if="error"/>
-      <div class="childInfo text-center" v-else>
-          <div class="editLinks">
-              <router-link :to="{ name: 'addParent', params: { child: child } }">Add Parent</router-link>  
-              <!-- <router-link :to="{name: 'deactivateChild'}">Deactivate Child </router-link> -->
-          </div>
-          <form @submit.prevent="updateChild">
-                <label for="firstName">First Name: </label>
-                <input type="text" name="firstName" id="firstName" v-model="child.firstName">
-                <label for="lastName">Last Name: </label>
-                <input type="text" name="lastName" id="lastName" v-model="child.lastName">
-                <label for="gender">Gender: </label>
-                <select name="gender" id="gender" v-model="child.gender">
-                    <option value="" disabled selected="selected">Choose One</option>
-                    <option value="F">Female</option>
-                    <option value="M">Male</option>
-                    <option value="N">Non-Binary</option>
-                    <option value="O">Other</option>
-                </select>
-                <label for="dateOfBirth">Date of Birth: </label>
-                <input type="date" name="dateOfBirth" id="dateOfBirth" v-model="child.dateOfBirth">
-                <label for="ratePerHour">Rate Per Hour: </label>
-                <input type="number" name="ratePerHour" id="ratePerHour" min="0" step="any" v-model="child.ratePerHour">
-                <label for="needsDiapers">Needs Diapers? </label>
-                <select name="needsDiapers" id="needsDiapers" v-model="child.needsDiapers">
-                    <option :value="true">Yes</option>
-                    <option :value="false">No</option>
-                </select>
-                <upload-photo @image-upload="imageUpload" />
-                <input type="submit" value="Update">
-          </form>
-      </div>
-  </div>
+      <v-card 
+        elevation="2"
+        v-else
+      >
+        <v-form
+            @submit.prevent="updateChild"
+            ref="form"
+        >
+            <v-container class="px-12">
+                <v-row>
+                    <v-col>
+                        <v-text-field 
+                            label="First Name"
+                            v-model="child.firstName"
+                            id="firstName"
+                            :rules="nameRules"
+                        />
+                    </v-col>
+                    <v-col>
+                        <v-text-field 
+                            label="Last Name"
+                            v-model="child.lastName"
+                            id="lastName"
+                            :rules="nameRules"
+                        />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-select 
+                            v-model="child.gender"
+                            label="Gender"
+                            :items="genders"
+                            item-text="item"
+                            item-value="value"
+                        />
+                    </v-col>
+                    <v-col>
+                       <v-text-field 
+                            type="date"
+                            label="Date Of Birth"
+                            v-model="child.dateOfBirth"
+                            id="dateOfBirth"
+                        /> 
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-text-field 
+                            type="number"
+                            min="0" 
+                            step="any"
+                            label="Rate Per Hour (in U.S. Dollars)"
+                            v-model="child.ratePerHour"
+                            :rules="rateRules"
+                        />
+                    </v-col>
+                    <v-col>
+                        <v-radio-group
+                            v-model="child.needsDiapers"
+                            label="Needs Diaper?"
+                            row
+                            :rules="diaperRules"
+                        >
+                            <v-radio 
+                                label="Yes"
+                                :value="true"
+                            />
+                            <v-radio 
+                                label="No"
+                                :value="false"
+                            />
+                        </v-radio-group>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-container v-if="child.imageUrl && !newImage" class="d-flex justify-center">
+                            <v-img 
+                                
+                                :src="child.imageUrl"
+                                :alt="child.firstName"
+                                max-width="20vh"
+                            />
+                        </v-container>
+                        <upload-photo @image-upload="imageUpload" v-else-if="!child.imageUrl || newImage" />
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-btn @click="changeNewImage">{{ (newImage) ? 'Cancel' : 'Update Image' }}</v-btn>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <add-parent :child="child" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <new-parent />
+                    </v-col>
+                </v-row>
+                <v-row  class="justify-center">
+                    <v-list-item v-if="child.allergies.length > 0" class="justify-center">
+                        Allergies:
+                        <v-list>
+                            <v-list-item v-for="allergy in child.allergies" :key="allergy.allergyId">{{ allergy.name }} <span class="pl-4" @click="removeAllergyFromChild(allergy)">❌</span></v-list-item>
+                        </v-list>
+                    </v-list-item>
+                </v-row>
+                <v-row justify="center">
+                    <v-col>
+                        <add-allergy :childId="child.childId"/>
+                    </v-col>
+                </v-row>
+                <v-row justify="center">
+                    <v-btn class="mr-6" type="submit">Submit</v-btn>
+                    <v-btn :to="{name: 'viewChild', parms: {id: child.childId}}">Cancel</v-btn>
+                </v-row>
+            </v-container>
+        </v-form>  
+      </v-card>
+  </v-container>
 </template>
 
 <script>
 import childrenService from '@/services/ChildrenService'
 import Error from '@/components/Error'
 import moment from 'moment'
-import UploadPhoto from '../../components/UploadPhoto.vue'
+import UploadPhoto from '@/components/UploadPhoto.vue'
+import AddParent from '@/components/AddParent.vue'
+import NewParent from '../../components/NewParent.vue'
+import AddAllergy from '@/components/AddAllergy'
 
 export default {
     components: {
         Error,
-        UploadPhoto
+        UploadPhoto,
+        AddParent,
+        NewParent,
+        AddAllergy
     },
     data() {
         return {
             child: {},
+            genders: [
+                { item: 'Female', value: 'F' },
+                { item: 'Male', value: 'M' },
+                { item: 'Non-Binary', value: 'N' },
+                { item: 'Other', value: 'O' }
+            ],
             isLoading: true,
-            error: false
+            error: false,
+            newImage: false,
+            nameRules: [
+                v => !!v || 'Name is required'
+            ],
+            rateRules: [
+                v => !!v || 'Rate Per Hour is required'
+            ],
+            diaperRules: [
+                v => !!v || 'Needs Diapers is required'
+            ]
         }
     },
     methods: {
         updateChild() {
             this.child.ratePerHour = Number(this.child.ratePerHour);
 
-            childrenService.updateChild(this.child)
+            if (this.$refs.form.validate()) {
+                childrenService.updateChild(this.child)
                 .then(res => {
                     if (res.status === 201) {
                         this.$router.push({name: 'dashboard'});
@@ -69,10 +187,27 @@ export default {
                         this.error = true;
                     }
                 });
+            }
+            
+        },
+
+        changeNewImage() {
+            (this.newImage) ? this.newImage = false : this.newImage = true;
         },
 
         imageUpload(value) {
             this.child.imageUrl = value;
+        },
+        
+        removeAllergyFromChild(allergy) {
+            if (confirm(`Are you sure you'd like to remove ${allergy.name} from ${this.child.firstName}'s Allergy list?`)) {
+                childrenService.removeAllergyFromChild(this.child.childId, allergy.allergyId)
+                    .then(res => {
+                        if (res.status === 204) {
+                            window.location.reload();
+                        }
+                    })
+            }
         }
     },
     created() {

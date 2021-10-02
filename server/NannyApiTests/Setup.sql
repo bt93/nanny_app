@@ -201,14 +201,15 @@ INSERT INTO diaper (session_id, time, notes)
 INSERT INTO diaper (session_id, time, notes)
 	VALUES (@session1, '2020-10-20 11:20:00', 'Nothing Unusal')
 
-
+INSERT INTO child_allergies (child_id, allergy_id)
+	VALUES (@ellie, (SELECT allergy_id FROM allergies WHERE name = 'Banana'))
 -- Test if they work
 --SELECT * FROM address
 --SELECT * FROM caretaker
 --SELECT * FROM session
 --SELECT * FROM child
 --SELECT * FROM session_caretaker
-
+--SELECT * FROM child_allergies
 
 -- Return data to the caller
 SELECT @berkshire AS berkshire, @fleet AS fleet, @street AS street, @mayfield as mayfield,

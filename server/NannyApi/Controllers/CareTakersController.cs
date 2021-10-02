@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NannyApi.DAL;
 using NannyApi.Models;
+using NannyApi.Security;
 
 namespace NannyApi.Controllers
 {
@@ -29,10 +30,12 @@ namespace NannyApi.Controllers
         }
 
         private ICareTakerDAO careTakerDao;
+        private IPasswordHasher PasswordHasher;
 
-        public CaretakersController(ICareTakerDAO careTakerDao)
+        public CaretakersController(ICareTakerDAO careTakerDao, IPasswordHasher passwordHasher)
         {
             this.careTakerDao = careTakerDao;
+            this.PasswordHasher = passwordHasher;
         }
 
         // Get for /api/caretakers
@@ -52,12 +55,14 @@ namespace NannyApi.Controllers
         {
             CareTaker careTaker = careTakerDao.GetCareTakerById(userId);
 
-            if (careTaker != null)
+            if (careTaker == null)
             {
-                return careTaker;
+                return NotFound();
             }
 
-            return NotFound();
+            careTaker.Password = null;
+            careTaker.Salt = null;
+            return Ok(careTaker);
         }
 
         /// <summary>
@@ -67,7 +72,7 @@ namespace NannyApi.Controllers
         /// <param name="careTaker"></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult<CareTaker> UpdateCareTaker(CareTaker careTaker)
+        public ActionResult<CareTakerSettings> UpdateCareTaker(CareTakerSettings careTaker)
         {
             CareTaker careTakerCheck = careTakerDao.GetCareTakerById(userId);
 
@@ -90,7 +95,7 @@ namespace NannyApi.Controllers
                 return NotFound();
             }
 
-            bool isChanged = careTakerDao.UpdatePassword(careTaker.Password, userId);
+            bool isChanged = careTakerDao.UpdatePassword(careTaker.Password, userId, PasswordHasher);
 
             if (isChanged)
             {

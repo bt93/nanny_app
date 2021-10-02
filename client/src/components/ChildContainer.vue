@@ -1,15 +1,33 @@
 <template>
-    <router-link :to="{name: 'viewChild', params: {id: child.childId, firstName: child.firstName.toLowerCase(), lastName: child.lastName.toLowerCase()}}">
-        <div class="childContainer">
-            <h3>{{ child.firstName }} {{ child.lastName }}</h3>
-            <ul>
-                <li>Date of Birth: {{ formatDOB }}</li>
-                <li>Gender: {{ getGender }}</li>
-                <li>Rate: ${{ child.ratePerHour }}</li>
-                <li>Needs diapers: {{ getNeedsDiapers }}</li>
-            </ul>
-        </div>
-    </router-link>
+    <v-card class="pa-3" width="20em">
+        <v-card-title >
+            {{child.firstName}} {{ child.lastName }}
+            <v-spacer />
+            <v-avatar
+                size="90"
+                v-if="child.imageUrl"
+            >
+                <v-img
+                    :src="child.imageUrl"
+                    :alt="child.firstName"
+                />
+            </v-avatar>
+            <v-avatar
+                size="90"
+                color="primary"
+                v-else
+            >
+                <v-icon dark large>
+                    mdi-account-circle
+                </v-icon>
+            </v-avatar>
+        </v-card-title>
+        <v-card-text>Date of Birth: {{ formatDOB }}</v-card-text>
+        <v-card-text>Gender: {{ getGender }}</v-card-text>
+        <v-card-text>Rate: ${{ child.ratePerHour }}</v-card-text>
+        <v-card-text>Needs Diapers: {{ getNeedsDiapers }}</v-card-text>
+        <v-btn :to="{name: 'viewChild', params: {id: child.childId}}">View {{ child.firstName }}</v-btn>
+    </v-card>
 </template>
 
 <script>
@@ -49,20 +67,4 @@ export default {
 </script>
 
 <style>
-.childContainer {
-    border: rgb(58, 81, 102) 2px solid;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    margin-right: 20px;
-}
-
-.childContainer:hover {
-  background-color: rgb(37, 57, 73);
-  color: rgb(72, 223, 185);
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
 </style>

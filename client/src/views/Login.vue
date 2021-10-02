@@ -1,41 +1,54 @@
 <template>
-  <div id="login" class="text-center">
-    <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
-      <div
-        class="alert alert-danger"
-        role="alert"
-        v-if="invalidCredentials"
-      >Invalid Email and password!</div>
-      <div
-        class="alert alert-success"
-        role="alert"
-        v-if="this.$route.query.registration"
-      >Thank you for registering, please sign in.</div>
-      <label for="emailAddress" class="sr-only">Email</label>
-      <input
-        type="text"
-        id="emailAddress"
-        class="form-control"
-        placeholder="Email Address"
-        v-model="user.emailAddress"
-        required
-        autofocus
-      />
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-        required
-      />
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
-      <button type="submit">Sign in</button>
-    </form>
-    <img src="../images/loading.gif" alt="Loading" v-if="isLoading">
-  </div>
+  <v-card
+    elevation="2"
+    class="ma-12 px-12"
+  >
+    <v-form class="mx-12" 
+    @submit.prevent="login" 
+    v-model="valid"
+    ref="form">
+      <v-card-title class="text-sm-body-1 text-caption mb-3 px-1 font-weight-normal">Please Sign In</v-card-title>
+      <v-container>
+        <v-row v-if="invalidCredentials">
+          <h3>Invalid Email and Password</h3>
+        </v-row>
+        <v-row>
+          <v-text-field
+            label="Email Address"
+            v-model="user.emailAddress"
+            id="emailAddress"
+            required
+            :rules="emailRules"
+          ></v-text-field>
+        </v-row>
+        <v-row>
+          <v-text-field
+            label="Password"
+            v-model="user.password"
+            id="password"
+            type="password"
+            required
+            :rules="passwordRules"
+          ></v-text-field>
+        </v-row>
+        <v-row justify="center">
+          <router-link :to="{ name: 'register' }">Need an account?</router-link>
+        </v-row>
+        <v-row justify="center" class="my-9">
+            <v-progress-circular 
+              color="primary" 
+              indeterminate 
+              v-if="isLoading"
+              class="py-4"
+            ></v-progress-circular>
+            <div v-else class="py-4"></div>
+        </v-row>
+        <v-row justify="center">
+          <v-btn type="submit">Sign in</v-btn>
+        </v-row>
+      </v-container>
+    </v-form>
+  </v-card>
 </template>
 
 <script>
@@ -50,14 +63,24 @@ export default {
         emailAddress: "",
         password: ""
       },
+      invalidCredentials: false,
       isLoading: false,
-      invalidCredentials: false
+      valid: false,
+      emailRules: [
+        v => !!v || 'Email Address is required',
+        v => /.+@.+/.test(v) || 'Email Address must be valid'
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+      ]
     };
   },
   methods: {
     login() {
-      this.isLoading = true;
-      authService
+      if (this.$refs.form.validate()) {
+        this.invalidCredentials = false;
+        this.isLoading = true;
+        authService
         .login(this.user)
         .then(response => {
           if (response.status == 200) {
@@ -73,8 +96,10 @@ export default {
             this.isLoading = false;
             this.invalidCredentials = true;
           }
-        });
+        }); 
+      }
     }
   }
 };
 </script>
+

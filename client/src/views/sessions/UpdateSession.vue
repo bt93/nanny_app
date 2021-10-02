@@ -1,32 +1,52 @@
 <template>
-  <div class="details">
-      <img src="@/images/loading.gif" alt="Loading" v-if="isLoading">
+  <v-container class="details">
+      <v-row v-if="isLoading" justify="center">
+          <v-progress-circular 
+            indeterminate
+            color="primary"
+          />
+      </v-row>
       <error v-else-if="error"/>
-      <div v-else>
-          <router-link :to="{name: 'session', params: {id: this.$route.params.id}}">Go back</router-link>
-          <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
-          <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
-          <h3>Session Details</h3>
-          <session-links :sessionId="session.sessionId"/>
-          <form @submit.prevent="updateSession">
-              <div>
-                  <label for="dropOff">Drop Off: </label>
-                    <input 
-                    type="datetime-local" 
-                    name="dropOff" 
-                    id="dropOff" 
+      <v-card v-else>
+          <v-row justify="center" class="py-2">
+             <v-btn :to="{name: 'session', params: {id: this.$route.params.id}}">Go back</v-btn> 
+          </v-row>
+          <v-row justify="center">
+              <h2>{{ session.child.firstName }} {{ session.child.lastName }}</h2>
+          </v-row>
+          <v-row justify="center">
+              <p>Gender: {{ getGender }} - DOB: {{ formatDOB }}</p>
+          </v-row>
+          <v-row justify="center">
+            <h3>Session Details</h3>  
+          </v-row>
+          <v-row justify="center" class="my-12">
+             <session-links :sessionId="session.sessionId"/> 
+          </v-row>
+          <v-row justify="center">
+             <v-form @submit.prevent="updateSession">
+                <v-row>
+                   <v-text-field 
+                    type="datetime-local"
+                    label="Drop Off Time"
                     v-model="session.dropOff"
-                    >
-              </div>
-              <div>
-                <label for="notes">Notes: </label>
-                <textarea name="notes" id="notes" cols="30" rows="10" v-model="session.notes"></textarea>
-              </div>
-              <input type="submit" value="Update">
-          </form>
-          <session-info :session="session" />
-      </div>
-  </div>
+                    />  
+                </v-row>
+                <v-row>
+                   <v-textarea 
+                    label="notes"
+                    v-model="session.notes"
+                    />  
+                </v-row>
+                <v-row justify="center" class="mt-4 mb-12">
+                    <v-btn type="submit">Update</v-btn>
+                </v-row>
+            </v-form> 
+          </v-row>
+          
+      </v-card>
+      <session-info v-if="!isLoading" :session="session" />
+  </v-container>
 </template>
 
 <script>
@@ -37,7 +57,7 @@ import SessionInfo from '../../components/SessionInfo.vue'
 import SessionLinks from '@/components/SessionLinks'
 
 export default {
-    name: 'session-details',
+    name: 'update-session',
     components: {
         Error,
         SessionInfo,

@@ -1,4 +1,6 @@
-﻿using NannyApi.Models;
+﻿
+using NannyApi.Models;
+using NannyApi.Security;
 using System.Collections.Generic;
 
 namespace NannyApi.DAL
@@ -21,14 +23,14 @@ namespace NannyApi.DAL
         /// </summary>
         /// <param name="careTaker"></param>
         /// <returns>Intiger of rows affected</returns>
-        public CareTaker AddCareTaker(CareTaker careTaker);
+        public CareTaker AddCareTaker(CareTaker careTaker, IPasswordHasher hasher);
 
         /// <summary>
         /// Updates a caretaker
         /// </summary>
         /// <param name="careTaker"></param>
         /// <returns>Caretaker Object</returns>
-        public CareTaker UpdateCareTaker(CareTaker careTaker);
+        public CareTakerSettings UpdateCareTaker(CareTakerSettings careTaker);
         /// <summary>
         /// Deletes a caretaker
         /// </summary>
@@ -47,6 +49,6 @@ namespace NannyApi.DAL
         /// <param name="password"></param>
         /// <param name="careTakerId"></param>
         /// <returns>Bool</returns>
-        bool UpdatePassword(string password, int careTakerId);
+        bool UpdatePassword(string password, int careTakerId, IPasswordHasher hasher);
     }
 }

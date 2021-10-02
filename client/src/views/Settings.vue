@@ -1,62 +1,112 @@
 <template>
-  <div class="settings">
-    <img src="../images/loading.gif" alt="" v-if="isLoading">
+  <v-container class="settings">
+    <v-row v-if="isLoading" justify="center">
+          <v-progress-circular 
+            color="primary"
+            indeterminate
+          />
+      </v-row>
     <Error v-else-if="error" />
-    <form v-else @submit.prevent="submit">
-      <div class="input">
-        <h2>Basic Info</h2>
-        <div>
-          <label for="firstName">First Name: </label>
-          <input type="text" name="firstName" id="firstName" v-model="caretaker.firstName">
-        </div>
-        <div>
-          <label for="lastName">Last Name: </label>
-          <input type="text" name="lastName" id="lastName" v-model="caretaker.lastName">
-        </div>
-        <div>
-          <label for="email">Email Address: </label>
-          <input type="text" name="email" id="email" v-model="caretaker.emailAddress">
-        </div>
-        <div>
-          <label for="phoneNumber">Phone Number: </label>
-          <input type="tel" name="phoneNumber" id="phoneNumber" v-model="caretaker.phoneNumber">
-        </div>
-      </div>
-      <div class="input">
-        <h2>Address</h2>
-        <div>
-          <label for="street">Street: </label>
-          <input type="address" name="street" id="street" v-model="caretaker.address.street">
-        </div>
-        <div>
-          <label for="city">City: </label>
-          <input type="city" name="city" id="city" v-model="caretaker.address.city">
-        </div>
-        <div>
-          <label for="state">State: </label>
-          <input type="state" name="state" id="state" v-model="caretaker.address.state">
-        </div>
-        <div>
-          <label for="zip">Zip Code: </label>
-          <input type="zip" name="zip" id="zip" v-model="caretaker.address.zip">
-        </div>
-        <div>
-          <label for="county">County: </label>
-          <input type="text" name="county" id="county" v-model="caretaker.address.county">
-        </div>
-        <div>
-          <label for="country">Country: </label>
-          <input type="text" name="country" id="country" v-model="caretaker.address.country">
-        </div>
-      </div>
-      <div>
-          <router-link :to="{ name: 'changePassword' }">Change password</router-link>
-      </div>
-      <div>
-        <input type="submit">
-      </div>
-    </form>
-  </div>
+    <v-container v-else>
+      <v-form @submit.prevent="submit" ref="form">
+        <v-container class="d-md-flex justify-space-around mb-12">
+          <v-card elevation="2" class="px-6">
+            <h2>Basic Info</h2>
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="First Name"
+                  id="firstName"
+                  v-model="caretaker.firstName"
+                  :rules="nameRules"
+                />
+              </v-col>
+              <v-col>
+                <v-text-field 
+                  label="Last Name"
+                  id="lastName"
+                  v-model="caretaker.lastName"
+                  :rules="nameRules"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Email Address"
+                  id="emailAddress"
+                  v-model="caretaker.emailAddress"
+                  :rules="emailRules"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Phone Number"
+                  type="tel"
+                  id="phoneNumber"
+                  v-model="caretaker.phoneNumber"
+                />
+              </v-col>
+            </v-row>
+          </v-card>
+          <v-card elevation="2" class="px-6">
+            <h2>Address</h2>
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Street"
+                  id="street"
+                  v-model="caretaker.address.street"
+                  :rules="streetRules"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="City"
+                  id="city"
+                  v-model="caretaker.address.city"
+                  :rules="cityRules"
+                />
+              </v-col>
+              <v-col>
+                <v-text-field 
+                  label="state"
+                  id="state"
+                  v-model="caretaker.address.state"
+                  :rules="stateRules"
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field 
+                  label="Zip Code"
+                  id="zip"
+                  v-model="caretaker.address.zip"
+                />
+              </v-col>
+              <v-col>
+                <v-text-field 
+                  label="County"
+                  id="county"
+                  v-model="caretaker.address.county"
+                />
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-container>
+        <v-row justify="center">
+          <v-btn type="submit" class="mr-6">Submit</v-btn>
+          <v-btn :to="{ name: 'changePassword' }" class="mr-6" color="error">Change Password</v-btn>
+          <v-btn :to="{ name: 'dashboard' }">Cancel</v-btn>
+        </v-row>
+      </v-form>
+    </v-container>
+  </v-container>
 </template>
 
 <script>
@@ -71,20 +121,45 @@ export default {
     return {
       caretaker: {},
       isLoading: true,
-      error: false
+      error: false,
+      nameRules: [
+        v => !!v || 'Field is required',
+      ],
+      emailRules: [
+        v => !!v || 'Email Address is required',
+        v => /.+@.+/.test(v) || 'Email Address must be valid'
+      ],
+      streetRules: [
+        v => !!v || 'Street Name is required'
+      ],
+      cityRules: [
+        v => !!v || 'City Name is required'
+      ],
+      stateRules: [
+        v => !!v || 'State is required'
+      ],
+      countryRules: [
+        v => !!v || 'Country is required'
+      ],
     }
   },
   methods: {
     submit() {
-      caretakerService.updateCaretaker(this.caretaker)
-        .then(res => {
-          if (res.status === 201) {
-            this.$router.push('/dashboard');
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        }); 
+      if (this.$refs.form.validate()) {
+        this.isLoading = true;
+        caretakerService.updateCaretaker(this.caretaker)
+          .then(res => {
+            if (res.status === 201) {
+              this.$router.push('/dashboard');
+            }
+          })
+          .catch(err => {
+            if (err) {
+              this.isLoading = false;
+              this.error = true;
+            }
+          });
+      }
     }    
   },
   created() {

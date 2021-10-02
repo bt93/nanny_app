@@ -1,20 +1,31 @@
 <template>
-  <div class="change-password">
-      <h1>Change Password</h1>
-      <h2 v-if="errorMessage">{{ errorMessage }}</h2>
-      <form @submit.prevent="submit">
-          <div>
-            <label for="password">Password: </label>
-            <input type="password" name="password" id="password" v-model="newPassword" required>
-          </div>
-          <div>
-              <label for="confrimPassword">Confrim Password: </label>
-              <input type="password" name="confirmPassword" id="confirmPassword" v-model="confirmPassword" required>
-          </div>
-          <input type="submit">
-          <button @click.prevent="cancel">Cancel</button>
-      </form>
-  </div>
+    <v-card class="ma-12 px-12">
+        <v-card-title>Change Password</v-card-title>
+        <v-form @submit.prevent="submit" ref="form">
+            <v-row>
+              <v-text-field 
+                label="Password"
+                id="password"
+                v-model="newPassword"
+                type="password"
+                :rules="passwordRules"
+                />  
+            </v-row>
+            <v-row>
+                <v-text-field 
+                label="Confirm Password"
+                id="confirmPassword"
+                v-model="confirmPassword"
+                type="password"
+                :rules="confirmPasswordRules"
+                />  
+            </v-row>
+            <v-row justify="center" class="py-4">
+                <v-btn type="submit" class="mx-9" color="error">Submit</v-btn>
+                <v-btn :to="{name: 'settings'}">Cancel</v-btn>
+            </v-row>
+        </v-form>
+    </v-card>
 </template>
 
 <script>
@@ -26,12 +37,19 @@ export default {
             newPassword: '',
             confirmPassword: '',
             errorMessage: '',
-            caretaker: {}
+            caretaker: {},
+            passwordRules: [
+                v => !!v || 'Password is required'
+            ],
+            confirmPasswordRules: [
+                v => !!v || 'Confirm Password is required',
+                v => v === this.newPassword || 'Password must match'
+            ],
         }
     },
     methods: {
         submit() {
-            if (this.newPassword === this.confirmPassword) {
+            if (this.$refs.form.validate()) {
                 this.caretaker.password = this.newPassword;
                 caretakerService.updatePassword(this.caretaker)
                     .then(res => {
@@ -39,12 +57,8 @@ export default {
                             this.$router.push('/settings');
                         }
                     })
-            } else {
-                this.errorMessage = 'Passwords do not match. Please try again.';
             }
-        },
-        cancel() {
-            this.$router.push('/settings');
+                
         }
     },
     created() {

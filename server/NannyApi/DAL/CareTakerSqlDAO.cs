@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using NannyApi.Security.Models;
 using NannyApi.Security;
 using System.Data;
+using NannyApi.DAL.DBHelpers;
 
 namespace NannyApi.DAL
 {
@@ -12,6 +13,7 @@ namespace NannyApi.DAL
     {
 
         private string connectionString { get; set; }
+        private StoredProcedureHelper storedProcedureHelper { get; set; }
         /// <summary>
         /// Creates a sql based caretaker DAO
         /// </summary>
@@ -19,22 +21,17 @@ namespace NannyApi.DAL
         public CareTakerSqlDAO(string dbconnectionString)
         {
             this.connectionString = dbconnectionString;
+            storedProcedureHelper = new StoredProcedureHelper();
         }
 
         public IList<CareTaker> GetAllCareTakers()
         {
             List<CareTaker> careTakers = new List<CareTaker>();
 
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (SqlConnection conn = storedProcedureHelper.CreateConnection(connectionString))
             {
-                conn.Open();
-
-                // Returns all the caretakers with address
-                const string sql = @"SELECT * FROM caretaker
-                                       JOIN address ON caretaker.address_id = address.address_id";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader rdr = cmd.ExecuteReader();
+                var command = storedProcedureHelper.CreateCommand("GetAllCaretakers", conn);
+                var rdr = storedProcedureHelper.ToList(command);
 
                 while (rdr.Read())
                 {
@@ -48,22 +45,14 @@ namespace NannyApi.DAL
 
         public CareTaker GetCareTakerByEmail(string email)
         {
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (SqlConnection conn = storedProcedureHelper.CreateConnection(connectionString))
             {
-                conn.Open();
+                var command = storedProcedureHelper.CreateCommand("GetCaretakerByEmail", conn);
+                storedProcedureHelper.AddWithValue(command, "@EmailAddress", email, SqlDbType.NVarChar);
+                
+                var rdr = storedProcedureHelper.Single(command);
 
-                // Queries for a single person by id w/ their address
-                const string sql = @"SELECT *
-                                        FROM caretaker
-                                        JOIN address ON caretaker.address_id = address.address_id
-                                        WHERE email_address = @email_address";
-
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@email_address", email);
-
-                SqlDataReader rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
+                if (rdr.Read())
                 {
                     return ParseRow(rdr);
                 }
@@ -74,27 +63,19 @@ namespace NannyApi.DAL
 
         public CareTaker GetCareTakerById(int id)
         {
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (SqlConnection conn = storedProcedureHelper.CreateConnection(connectionString))
             {
-                conn.Open();
+                var command = storedProcedureHelper.CreateCommand("GetCaretakerByID", conn);
+                storedProcedureHelper.AddWithValue(command, "@CaretakerID", id, SqlDbType.Int);
 
-                // Queries for a single person by first and last name w/ their address
-                const string sql = @"SELECT *
-                                        FROM caretaker
-                                        JOIN address ON caretaker.address_id = address.address_id
-                                        WHERE caretaker_id = @caretaker_id";
+                var rdr = storedProcedureHelper.Single(command);
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", id);
-
-                SqlDataReader rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
+                if (rdr.Read())
                 {
                     return ParseRow(rdr);
                 }
             }
-            
+
             return null;
         }
 
@@ -168,19 +149,12 @@ namespace NannyApi.DAL
 
             using (SqlConnection conn = new SqlConnection(this.connectionString))
             {
-                conn.Open();
-
-                const string sql = @"UPDATE caretaker
-                                        SET password = @password,
-                                        SALT = @salt
-                                        WHERE caretaker_id = @caretaker_id";
-
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@password", hash.Password);
-                cmd.Parameters.AddWithValue("@salt", hash.Salt);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                var command = storedProcedureHelper.CreateCommand("UpdatePassword", conn);
+                storedProcedureHelper.AddWithValue(command, "@Password", hash.Password, SqlDbType.NVarChar);
+                storedProcedureHelper.AddWithValue(command, "@Salt", hash.Salt, SqlDbType.NVarChar);
+                storedProcedureHelper.AddWithValue(command, "@CaretakerID", careTakerId, SqlDbType.Int);
                 
-                return cmd.ExecuteNonQuery() == 1;
+                return storedProcedureHelper.ExecuteNonQuery(command) == 1;
             }
         }
 

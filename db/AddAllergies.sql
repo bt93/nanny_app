@@ -1,11 +1,15 @@
-
+DROP TABLE if EXISTS child_allergies
+DROP TABLE if EXISTS allergies
+DROP TABLE if EXISTS allergy_type
 -- Creates the table for allergy types
+
 CREATE TABLE allergy_type(
 	allergy_type_id INT IDENTITY PRIMARY KEY,
 	name NVARCHAR(80) NOT NULL
 )
 
 -- Creates the table for an allergy
+
 CREATE TABLE allergies (
 	allergy_id INT IDENTITY PRIMARY KEY,
 	name NVARCHAR(80) NOT NULL,
@@ -14,6 +18,7 @@ CREATE TABLE allergies (
 )
 
 -- Creates the table that references the allergy to the child
+
 CREATE TABLE child_allergies (
 	child_id INT NOT NULL,
 	allergy_id INT NOT NULL,

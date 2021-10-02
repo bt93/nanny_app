@@ -10,6 +10,7 @@ DELETE FROM session;
 DELETE FROM child_caretaker;
 DELETE FROM caretaker;
 DELETE FROM child_parent;
+DELETE FROM child_allergies;
 DELETE FROM child;
 DELETE FROM parent;
 DELETE FROM address;

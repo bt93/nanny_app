@@ -6,40 +6,26 @@ namespace NannyApi.DAL.DBHelpers
 {
     public class StoredProcedureHelper
     {
-        private SqlConnection _connection;
-
-        public StoredProcedureHelper(SqlConnection connection)
+        public SqlConnection CreateConnection(string connectionString)
         {
-            _connection = connection;
+            return new SqlConnection(connectionString);
         }
 
-        public SqlCommand CreateCommand(string commandName)
+        public SqlCommand CreateCommand(string commandName, SqlConnection connection)
         {
-            var command = new SqlCommand(commandName, _connection);
+            var command = new SqlCommand(commandName, connection);
             command.CommandType = CommandType.StoredProcedure;
             return command;
         }
 
-        public SqlParameter AddWithValue(string parameterName, object value, SqlDbType DBType)
+        public SqlCommand AddWithValue(SqlCommand command, string parameterName, object value, SqlDbType DBType)
         {
-            var parameter = new SqlParameter(parameterName, value);
+            var parameter = command.Parameters.AddWithValue(parameterName, value);
             parameter.SqlDbType = DBType;
-            return parameter;
+            return command;
         }
 
-        public object Single(SqlCommand command)
-        {
-            if (command.Connection.State != ConnectionState.Open)
-            {
-                command.Connection.Open();
-            }
-
-            var result = command.ExecuteScalar();
-            command.Connection.Close();
-            return result;
-        }
-        
-        public SqlDataReader ExecuteReader(SqlCommand command)
+        public SqlDataReader Single(SqlCommand command)
         {
             if (command.Connection.State != ConnectionState.Open)
             {
@@ -47,7 +33,23 @@ namespace NannyApi.DAL.DBHelpers
             }
 
             var result = command.ExecuteReader();
-            command.Connection.Close();
+
+            if (result.RecordsAffected > 1)
+            {
+                throw new System.Exception("Returned too many rows");
+            }
+
+            return result;
+        }
+        
+        public SqlDataReader ToList(SqlCommand command)
+        {
+            if (command.Connection.State != ConnectionState.Open)
+            {
+                command.Connection.Open();
+            }
+
+            var result = command.ExecuteReader();
 
             return result;
         } 
@@ -60,7 +62,6 @@ namespace NannyApi.DAL.DBHelpers
             }
 
             var result = command.ExecuteNonQuery();
-            command.Connection.Close();
             return result;
         }
     }

@@ -13,7 +13,7 @@ namespace NannyApi.DAL
     {
 
         private string connectionString { get; set; }
-        private StoredProcedureHelper storedProcedureHelper { get; set; }
+
         /// <summary>
         /// Creates a sql based caretaker DAO
         /// </summary>
@@ -21,17 +21,17 @@ namespace NannyApi.DAL
         public CareTakerSqlDAO(string dbconnectionString)
         {
             this.connectionString = dbconnectionString;
-            storedProcedureHelper = new StoredProcedureHelper();
         }
 
         public IList<CareTaker> GetAllCareTakers()
         {
             List<CareTaker> careTakers = new List<CareTaker>();
 
-            using (SqlConnection conn = storedProcedureHelper.CreateConnection(connectionString))
+            using (var connection = Connection.CreateConnection(connectionString))
             {
-                var command = storedProcedureHelper.CreateCommand("GetAllCaretakers", conn);
-                var rdr = storedProcedureHelper.ToList(command);
+                //GetAllCaretakers
+                var command = connection.CreateNewCommand("GetAllCaretakers");
+                var rdr = command.ToList();
 
                 while (rdr.Read())
                 {
@@ -45,12 +45,12 @@ namespace NannyApi.DAL
 
         public CareTaker GetCareTakerByEmail(string email)
         {
-            using (SqlConnection conn = storedProcedureHelper.CreateConnection(connectionString))
+            using (var connection = Connection.CreateConnection(connectionString))
             {
-                var command = storedProcedureHelper.CreateCommand("GetCaretakerByEmail", conn);
-                storedProcedureHelper.AddWithValue(command, "@EmailAddress", email, SqlDbType.NVarChar);
+                var command = connection.CreateNewCommand("GetCaretakerByEmail");
+                command.AddWithValue("@EmailAddress", email, SqlDbType.NVarChar);
                 
-                var rdr = storedProcedureHelper.Single(command);
+                var rdr = command.Single();
 
                 if (rdr.Read())
                 {
@@ -63,12 +63,12 @@ namespace NannyApi.DAL
 
         public CareTaker GetCareTakerById(int id)
         {
-            using (SqlConnection conn = storedProcedureHelper.CreateConnection(connectionString))
+            using (var connection = Connection.CreateConnection(connectionString))
             {
-                var command = storedProcedureHelper.CreateCommand("GetCaretakerByID", conn);
-                storedProcedureHelper.AddWithValue(command, "@CaretakerID", id, SqlDbType.Int);
+                var command = connection.CreateNewCommand("GetCaretakerByID");
+                command.AddWithValue("@CaretakerID", id, SqlDbType.Int);
 
-                var rdr = storedProcedureHelper.Single(command);
+                var rdr = command.Single();
 
                 if (rdr.Read())
                 {
@@ -84,28 +84,25 @@ namespace NannyApi.DAL
             IPasswordHasher passwordHasher = hasher;
             PasswordHash hash = passwordHasher.ComputeHash(careTaker);
 
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (var connection = Connection.CreateConnection(this.connectionString))
             {
-                conn.Open();
-
+                var command = connection.CreateNewCommand("AddCareTaker");
                 // Stored Procedure created in db/init_scrip.sql
-                SqlCommand cmd = new SqlCommand("dbo.addCareTaker", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@street", careTaker.Address.Street);
-                cmd.Parameters.AddWithValue("@city", careTaker.Address.City);
-                cmd.Parameters.AddWithValue("@state", careTaker.Address.State);
-                cmd.Parameters.AddWithValue("@zip", careTaker.Address.Zip);
-                cmd.Parameters.AddWithValue("@county", careTaker.Address.County);
-                cmd.Parameters.AddWithValue("@country", careTaker.Address.Country);
-                cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
-                cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
-                cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                cmd.Parameters.AddWithValue("@password", hash.Password);
-                cmd.Parameters.AddWithValue("@salt", hash.Salt);
-                cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
+                command.AddWithValue("@street", careTaker.Address.Street, SqlDbType.NVarChar);
+                command.AddWithValue("@city", careTaker.Address.City, SqlDbType.NVarChar);
+                command.AddWithValue("@state", careTaker.Address.State, SqlDbType.NVarChar);
+                command.AddWithValue("@zip", careTaker.Address.Zip, SqlDbType.Int);
+                command.AddWithValue("@county", careTaker.Address.County, SqlDbType.NVarChar);
+                command.AddWithValue("@country", careTaker.Address.Country, SqlDbType.NVarChar);
+                command.AddWithValue("@first_name", careTaker.FirstName, SqlDbType.NVarChar);
+                command.AddWithValue("@last_name", careTaker.LastName, SqlDbType.NVarChar);
+                command.AddWithValue("@email_address", careTaker.EmailAddress, SqlDbType.NVarChar);
+                command.AddWithValue("@password", hash.Password, SqlDbType.NVarChar);
+                command.AddWithValue("@salt", hash.Salt, SqlDbType.NVarChar);
+                command.AddWithValue("@phone_number", careTaker.PhoneNumber, SqlDbType.NVarChar);
                 
                 // Finally, executes the caretaker insert
-                careTaker.CareTakerId = Convert.ToInt32(cmd.ExecuteScalar());
+                careTaker.CareTakerId = Convert.ToInt32(command.ModifyAndReturn());
 
                 return careTaker;
             }
@@ -113,28 +110,24 @@ namespace NannyApi.DAL
 
         public CareTakerSettings UpdateCareTaker(CareTakerSettings careTaker)
         {
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
-            {
-                conn.Open();
-
-                
+            using (var connection = Connection.CreateConnection(this.connectionString))
+            {                
                 // Address insert done first 
-                SqlCommand cmd = new SqlCommand("dbo.updateCareTaker", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
-                cmd.Parameters.AddWithValue("@street", careTaker.Address.Street);
-                cmd.Parameters.AddWithValue("@city", careTaker.Address.City);
-                cmd.Parameters.AddWithValue("@state", careTaker.Address.State);
-                cmd.Parameters.AddWithValue("@zip", careTaker.Address.Zip);
-                cmd.Parameters.AddWithValue("@county", careTaker.Address.County);
-                cmd.Parameters.AddWithValue("@country", careTaker.Address.Country);
-                cmd.Parameters.AddWithValue("@first_name", careTaker.FirstName);
-                cmd.Parameters.AddWithValue("@last_name", careTaker.LastName);
-                cmd.Parameters.AddWithValue("@email_address", careTaker.EmailAddress);
-                cmd.Parameters.AddWithValue("@phone_number", careTaker.PhoneNumber);
+                var command = connection.CreateNewCommand("UpdateCareTaker");
+                command.AddWithValue("@caretaker_id", careTaker.CareTakerId, SqlDbType.Int);
+                command.AddWithValue("@street", careTaker.Address.Street, SqlDbType.NVarChar);
+                command.AddWithValue("@city", careTaker.Address.City, SqlDbType.NVarChar);
+                command.AddWithValue("@state", careTaker.Address.State, SqlDbType.NVarChar);
+                command.AddWithValue("@zip", careTaker.Address.Zip, SqlDbType.Int);
+                command.AddWithValue("@county", careTaker.Address.County, SqlDbType.NVarChar);
+                command.AddWithValue("@country", careTaker.Address.Country, SqlDbType.NVarChar);
+                command.AddWithValue("@first_name", careTaker.FirstName, SqlDbType.NVarChar);
+                command.AddWithValue("@last_name", careTaker.LastName, SqlDbType.NVarChar);
+                command.AddWithValue("@email_address", careTaker.EmailAddress, SqlDbType.NVarChar);
+                command.AddWithValue("@phone_number", careTaker.PhoneNumber, SqlDbType.NVarChar);
 
                 // Finally, executes the caretaker insert
-                careTaker.CareTakerId = Convert.ToInt32(cmd.ExecuteScalar());
+                careTaker.CareTakerId = Convert.ToInt32(command.ModifyAndReturn());
 
                 return careTaker;
             }
@@ -147,28 +140,25 @@ namespace NannyApi.DAL
             IPasswordHasher passwordHasher = hasher;
             PasswordHash hash = passwordHasher.ComputeHash(caretaker);
 
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (var connection = new SqlConnection(this.connectionString))
             {
-                var command = storedProcedureHelper.CreateCommand("UpdatePassword", conn);
-                storedProcedureHelper.AddWithValue(command, "@Password", hash.Password, SqlDbType.NVarChar);
-                storedProcedureHelper.AddWithValue(command, "@Salt", hash.Salt, SqlDbType.NVarChar);
-                storedProcedureHelper.AddWithValue(command, "@CaretakerID", careTakerId, SqlDbType.Int);
+                var command = connection.CreateNewCommand("UpdatePassword");
+                command.AddWithValue("@Password", hash.Password, SqlDbType.NVarChar);
+                command.AddWithValue("@Salt", hash.Salt, SqlDbType.NVarChar);
+                command.AddWithValue("@CaretakerID", careTakerId, SqlDbType.Int);
                 
-                return storedProcedureHelper.ExecuteNonQuery(command) == 1;
+                return command.Modify() == 1;
             }
         }
 
         public void DeleteCareTaker(CareTaker careTaker)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(this.connectionString))
             {
-                conn.Open();
-
-                SqlCommand cmd = new SqlCommand("dbo.deleteCareTaker", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@caretaker_id", careTaker.CareTakerId);
-                cmd.Parameters.AddWithValue("@address_id", careTaker.AddressId);
-                cmd.ExecuteNonQuery();
+                var command = connection.CreateNewCommand("DeleteCareTaker");
+                command.AddWithValue("@caretaker_id", careTaker.CareTakerId, SqlDbType.Int);
+                command.AddWithValue("@address_id", careTaker.AddressId, SqlDbType.Int);
+                command.Modify();
             }
         }
 

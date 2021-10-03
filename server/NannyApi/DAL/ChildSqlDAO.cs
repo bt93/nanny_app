@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
+using NannyApi.DAL.DBHelpers;
+using System.Data;
 
 namespace NannyApi.DAL
 {
@@ -23,23 +23,13 @@ namespace NannyApi.DAL
         {
             List<Child> children = new List<Child>();
 
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (var connection = Connection.CreateConnection(connectionString))
             {
-                conn.Open();
 
-                const string sql = @"SELECT child.*
-	                                    FROM child
-	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
-                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
-	                                    WHERE caretaker.caretaker_id = @caretaker_id
-                                        AND child.active = 1
-	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
-	                                    child.gender, child.date_of_birth, child.needs_diapers,
-	                                    child.rate_per_hour, child.image_url, child.active;";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                var command = connection.CreateNewCommand("GetChildren");
+                command.AddWithValue("@CaretakerID", careTakerId, SqlDbType.Int);
 
-                SqlDataReader rdr = cmd.ExecuteReader();
+                SqlDataReader rdr = command.ToList();
 
                 while (rdr.Read())
                 {
@@ -54,23 +44,13 @@ namespace NannyApi.DAL
         {
             List<Child> children = new List<Child>();
 
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (var connection = Connection.CreateConnection(connectionString))
             {
-                conn.Open();
 
-                const string sql = @"SELECT child.*
-	                                    FROM child
-	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
-                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
-	                                    WHERE caretaker.caretaker_id = @caretaker_id
-                                        AND child.active = 0
-	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
-	                                    child.gender, child.date_of_birth, child.needs_diapers,
-	                                    child.rate_per_hour, child.image_url, child.active;";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
+                var command = connection.CreateNewCommand("GetDeactivedChildren");
+                command.AddWithValue("@CaretakerID", careTakerId, SqlDbType.Int);
 
-                SqlDataReader rdr = cmd.ExecuteReader();
+                SqlDataReader rdr = command.ToList();
 
                 while (rdr.Read())
                 {
@@ -83,25 +63,13 @@ namespace NannyApi.DAL
 
         public Child GetChildById(int childId, int careTakerId)
         {
-            using (SqlConnection conn = new SqlConnection(this.connectionString))
+            using (var connection = Connection.CreateConnection(connectionString))
             {
-                conn.Open();
+                var command = connection.CreateNewCommand("GetChildByID");
+                command.AddWithValue("@ChildID", careTakerId, SqlDbType.Int);
+                command.AddWithValue("@CaretakerID", childId, SqlDbType.Int);
 
-                const string sql = @"SELECT child.*
-	                                    FROM child
-	                                    JOIN child_caretaker ON child.child_id = child_caretaker.child_id
-                                        JOIN caretaker ON child_caretaker.caretaker_id = caretaker.caretaker_id
-	                                    WHERE caretaker.caretaker_id = @caretaker_id
-                                        AND child.child_id = @child_id
-	                                    GROUP BY child.child_id, child.first_name, child.last_name, 
-	                                    child.gender, child.date_of_birth, child.needs_diapers,
-	                                    child.rate_per_hour, child.image_url, child.active;";
-
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@caretaker_id", careTakerId);
-                cmd.Parameters.AddWithValue("@child_id", childId);
-
-                SqlDataReader rdr = cmd.ExecuteReader();
+                SqlDataReader rdr = command.Single();
 
                 while (rdr.Read())
                 {
